@@ -1,21 +1,20 @@
-package com.example.plantcare.ui.composable
+package com.example.plantcare.ui.composable.plantDetails
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
@@ -29,16 +28,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.example.plantcare.data.model.Plants
-import com.example.plantcare.data.model.Tasks
 import com.example.plantcare.ui.composable.util.EmptyListMsg
 
 @Composable
 fun PlantDetailsNotes(notes: Map<String, String>){
-    val scrollState = rememberScrollState()
-    Column(modifier = Modifier
-        .height(300.dp)
-        .fillMaxWidth(),
+    Box(modifier = Modifier
+        .height(330.dp)
+        .fillMaxWidth()
+        .padding(0.dp,0.dp,0.dp, 30.dp),
+        contentAlignment = Alignment.BottomEnd){
+    Column(modifier = Modifier,
         verticalArrangement = Arrangement.SpaceEvenly,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -47,7 +46,8 @@ fun PlantDetailsNotes(notes: Map<String, String>){
             style = MaterialTheme.typography.titleLarge,
             modifier = Modifier
                 .padding(10.dp, 20.dp, 0.dp, 5.dp)
-                .fillMaxWidth())
+                .fillMaxWidth()
+        )
         Card(shape = CardDefaults.elevatedShape,
             colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
             elevation = CardDefaults.cardElevation(
@@ -56,8 +56,7 @@ fun PlantDetailsNotes(notes: Map<String, String>){
             border = BorderStroke(1.dp, Color.Black),
             modifier = Modifier
                 .fillMaxWidth(0.96f)
-                .fillMaxHeight()
-               // .verticalScroll(scrollState)
+                .height(330.dp)
         ) {
             if (notes!!.isNotEmpty()){
                     NotesList(notes)
@@ -65,6 +64,18 @@ fun PlantDetailsNotes(notes: Map<String, String>){
             } else{
                 EmptyListMsg("You haven't saved any\nnotes for this plant yet")
             }
+        }
+    }
+        FloatingActionButton(onClick = { /*TODO*/ },
+            containerColor = Color.White,
+            shape = RoundedCornerShape(50.dp),
+            modifier = Modifier
+                .padding(20.dp, 0.dp)
+                .height(50.dp)
+                .width(50.dp)
+                .offset(0.dp, 20.dp)
+        ) {
+            Icon(Icons.Filled.Add, "Floating action button.")
         }
     }
 }
@@ -83,10 +94,14 @@ fun NotesList(notes: Map<String, String>) {
                     .padding(15.dp, 10.dp)
                     .fillMaxWidth()
             )
-            Divider(
-                thickness = 1.dp,
-                modifier = Modifier.padding(7.dp, 2.dp)
-            )
+            if(it != notes.entries.last()) {
+                Divider(
+                    thickness = 1.dp,
+                    modifier = Modifier.padding(7.dp, 2.dp)
+                )
+            } else {
+                Spacer(modifier = Modifier.height(30.dp))
+            }
         }
     }
     }

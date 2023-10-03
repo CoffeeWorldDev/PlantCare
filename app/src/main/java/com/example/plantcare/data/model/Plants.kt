@@ -23,5 +23,6 @@ data class Plants(
     //@ColumnInfo(name = "Notes")
     var notes : Map<String, String>?,
     //@ColumnInfo(name = "Tasks")
-    var tasks: List<Tasks>?
+    var tasks: List<Tasks>?,
+    var season: String
 )

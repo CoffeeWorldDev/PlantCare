@@ -12,6 +12,7 @@ import com.example.plantcare.ui.composable.plantDetails.PlantDetailsScreenBase
 import com.example.plantcare.ui.composable.home.HomeBaseScreen
 import com.example.plantcare.ui.composable.plantsGallery.PlantsGalleryScreenBase
 import com.example.plantcare.ui.composable.SettingsScreen
+import com.example.plantcare.ui.composable.plantCreationEdit.PlantCreationEditBase
 
 @Composable
 fun PlantCareNavHost(
@@ -19,7 +20,7 @@ fun PlantCareNavHost(
     plants: List<Plants>
 ){
 
-    NavHost(navController = navController, startDestination = "plant_detail_screen"){
+    NavHost(navController = navController, startDestination = "plant_create_edit_screen"){
 
         composable(BottomNavItem.HomeScreen.screen_route){
             HomeBaseScreen(plants)
@@ -42,17 +43,10 @@ fun PlantCareNavHost(
                })){
            PlantDetailsScreenBase(plants)
        }
+
+        composable(route = "plant_create_edit_screen"){
+            PlantCreationEditBase(plants)
+        }
     }
 }
-
-//fun navigateToPlayer(episodeUri: String, from: NavBackStackEntry) {
-//    // In order to discard duplicated navigation events, we check the Lifecycle
-//        val encodedUri = Uri.encode(episodeUri)
-//        navController.navigate(Screen.Player.createRoute(encodedUri))
-//
-//}
-//
-//fun navigateBack() {
-//    navController.popBackStack()
-//}
 

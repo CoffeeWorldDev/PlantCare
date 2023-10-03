@@ -24,5 +24,6 @@ class Tasks (
     //@ColumnInfo(name = "Urgency")
     var urgency : String,
     //@ColumnInfo(name = "DaysUntilNextCycle")
-    var daysUntilNextCycle : Int
+    var daysUntilNextCycle : Int,
+    var season: String
     )
