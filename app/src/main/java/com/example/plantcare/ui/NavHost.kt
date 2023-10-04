@@ -22,31 +22,31 @@ fun PlantCareNavHost(
 
     NavHost(navController = navController, startDestination = "plant_create_edit_screen"){
 
-        composable(BottomNavItem.HomeScreen.screen_route){
-            HomeBaseScreen(plants)
-        }
-              composable(BottomNavItem.PlantsGallery.screen_route){
-            PlantsGalleryScreenBase(plants,  onNavigateToSecondScreen = {id
-                navController.navigate("plant_detail_screen/$it")
-            })
-        }
-
-              composable(BottomNavItem.Settings.screen_route){
-            SettingsScreen()
-        }
-
-       composable(route = "plant_detail_screen",
-           //TODO delete and make a proper data sharing with viewModel
-           arguments = listOf(
-               navArgument("inputName"){
-                   type = NavType.StringType
-               })){
-           PlantDetailsScreenBase(plants)
-       }
-
-        composable(route = "plant_create_edit_screen"){
-            PlantCreationEditBase(plants)
-        }
+//        composable(BottomNavItem.HomeScreen.screen_route){
+//            HomeBaseScreen(plants)
+//        }
+//              composable(BottomNavItem.PlantsGallery.screen_route){
+//            PlantsGalleryScreenBase(plants,  onNavigateToSecondScreen = {id
+//                navController.navigate("plant_detail_screen/$it")
+//            })
+//        }
+//
+//              composable(BottomNavItem.Settings.screen_route){
+//            SettingsScreen()
+//        }
+//
+//       composable(route = "plant_detail_screen",
+//           //TODO delete and make a proper data sharing with viewModel
+//           arguments = listOf(
+//               navArgument("inputName"){
+//                   type = NavType.StringType
+//               })){
+//           PlantDetailsScreenBase(plants)
+//       }
+//
+//        composable(route = "plant_create_edit_screen"){
+//            PlantCreationEditBase(plants)
+//        }
     }
 }
 

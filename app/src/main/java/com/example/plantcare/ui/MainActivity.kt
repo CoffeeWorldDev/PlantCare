@@ -9,9 +9,13 @@ import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import com.example.compose.PlantCareTheme
 import com.example.plantcare.ui.composable.MainScreen
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-    lateinit var viewModel: MainActivityViewModel
+    @Inject
+    lateinit var factory: PlantsViewModelFactory
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -24,7 +28,7 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.surface
                 ) {
                     //TODO making the upper phone bar invisible
-                    MainScreen()
+                    MainScreen(factory = factory)
                 }
             }
         }

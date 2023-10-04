@@ -2,6 +2,8 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("com.google.devtools.ksp")
+    kotlin("kapt")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -54,7 +56,7 @@ android {
 dependencies {
 
     val room_version = "2.5.2"
-    val nav_version = "2.7.2"
+    val nav_version = "2.7.3"
 
     implementation("androidx.room:room-runtime:$room_version")
     annotationProcessor("androidx.room:room-compiler:$room_version")
@@ -83,4 +85,8 @@ dependencies {
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
+
+    implementation("com.google.dagger:hilt-android:2.48")
+    kapt("com.google.dagger:hilt-android-compiler:2.48")
+    kapt("org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.5.0")
 }
