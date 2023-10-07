@@ -9,12 +9,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.example.plantcare.data.model.Plants
+import com.example.plantcare.data.model.Tasks
 
 //TODO delete
 val column : Int = 2
 
 @Composable
-fun PlantsGalleryScreenBase(plants: List<Plants>, onNavigateToSecondScreen : (String)->Unit) {
+fun PlantsGalleryScreenBase(plants: Map<Plants, List<Tasks>>, onNavigateToSecondScreen: (String)->Unit) {
     Column(
         modifier = Modifier
             .fillMaxSize()

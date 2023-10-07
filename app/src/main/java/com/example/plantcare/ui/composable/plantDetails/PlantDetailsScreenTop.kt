@@ -6,7 +6,6 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -17,11 +16,11 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.layout.IntrinsicMeasurable
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
@@ -36,86 +35,87 @@ import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import com.example.plantcare.R
 import com.example.plantcare.data.model.Plants
+import com.example.plantcare.data.model.Tasks
 import com.example.plantcare.ui.composable.util.TitlesBackgroundShape
 
 @Composable
-fun PlantDetailsScreenTop(plants: List<Plants>) {
+fun PlantDetailsScreenTop(plants: State<Map<Plants, List<Tasks>>>) {
 
 
-    Row(modifier = Modifier
-        .fillMaxWidth()
-        .height(200.dp),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically) {
-
-        Image(painter = painterResource(id = R.drawable.baseline_image_24),
-              contentDescription = "plant image",
-              modifier = Modifier
-                  .border(1.dp, color = Color.Black)
-                  .fillMaxWidth(0.5f)
-                  .fillMaxHeight()
-        )
-        Column(modifier = Modifier
-            .fillMaxHeight()
-            .fillMaxWidth(),
-               verticalArrangement = Arrangement.SpaceEvenly,
-               horizontalAlignment = Alignment.End) {
-                    Card(
-                        shape = TitlesBackgroundShape(150f, 100f),
-                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
-                        elevation = CardDefaults.cardElevation(
-                            defaultElevation = 8.dp
-                        ),
-                        modifier = Modifier
-                            .graphicsLayer {
-                                this.rotationZ = 180f
-                            }
-                    ){
-                        //TODO changing box side depending on screen size?
-                        Box( modifier = Modifier
-                            .height(getScreenHeight()),
-                            contentAlignment = Alignment.CenterEnd) {
-                            formatName(name = plants[3].name)
-                        }
-                    }
-            //TODO make a more flexible age text
-            val age : String
-            if(plants[3].age!!.toInt() > 1){
-                age = "${plants[3].age.toString()} days old"
-            }else{
-                age = "${plants[3].age.toString()} day old"
-            }
-            Text(
-                text = age,
-                fontWeight = FontWeight.SemiBold,
-                textAlign = TextAlign.Center,
-                fontSize = 20.sp,
-                color = MaterialTheme.colorScheme.primary,
-                modifier = Modifier
-                    .fillMaxWidth()
-                ,
-                fontStyle = FontStyle.Italic,
-                style = MaterialTheme.typography.titleLarge
-            )
-            if(plants[3].species!=""){
-                Text(
-                    text = plants[3].species!!,
-                    fontWeight = FontWeight.SemiBold,
-                    textAlign = TextAlign.Center,
-                    fontSize = 20.sp,
-                    color = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier
-                     .fillMaxWidth()
-                    ,
-                    fontStyle = FontStyle.Italic,
-                    style = MaterialTheme.typography.titleLarge
-                )
-            }
-
-        }
-
-    }
-}
+//    Row(modifier = Modifier
+//        .fillMaxWidth()
+//        .height(200.dp),
+//        horizontalArrangement = Arrangement.SpaceBetween,
+//        verticalAlignment = Alignment.CenterVertically) {
+//
+//        Image(painter = painterResource(id = R.drawable.baseline_image_24),
+//              contentDescription = "plant image",
+//              modifier = Modifier
+//                  .border(1.dp, color = Color.Black)
+//                  .fillMaxWidth(0.5f)
+//                  .fillMaxHeight()
+//        )
+//        Column(modifier = Modifier
+//            .fillMaxHeight()
+//            .fillMaxWidth(),
+//               verticalArrangement = Arrangement.SpaceEvenly,
+//               horizontalAlignment = Alignment.End) {
+//                    Card(
+//                        shape = TitlesBackgroundShape(150f, 100f),
+//                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
+//                        elevation = CardDefaults.cardElevation(
+//                            defaultElevation = 8.dp
+//                        ),
+//                        modifier = Modifier
+//                            .graphicsLayer {
+//                                this.rotationZ = 180f
+//                            }
+//                    ){
+//                        //TODO changing box side depending on screen size?
+//                        Box( modifier = Modifier
+//                            .height(getScreenHeight()),
+//                            contentAlignment = Alignment.CenterEnd) {
+//                            formatName(name = plants[3].name)
+//                        }
+//                    }
+//            //TODO make a more flexible age text
+//            val age : String
+//            if(plants[3].age!!.toInt() > 1){
+//                age = "${plants[3].age.toString()} days old"
+//            }else{
+//                age = "${plants[3].age.toString()} day old"
+//            }
+//            Text(
+//                text = age,
+//                fontWeight = FontWeight.SemiBold,
+//                textAlign = TextAlign.Center,
+//                fontSize = 20.sp,
+//                color = MaterialTheme.colorScheme.primary,
+//                modifier = Modifier
+//                    .fillMaxWidth()
+//                ,
+//                fontStyle = FontStyle.Italic,
+//                style = MaterialTheme.typography.titleLarge
+//            )
+//            if(plants[3].species!=""){
+//                Text(
+//                    text = plants[3].species!!,
+//                    fontWeight = FontWeight.SemiBold,
+//                    textAlign = TextAlign.Center,
+//                    fontSize = 20.sp,
+//                    color = MaterialTheme.colorScheme.primary,
+//                    modifier = Modifier
+//                     .fillMaxWidth()
+//                    ,
+//                    fontStyle = FontStyle.Italic,
+//                    style = MaterialTheme.typography.titleLarge
+//                )
+//            }
+//
+//        }
+//
+//    }
+//}
 
 
 @Composable
@@ -149,32 +149,40 @@ fun getScreenHeight(): Dp {
 
 
 @Composable
-fun formatName(name : String){
+fun formatName(name : String) {
     var formattedName = name
     var maxLength = name.length
     var isOverflowOn = TextOverflow.Clip
 
-    if(name.contains(" ")) {
+    if (name.contains(" ")) {
         formattedName = name.replace(" ", "\n")
         val lines = formattedName.split("\\s".toRegex()).toTypedArray()
 
         lines.forEach {
-            if(it.toString().length > 5){
+            if (it.toString().length > 5) {
                 maxLength = it.toString().length + 5
                 Log.e("HERE", maxLength.toString())
             }
         }
         if (lines.size > 3) isOverflowOn = TextOverflow.Ellipsis
     }
-    var size : TextUnit = 10.em
+    var size: TextUnit = 10.em
 
-    if(maxLength <= 6) {size}
-    else if(maxLength <= 8) {size = 7.8.em}
-    else if(maxLength <= 9) {size = 7.2.em}
-    else if(maxLength <= 11) {size = 5.9.em}
-    else if(maxLength <= 13) {size = 4.7.em}
-    else if(maxLength <= 15) {size = 4.em}
-    else{size = 3.5.em}
+    if (maxLength <= 6) {
+        size
+    } else if (maxLength <= 8) {
+        size = 7.8.em
+    } else if (maxLength <= 9) {
+        size = 7.2.em
+    } else if (maxLength <= 11) {
+        size = 5.9.em
+    } else if (maxLength <= 13) {
+        size = 4.7.em
+    } else if (maxLength <= 15) {
+        size = 4.em
+    } else {
+        size = 3.5.em
+    }
 
     Text(
         text = formattedName,
@@ -192,5 +200,7 @@ fun formatName(name : String){
         style = MaterialTheme.typography.titleLarge,
         overflow = isOverflowOn
     )
+
+}
 }
 

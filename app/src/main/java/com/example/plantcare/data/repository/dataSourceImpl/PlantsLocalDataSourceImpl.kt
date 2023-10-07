@@ -7,11 +7,11 @@ import com.example.plantcare.data.repository.dataSource.PlantsLocalDataSource
 import kotlinx.coroutines.flow.Flow
 
 class PlantsLocalDataSourceImpl(private val plantsDao : PlantsDao) : PlantsLocalDataSource {
-    override suspend fun savePlantToDb(plant: Plants) {
+    override fun savePlantToDb(plant: Plants) {
         plantsDao.insert(plant)
     }
 
-    override suspend fun getPlants(): Flow<Map<Plants, List<Tasks>>> {
+    override fun getPlants(): Flow<Map<Plants, List<Tasks>>> {
        return plantsDao.getPlants()
     }
 }

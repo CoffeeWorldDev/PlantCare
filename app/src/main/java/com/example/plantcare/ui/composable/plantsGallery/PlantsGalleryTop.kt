@@ -26,13 +26,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.plantcare.data.model.Plants
+import com.example.plantcare.data.model.Tasks
 import com.example.plantcare.ui.composable.util.TitlesBackgroundShape
 
 
 @Composable
 fun PlantsGalleryTop(
     modifier: Modifier,
-    plants: List<Plants>
+    plants: Map<Plants, List<Tasks>>
 ) {
     val primaryColor = MaterialTheme.colorScheme.primary
     val onPrimaryColor = MaterialTheme.colorScheme.onPrimary
@@ -57,7 +58,7 @@ fun PlantsGalleryTop(
                 contentAlignment = Alignment.Center
                 ) {
                 Text(
-                    text = "You have ${plants.size}\nplants",
+                    text = "You have ${plants.keys.size}\nplants",
                     fontWeight = FontWeight.SemiBold,
                     textAlign = TextAlign.Center,
                     fontSize = 30.sp,

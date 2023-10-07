@@ -55,14 +55,17 @@ android {
 
 dependencies {
 
+    implementation("androidx.test:core-ktx:1.5.0")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.8.1")
     val room_version = "2.5.2"
     val nav_version = "2.7.3"
 
     implementation("androidx.room:room-runtime:$room_version")
     annotationProcessor("androidx.room:room-compiler:$room_version")
     implementation("androidx.room:room-ktx:$room_version")
+    kapt("androidx.room:room-compiler:$room_version")
     // To use Kotlin Symbol Processing (KSP)
-    ksp("androidx.room:room-compiler:$room_version")
+    //ksp("androidx.room:room-compiler:$room_version")
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
 

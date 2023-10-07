@@ -24,52 +24,54 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.plantcare.R
 import com.example.plantcare.data.model.Plants
+import com.example.plantcare.data.model.Tasks
 
 @Composable
 fun PlantsGalleryMainBlockL2(
-    plants: List<Plants>,
+    plants: Map<Plants, List<Tasks>>,
     columns: Int,
     onNavigateToSecondScreen: (String) -> Unit
 ) {
+    //var plantsList : Set<Plants> = plants
     LazyVerticalGrid(columns = GridCells.Fixed(columns),
                      modifier = Modifier.fillMaxSize()){
         items(plants.size) {plant ->
-            Row(modifier = Modifier.padding(15.dp, 0.dp,0.dp, 20.dp)
-                .clickable { onNavigateToSecondScreen(plants[plant].plantsId.toString())
-                Log.d("ERROR", plants[plant].plantsId.toString())}) {
-                Card {
+ //          Row(modifier = Modifier.padding(15.dp, 0.dp,0.dp, 20.dp)
+ //              .clickable { onNavigateToSecondScreen(plants[plant])
+ //              Log.d("ERROR", plants[plant].plantsId.toString())}) {
+ //              Card {
 
-                }
-                Image(painter = painterResource(id = R.drawable.baseline_image_24),
-                    contentDescription = "plant image",
-                    modifier = Modifier
-                        .border(1.dp, color = Color.Black)
-                        .weight(1.1f)
-                        .height(95.dp)
-                )
-                Column(modifier = Modifier
-                    .weight(3f)
-                    .padding(10.dp, 0.dp, 0.dp, 0.dp),
-                    horizontalAlignment = Alignment.End) {
-                    Text(text = plants[plant].name,
-                        modifier = Modifier
-                            .padding(0.dp, 0.dp, 10.dp, 0.dp)
-                            .fillMaxWidth(),
-                        textAlign = TextAlign.Center)
-                    Divider(thickness = 1.dp,
-                        modifier = Modifier.padding(0.dp, 0.dp,0.dp, 5.dp))
-                        plants[plant].age?.let { it1 ->
-                            Text(text = "$it1 days old" ,
-                                modifier = Modifier.fillMaxWidth(),
-                                textAlign = TextAlign.Center)
-                        }
-                        plants[plant].type?.let { it1 ->
-                            Text(text = it1,
-                                modifier = Modifier.fillMaxWidth(),
-                                textAlign = TextAlign.Center)
-                        }
-                }
-            }
+ //              }
+ //              Image(painter = painterResource(id = R.drawable.baseline_image_24),
+ //                  contentDescription = "plant image",
+ //                  modifier = Modifier
+ //                      .border(1.dp, color = Color.Black)
+ //                      .weight(1.1f)
+ //                      .height(95.dp)
+ //              )
+ //              Column(modifier = Modifier
+ //                  .weight(3f)
+ //                  .padding(10.dp, 0.dp, 0.dp, 0.dp),
+ //                  horizontalAlignment = Alignment.End) {
+ //                  Text(text = plants[plant].name,
+ //                      modifier = Modifier
+ //                          .padding(0.dp, 0.dp, 10.dp, 0.dp)
+ //                          .fillMaxWidth(),
+ //                      textAlign = TextAlign.Center)
+ //                  Divider(thickness = 1.dp,
+ //                      modifier = Modifier.padding(0.dp, 0.dp,0.dp, 5.dp))
+ //                      plants[plant].age?.let { it1 ->
+ //                          Text(text = "$it1 days old" ,
+ //                              modifier = Modifier.fillMaxWidth(),
+ //                              textAlign = TextAlign.Center)
+ //                      }
+ //                      plants[plant].type?.let { it1 ->
+ //                          Text(text = it1,
+ //                              modifier = Modifier.fillMaxWidth(),
+ //                              textAlign = TextAlign.Center)
+ //                      }
+ //              }
+ //          }
             }
         }
     }

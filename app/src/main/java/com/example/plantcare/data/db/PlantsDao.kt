@@ -11,9 +11,11 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface PlantsDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(plant: Plants)
+    fun insert(plant: Plants)
 
     @Query("SELECT * FROM plants JOIN tasks ON plants.plantsId = tasks.ownerPlantId")
     fun getPlants(): Flow<Map<Plants, List<Tasks>>>
 
+    @Query("SELECT * FROM plants")
+    fun getOnlyPlants(): Flow<Plants>
 }

@@ -9,9 +9,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.example.plantcare.data.model.Plants
+import com.example.plantcare.data.model.Tasks
 
 @Composable
-fun HomeBaseScreen(plants: List<Plants>) {
+fun HomeBaseScreen(plants: Map<Plants, List<Tasks>>) {
     Column(
         modifier = Modifier
             .fillMaxSize()

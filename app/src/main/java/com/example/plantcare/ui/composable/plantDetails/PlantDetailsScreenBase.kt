@@ -12,9 +12,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import com.example.plantcare.data.model.Plants
+import com.example.plantcare.data.model.Tasks
 
 @Composable
-fun PlantDetailsScreenBase(plants: List<Plants>) {
+fun PlantDetailsScreenBase(plants: Map<Plants, List<Tasks>>) {
     val scrollState = rememberScrollState()
     Box(
         modifier = Modifier.fillMaxSize(),
@@ -22,9 +23,9 @@ fun PlantDetailsScreenBase(plants: List<Plants>) {
     ){
         //TODO modify the parameter
         Column(modifier = Modifier.verticalScroll(scrollState)) {
-            PlantDetailsScreenTop(plants)
-            PlantDetailsTasksList(plants)
-            PlantDetailsNotes(plants[3].notes!!)
+          //  PlantDetailsScreenTop(plants)
+          //  PlantDetailsTasksList(plants)
+          //  PlantDetailsNotes(plants[3].notes!!)
                 TextButton(onClick = { /*TODO*/ },
                         modifier = Modifier.align(Alignment.End)) {
                     Text(text = "edit plant",

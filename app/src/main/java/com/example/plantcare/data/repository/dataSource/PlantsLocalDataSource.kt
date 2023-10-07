@@ -5,8 +5,8 @@ import com.example.plantcare.data.model.Tasks
 import kotlinx.coroutines.flow.Flow
 
 interface PlantsLocalDataSource {
-    suspend fun savePlantToDb(plant: Plants)
+    fun savePlantToDb(plant: Plants)
 
-    suspend fun getPlants() : Flow<Map<Plants, List<Tasks>>>
+    fun getPlants() : Flow<Map<Plants, List<Tasks>>>
 }
 

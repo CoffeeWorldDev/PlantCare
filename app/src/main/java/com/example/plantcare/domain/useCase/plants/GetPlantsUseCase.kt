@@ -6,7 +6,7 @@ import com.example.plantcare.domain.repository.PlantsRepository
 import kotlinx.coroutines.flow.Flow
 
 class GetPlantsUseCase(private val plantsRepository: PlantsRepository) {
-    suspend fun execute(): Flow<Map<Plants, List<Tasks>>> {
+    fun execute(): Flow<Map<Plants, List<Tasks>>> {
         return plantsRepository.getPlants()
     }
 }
