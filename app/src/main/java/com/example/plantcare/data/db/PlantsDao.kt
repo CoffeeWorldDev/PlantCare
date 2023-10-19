@@ -1,8 +1,8 @@
 package com.example.plantcare.data.db
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
-import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.example.plantcare.data.model.Plants
 import com.example.plantcare.data.model.Tasks
@@ -10,12 +10,15 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface PlantsDao {
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(plant: Plants)
+    @Insert
+    suspend fun insertPlant(plant: Plants)
 
-    @Query("SELECT * FROM plants JOIN tasks ON plants.plantsId = tasks.ownerPlantId")
-    fun getPlants(): Flow<Map<Plants, List<Tasks>>>
+    @Delete
+    fun deletePlant(plant: Plants)
 
-    @Query("SELECT * FROM plants")
-    fun getOnlyPlants(): Flow<Plants>
+    @Query("SELECT * FROM plants JOIN tasks ON plants.Plant_id = tasks.Task_owner_plant_id")
+    fun getPlantsAndTasks(): Flow<Map<Plants?, List<Tasks>>?>
+
+    @Query("SELECT * FROM plants JOIN tasks ON plants.Plant_id = tasks.Task_owner_plant_id WHERE tasks.Task_is_active = 1")
+    fun getActivePlants(): Flow<Map<Plants?, List<Tasks>>?>
 }

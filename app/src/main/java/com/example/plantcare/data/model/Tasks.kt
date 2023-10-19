@@ -1,29 +1,30 @@
 package com.example.plantcare.data.model
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "tasks")
 class Tasks (
     @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "Task_id")
     var taskId: Int,
-    //@ColumnInfo(name = "OwnerPlantId")
+    @ColumnInfo(name = "Task_owner_plant_id")
     var ownerPlantId : Int,
-    //@ColumnInfo(name = "Name")
+    @ColumnInfo(name = "Task_name")
     var name : String,
-    //@ColumnInfo(name = "IsActive")
+    @ColumnInfo(name = "Task_is_active")
     var isActive : Boolean,
-    //@ColumnInfo(name = "LastCompleted")
+    @ColumnInfo(name = "Task_last_completed")
     var lastCompleted : String,
-    //@ColumnInfo(name = "CycleLength")
+    @ColumnInfo(name = "Task_cycle_length")
     var cycleLength : Int,
-    //@ColumnInfo(name = "IsToBeCompleted")
-    var isToBeCompleted : Boolean,
-    //@ColumnInfo(name = "DaysUncompleted")
+    @ColumnInfo(name = "Task_days_uncompleted")
     var daysUncompleted : Int,
-    //@ColumnInfo(name = "Urgency")
+    @ColumnInfo(name = "Task_urgency")
     var urgency : String,
-    //@ColumnInfo(name = "DaysUntilNextCycle")
+    @ColumnInfo(name = "Task_days_until_next_cycle")
     var daysUntilNextCycle : Int,
-    var season: String
+    @ColumnInfo(name = "Task_current_season")
+    var currentSeason: String
     )

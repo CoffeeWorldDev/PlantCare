@@ -1,8 +1,10 @@
 package com.example.plantcare.ui.di
 
 import com.example.plantcare.domain.useCase.plants.AddPlantsUseCase
-import com.example.plantcare.domain.useCase.plants.GetPlantsUseCase
-import com.example.plantcare.ui.PlantsViewModelFactory
+import com.example.plantcare.domain.useCase.plants.GetPlantsAndTasksUseCase
+import com.example.plantcare.domain.useCase.plants.GetActivePlantsUseCase
+import com.example.plantcare.domain.useCase.tasks.UpdateTasksUseCase
+import com.example.plantcare.ui.home.HomeViewModelFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -14,13 +16,13 @@ import javax.inject.Singleton
 class FactoryModule {
     @Singleton
     @Provides
-fun ProvidesPlantsFactoryModel(
-        addPlantsUseCase: AddPlantsUseCase,
-        getPlantsUseCase: GetPlantsUseCase
-): PlantsViewModelFactory {
-    return PlantsViewModelFactory(
-        addPlantsUseCase,
-        getPlantsUseCase
+fun ProvidesHomeFactoryModel(
+        getActivePlantsUseCase: GetActivePlantsUseCase,
+        updateTasksUseCase: UpdateTasksUseCase
+): HomeViewModelFactory {
+    return HomeViewModelFactory(
+        getActivePlantsUseCase,
+        updateTasksUseCase
     )
 }
 }

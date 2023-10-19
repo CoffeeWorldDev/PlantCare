@@ -7,20 +7,24 @@ import com.example.plantcare.domain.repository.PlantsRepository
 import kotlinx.coroutines.flow.Flow
 
 class PlantsRepositoryImpl (private val plantsLocalDataSource : PlantsLocalDataSource) : PlantsRepository {
-    override fun addPlants(plants: Plants) {
-        plantsLocalDataSource.savePlantToDb(plants)
+    override suspend fun addPlants(plant: Plants) {
+        plantsLocalDataSource.savePlantToDb(plant)
     }
 
-    override fun deletePlants(plants: Plants) {
+    override fun deletePlants(plant: Plants) {
+        plantsLocalDataSource.deletePlant(plant)
+    }
+
+    override fun getActivePlants(): Flow<Map<Plants?, List<Tasks>>?> {
+        return plantsLocalDataSource.getActivePlants()
+    }
+
+    override fun updatePlants(plant: Plants) {
         TODO("Not yet implemented")
     }
 
-    override fun getPlants(): Flow<Map<Plants, List<Tasks>>> {
-        return plantsLocalDataSource.getPlants()
-    }
-
-    override fun updatePlants(plants: Plants) {
-        TODO("Not yet implemented")
+    override fun getPlantsAndTasks(): Flow<Map<Plants?, List<Tasks>>?> {
+        return plantsLocalDataSource.getPlantsAndTasks()
     }
 
 }

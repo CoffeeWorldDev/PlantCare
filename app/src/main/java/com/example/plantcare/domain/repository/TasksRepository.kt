@@ -5,8 +5,9 @@ import com.example.plantcare.data.model.Tasks
 import kotlinx.coroutines.flow.Flow
 
 interface TasksRepository {
-    suspend fun addTasks(plants: Plants)
-    suspend fun deleteTasks(tasks: Tasks)
-    fun getTasks(plants: Plants) : Flow<List<Tasks>>
+    suspend fun addTasks(task: Tasks)
+    suspend fun deleteTasks(task: Tasks)
+    fun getAllTasks() : Flow<List<Tasks>?>
+    fun getTasksFromPlants(plantId: Int) : Flow<List<Tasks>?>
     suspend fun updateTasks(tasks: Tasks)
 }
