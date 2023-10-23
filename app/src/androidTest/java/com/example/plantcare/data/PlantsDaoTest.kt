@@ -1,4 +1,4 @@
-package com.example.plantcare.repository.data
+package com.example.plantcare.data
 
 import android.content.Context
 import androidx.room.Room
@@ -7,7 +7,7 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
 import com.example.plantcare.data.db.PlantsDao
 import com.example.plantcare.data.db.PlantsDatabase
-import com.example.plantcare.repository.fakePlantsList
+import com.example.plantcare.fakePlantsList
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.*
@@ -39,16 +39,16 @@ class daoTest{
         db.close()
     }
 
-//    @Test
-//    @Throws(Exception::class)
-//    fun dao_AddAndGetPlants_success() = runBlocking{
-//        plantsDao.insertPlant(plantsList[0])
-//        plantsDao.insertPlant(plantsList[1])
-//        var returnPlants = plantsDao.getActivePlants().first()
-//        assertNotNull(returnPlants)
-//        assertEquals(plantsList[0], returnPlants?.get(0))
-//        assertEquals(plantsList[1], returnPlants?.get(1))
-//    }
+    @Test
+    @Throws(Exception::class)
+    fun dao_AddAndGetPlants_success() = runBlocking{
+        plantsDao.insertPlant(plantsList[0])
+        plantsDao.insertPlant(plantsList[1])
+        var returnPlants = plantsDao.getActivePlants().first()
+        assertNotNull(returnPlants)
+ //       assertEquals(plantsList[0], returnPlants?.get(0))
+ //       assertEquals(plantsList[1], returnPlants?.get(1))
+    }
 //    @Test
 //    @Throws(Exception::class)
 //    fun dao_DeletePlants_success() = runBlocking{

@@ -3,6 +3,7 @@ package com.example.plantcare.ui.di
 import com.example.plantcare.domain.useCase.plants.AddPlantsUseCase
 import com.example.plantcare.domain.useCase.plants.GetPlantsAndTasksUseCase
 import com.example.plantcare.domain.useCase.plants.GetActivePlantsUseCase
+import com.example.plantcare.domain.useCase.plants.GetFutureActivePlantsUseCase
 import com.example.plantcare.domain.useCase.tasks.UpdateTasksUseCase
 import com.example.plantcare.ui.home.HomeViewModelFactory
 import dagger.Module
@@ -18,11 +19,13 @@ class FactoryModule {
     @Provides
 fun ProvidesHomeFactoryModel(
         getActivePlantsUseCase: GetActivePlantsUseCase,
-        updateTasksUseCase: UpdateTasksUseCase
+        updateTasksUseCase: UpdateTasksUseCase,
+        getFutureActivePlantsUseCase: GetFutureActivePlantsUseCase
 ): HomeViewModelFactory {
     return HomeViewModelFactory(
         getActivePlantsUseCase,
-        updateTasksUseCase
+        updateTasksUseCase,
+        getFutureActivePlantsUseCase
     )
 }
 }

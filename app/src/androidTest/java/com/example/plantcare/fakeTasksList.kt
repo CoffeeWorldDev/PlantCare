@@ -1,4 +1,4 @@
-package com.example.plantcare.repository
+package com.example.plantcare
 
 import com.example.plantcare.data.model.Tasks
 

@@ -1,4 +1,4 @@
-package com.example.plantcare.repository.data
+package com.example.plantcare.data
 
 import android.content.Context
 import androidx.room.Room
@@ -8,8 +8,8 @@ import com.example.plantcare.data.db.PlantsDao
 import com.example.plantcare.data.db.PlantsDatabase
 import com.example.plantcare.data.db.TasksDao
 import com.example.plantcare.data.db.TasksDatabase
-import com.example.plantcare.repository.fakePlantsList
-import com.example.plantcare.repository.fakeTasksList
+import com.example.plantcare.fakePlantsList
+import com.example.plantcare.fakeTasksList
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import org.junit.After

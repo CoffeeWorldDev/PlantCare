@@ -17,10 +17,11 @@ android {
         versionCode = 1
         versionName = "1.0"
 
-        testInstrumentationRunner = "com.example.plantcare.repository.util.MainTestRunner"
+        testInstrumentationRunner = "com.example.plantcare.util.MainTestRunner"
         vectorDrawables {
             useSupportLibrary = true
         }
+        applicationIdSuffix = "debug"
     }
 
     buildTypes {
@@ -110,8 +111,7 @@ dependencies {
     androidTestImplementation("androidx.navigation:navigation-testing:$nav_version")
     androidTestImplementation("com.google.dagger:hilt-android-testing:2.44.2")
     // Make Hilt generate code in the androidTest folder
-    kaptAndroidTest("com.google.dagger:hilt-android-compiler:2.44.2")
-
+    kaptAndroidTest("com.google.dagger:hilt-android-compiler:2.48")
 
 
 //DEBUG IMPLEMENTATION

@@ -21,4 +21,8 @@ class TasksLocalDataSourceImpl(private val tasksDao : TasksDao) : TasksLocalData
     override fun getTasksFromPlants(plantId: Int): Flow<List<Tasks>?> {
         return tasksDao.getTasksFromPlants(plantId)
     }
+
+    override suspend fun updateTask(task: Tasks) {
+        tasksDao.updateTask(task)
+    }
 }

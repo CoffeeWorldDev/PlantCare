@@ -7,6 +7,7 @@ import androidx.room.Query
 import com.example.plantcare.data.model.Plants
 import com.example.plantcare.data.model.Tasks
 import kotlinx.coroutines.flow.Flow
+import java.util.Date
 
 @Dao
 interface PlantsDao {
@@ -21,4 +22,7 @@ interface PlantsDao {
 
     @Query("SELECT * FROM plants JOIN tasks ON plants.Plant_id = tasks.Task_owner_plant_id WHERE tasks.Task_is_active = 1")
     fun getActivePlants(): Flow<Map<Plants?, List<Tasks>>?>
+
+    @Query("SELECT * FROM plants JOIN tasks ON plants.Plant_id = tasks.Task_owner_plant_id WHERE tasks.Task_next_cycle_date = :date")
+    fun getFutureActivePlants(date: Date): Flow<Map<Plants?, List<Tasks>>?>
 }

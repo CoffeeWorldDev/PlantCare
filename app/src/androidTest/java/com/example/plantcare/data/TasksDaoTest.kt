@@ -1,4 +1,4 @@
-package com.example.plantcare.repository.data
+package com.example.plantcare.data
 
 import android.content.Context
 import androidx.room.Room
@@ -6,8 +6,8 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
 import com.example.plantcare.data.db.TasksDao
 import com.example.plantcare.data.db.TasksDatabase
-import com.example.plantcare.repository.fakePlantsList
-import com.example.plantcare.repository.fakeTasksList
+import com.example.plantcare.fakePlantsList
+import com.example.plantcare.fakeTasksList
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import org.junit.After
@@ -65,5 +65,19 @@ class TasksDaoTest {
         tasksDao.deleteTask(returnAllTasks!![2])
         var returnAfterDeletePlants = tasksDao.getTasksFromPlants(plantsList[1].plantsId).first()
         Assert.assertEquals(0, returnAfterDeletePlants!!.size)
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun dao_EditTasks_success() = runBlocking{
+        tasksDao.insertTask(tasksList[0])
+        tasksDao.insertTask(tasksList[1])
+        tasksDao.insertTask(tasksList[2])
+        var returnTasksFromPlants = tasksDao.getAllTasks().first()
+        val plantToBeChanged = returnTasksFromPlants!![0]
+        plantToBeChanged.daysUntilNextCycle = plantToBeChanged.cycleLength
+        tasksDao.updateTask(plantToBeChanged)
+        returnTasksFromPlants = tasksDao.getAllTasks().first()
+        Assert.assertEquals(11, returnTasksFromPlants!![0].daysUntilNextCycle)
     }
 }

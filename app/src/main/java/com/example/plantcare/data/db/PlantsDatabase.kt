@@ -7,7 +7,7 @@ import com.example.plantcare.data.model.Plants
 import com.example.plantcare.data.model.Tasks
 
 @Database(entities = [Plants::class, Tasks::class],version = 2, exportSchema = false)
-@TypeConverters(Converters::class)
+@TypeConverters(MapConverters::class, DateConverters::class)
 abstract class PlantsDatabase : RoomDatabase() {
     abstract fun getPlantsDao() : PlantsDao
 }

@@ -3,7 +3,7 @@ package com.example.plantcare.data.db
 import androidx.room.TypeConverter
 import java.util.TreeMap
 
-class Converters {
+class MapConverters {
     @TypeConverter
     fun fromStringMap(value: Map<String, String>): String {
         val sortedMap = TreeMap(value)

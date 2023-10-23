@@ -3,6 +3,7 @@ package com.example.plantcare.domain.repository
 import com.example.plantcare.data.model.Plants
 import com.example.plantcare.data.model.Tasks
 import kotlinx.coroutines.flow.Flow
+import java.util.Date
 
 interface PlantsRepository {
     suspend fun addPlants(plants: Plants)
@@ -10,4 +11,5 @@ interface PlantsRepository {
     fun getActivePlants() : Flow<Map<Plants?, List<Tasks>>?>
     fun updatePlants(plants: Plants)
     fun getPlantsAndTasks() : Flow<Map<Plants?, List<Tasks>>?>
+    fun getFutureActivePlants(date: Date): Flow<Map<Plants?, List<Tasks>>?>
 }

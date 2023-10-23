@@ -3,6 +3,7 @@ package com.example.plantcare.data.model
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.util.Date
 
 @Entity(tableName = "tasks")
 class Tasks (
@@ -16,7 +17,7 @@ class Tasks (
     @ColumnInfo(name = "Task_is_active")
     var isActive : Boolean,
     @ColumnInfo(name = "Task_last_completed")
-    var lastCompleted : String,
+    var lastCompleted : Date,
     @ColumnInfo(name = "Task_cycle_length")
     var cycleLength : Int,
     @ColumnInfo(name = "Task_days_uncompleted")
@@ -25,6 +26,8 @@ class Tasks (
     var urgency : String,
     @ColumnInfo(name = "Task_days_until_next_cycle")
     var daysUntilNextCycle : Int,
+    @ColumnInfo(name = "Task_next_cycle_date")
+    var nextCycleDate : Date,
     @ColumnInfo(name = "Task_current_season")
     var currentSeason: String
     )

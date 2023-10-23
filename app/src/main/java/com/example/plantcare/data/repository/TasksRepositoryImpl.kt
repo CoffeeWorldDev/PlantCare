@@ -23,8 +23,7 @@ class TasksRepositoryImpl(private val tasksLocalDataSource: TasksLocalDataSource
     override fun getTasksFromPlants(plantId: Int): Flow<List<Tasks>?> {
         return tasksLocalDataSource.getTasksFromPlants(plantId)
     }
-
-    override suspend fun updateTasks(tasks: Tasks) {
-        TODO("Not yet implemented")
+    override suspend fun updateTasks(task: Tasks) {
+        tasksLocalDataSource.updateTask(task)
     }
 }

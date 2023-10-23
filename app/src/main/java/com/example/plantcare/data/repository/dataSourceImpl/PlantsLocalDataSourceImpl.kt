@@ -5,6 +5,7 @@ import com.example.plantcare.data.model.Plants
 import com.example.plantcare.data.model.Tasks
 import com.example.plantcare.data.repository.dataSource.PlantsLocalDataSource
 import kotlinx.coroutines.flow.Flow
+import java.util.Date
 
 class PlantsLocalDataSourceImpl(private val plantsDao : PlantsDao) : PlantsLocalDataSource {
     override suspend fun savePlantToDb(plant: Plants) {
@@ -21,5 +22,9 @@ class PlantsLocalDataSourceImpl(private val plantsDao : PlantsDao) : PlantsLocal
 
     override fun getPlantsAndTasks(): Flow<Map<Plants?, List<Tasks>>?> {
         return plantsDao.getPlantsAndTasks()
+    }
+
+    override fun getFutureActivePlants(date: Date): Flow<Map<Plants?, List<Tasks>>?> {
+        return plantsDao.getFutureActivePlants(date)
     }
 }
