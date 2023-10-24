@@ -12,7 +12,7 @@ import com.example.plantcare.ui.home.HomeViewModel
 
 
 @Composable
-fun PlantCreationEditBase(plants: HomeViewModel.PlantsState) {
+fun PlantCreationEditBase() {
     val scrollState = rememberScrollState()
     Box(
         modifier = Modifier.fillMaxSize(),

@@ -14,7 +14,7 @@ import androidx.compose.ui.text.style.TextAlign
 import com.example.plantcare.ui.home.HomeViewModel
 
 @Composable
-fun PlantDetailsScreenBase(plants: HomeViewModel.PlantsState) {
+fun PlantDetailsScreenBase() {
     val scrollState = rememberScrollState()
     Box(
         modifier = Modifier.fillMaxSize(),

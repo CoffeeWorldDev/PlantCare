@@ -14,6 +14,7 @@ import com.example.plantcare.domain.useCase.tasks.UpdateTasksUseCase
 import com.example.plantcare.ui.util.ChangeTaskToInactive
 import com.example.plantcare.ui.util.getDateInMillis
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
@@ -30,14 +31,18 @@ class HomeViewModel @Inject constructor (private val getActivePlantsUseCase: Get
 
     var query = getActivePlantsUseCase.execute()
 
-    private val _state : StateFlow<PlantsState> = query.map { PlantsState(plantsMap = it) }
+    private val _uiState : StateFlow<homeUiState> = query.map { homeUiState(plantsMap = it) }
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(TIMEOUT_MILLIS),
-            initialValue = PlantsState()
+            initialValue = homeUiState()
         )
-    val plantsState : StateFlow<PlantsState>
-        get() = _state
+    val uiState : StateFlow<homeUiState>
+        get() = _uiState
+
+    fun getPlants(): Flow<Map<Plants?, List<Tasks>>?> {
+        return getActivePlantsUseCase.execute()
+    }
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun updateTask(task: Tasks) = viewModelScope.launch{
@@ -56,5 +61,5 @@ class HomeViewModel @Inject constructor (private val getActivePlantsUseCase: Get
     companion object {
         private const val TIMEOUT_MILLIS = 5_000L
     }
-    data class PlantsState(val plantsMap : Map<Plants?, List<Tasks>>? = mapOf())
+    data class homeUiState(var plantsMap : Map<Plants?, List<Tasks>>? : getActivePlantsUseCase)
 }

@@ -14,7 +14,7 @@ import com.example.plantcare.ui.home.HomeViewModel
 val column : Int = 2
 
 @Composable
-fun PlantsGalleryScreenBase(plants: HomeViewModel.PlantsState){
+fun PlantsGalleryScreenBase(){
     Column(
         modifier = Modifier
             .fillMaxSize()
