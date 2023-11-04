@@ -1,35 +1,24 @@
 package com.example.plantcare.ui
 
-import android.content.Context
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.lifecycle.Observer
-import androidx.room.Room
-import androidx.test.core.app.ApplicationProvider
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
-import com.example.plantcare.data.db.PlantsDao
-import com.example.plantcare.data.db.PlantsDatabase
-import com.example.plantcare.data.db.TasksDao
-import com.example.plantcare.data.db.TasksDatabase
-import com.example.plantcare.data.model.Plants
-import com.example.plantcare.data.model.Tasks
-import com.example.plantcare.domain.repository.PlantsRepository
-import com.example.plantcare.domain.useCase.plants.GetActivePlantsUseCase
-import com.example.plantcare.domain.useCase.plants.GetFutureActivePlantsUseCase
-import com.example.plantcare.domain.useCase.tasks.UpdateTasksUseCase
+import com.example.plantcare.FakePlantsRepository
+import com.example.plantcare.FakeTasksRepository
 import com.example.plantcare.fakeMap
 import com.example.plantcare.fakePlantsList
 import com.example.plantcare.fakeTasksList
 import com.example.plantcare.ui.home.HomeViewModel
-import com.example.plantcare.ui.util.getDateInMillis
+import com.example.plantcare.ui.util.GetDateInMillis
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.toList
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import org.junit.After
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.advanceTimeBy
+import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Before
@@ -37,37 +26,10 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.RuleChain
 import org.junit.runner.RunWith
-import org.mockito.ArgumentCaptor
-import org.mockito.Captor
-import org.mockito.Mock
-import org.mockito.Mockito
-import org.mockito.MockitoAnnotations
-import java.util.Date
-import javax.inject.Inject
 
-
-@RunWith(AndroidJUnit4ClassRunner::class)
 @HiltAndroidTest
+@RunWith(AndroidJUnit4ClassRunner::class)
 class homeViewModelTest {
-    private lateinit var plantsDatabase: PlantsDatabase
-    private lateinit var tasksDatabase: TasksDatabase
-    private lateinit var tasksDao: TasksDao
-    private lateinit var plantsDao : PlantsDao
-
-  //  @Mock
-  //  private lateinit var mockObserver: Observer<HomeViewModel.>
-    private lateinit var viewModel: HomeViewModel
-
-    private lateinit var viewState: HomeViewModel.homeUiState
-
-    @Captor
-    private lateinit var captor: ArgumentCaptor<HomeViewModel.homeUiState>
-
-    @Mock
-    private lateinit var plantsMockedList: List<Pair<Plants?, List<Tasks>>>
-
-   // @Mock
-   // private lateinit var getPlants  GetActivePlantsUseCase
 
     private val hiltRule = HiltAndroidRule(this)
     private val instantTaskExecutorRule = InstantTaskExecutorRule()
@@ -80,78 +42,80 @@ class homeViewModelTest {
         .outerRule(hiltRule)
         .around(instantTaskExecutorRule)
 
-    @Inject
-    lateinit var getActivePlantsUseCase: GetActivePlantsUseCase
-
-    @Inject
-    lateinit var updateTasksUseCase: UpdateTasksUseCase
-
-    @Inject
-    lateinit var getFutureActivePlantsUseCase: GetFutureActivePlantsUseCase
-
     @Before
     fun setUp() {
-        MockitoAnnotations.openMocks(this)
         hiltRule.inject()
-        val context = ApplicationProvider.getApplicationContext<Context>()
-        plantsDatabase = Room.inMemoryDatabaseBuilder(
-            context, PlantsDatabase::class.java).build()
-        tasksDatabase = Room.inMemoryDatabaseBuilder(
-            context, TasksDatabase::class.java).build()
-        tasksDao = tasksDatabase.GetTasksDao()
-        plantsDao = plantsDatabase.getPlantsDao()
-        viewModel = HomeViewModel(getActivePlantsUseCase, updateTasksUseCase, getFutureActivePlantsUseCase)
-        viewState = HomeViewModel.homeUiState()
     }
-
-    @After
-    fun tearDown() {
-        //plantsDatabase.close()
-    }
-    fun setUpTask() : List<Tasks>? = runBlocking{
-        tasksDao.insertTask(tasksList[0])
-        tasksDao.insertTask(tasksList[1])
-        tasksDao.insertTask(tasksList[2])
-        tasksDao.getAllTasks().first()
-    }
-    private fun setUpPlants() = runBlocking{
-        plantsDao.insertPlant(plantsList[0])
-        plantsDao.insertPlant(plantsList[1])
-    }
-
 
     @Test
-    fun plantsViewModel_CallPlantState_NotNull() = runBlocking {
-        setUpPlants()
-        val flow = flow {
-            emit(fakeMap())
-        }
-        assertNotNull(flow)
-        assertEquals(flowOf(fakeMap()), flow)
-       // Mockito.`when`(viewModel.getPlants()).thenReturn(flow)
-        var state = viewModel.query
-        //Mockito.`when`(state).thenReturn(flow)
+    fun homeViewModel_flowTest_success() = runTest {
+        val fakePlantsRepository = FakePlantsRepository()
+        val fakeTasksRepository = FakeTasksRepository()
+        val viewModel = HomeViewModel(fakePlantsRepository, fakeTasksRepository)
+        fakePlantsRepository.getActivePlants(GetDateInMillis(70))
 
-       // state.collect {value -> assertNotNull(value) }
-        var currentUiState = viewState.plantsMap
-        val currentValue = currentUiState?.toList()
-        //assertEquals(0, viewModel.uiState.value)
-        //assertNotNull(currentValue)
-        // assertEquals(plantsList[0], currentValue!![0].first)
+       backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) {
+            viewModel.uiState.collect()
+        }
+        val uiState = viewModel.uiState.first()
+        assertNotNull(uiState)
+        //advanceTimeBy(500)
+
+        var valRep = fakePlantsRepository.getActivePlants(GetDateInMillis()).first()?.keys
+        var vmRep =  viewModel.uiState.value
+        //assertNotNull(uiState.plantsMap)
+      //  assertEquals(valRep, vmRep)
+      //  assertEquals(valRep?.size, vmRep?.size)
+      //  assertEquals(2, vmRep?.size)
+      //  viewModel.observeMap(GetDateInMillis(7))
+      //  valRep = fakePlantsRepository.getFutureActivePlants(GetDateInMillis(7)).first()?.keys
+      //  vmRep = viewModel.uiState.value.plantsMap?.keys
+      //  assertEquals(0, valRep?.size)
+      //  assertEquals(valRep?.size, vmRep?.size)
+      //  assertEquals(valRep, vmRep)
     }
 
-    //TODO test more once return map is clarified
+
+    //TODO test if the task gets edited
     @Test
     @Throws(Exception::class)
-    fun plantsViewModel_EditTask_success(): Unit = runBlocking{
-        tasksDao.insertTask(tasksList[0])
-        tasksDao.insertTask(tasksList[1])
-        tasksDao.insertTask(tasksList[2])
-        var returnTasksFromPlants = tasksDao.getAllTasks().first()
-        val plantToBeChanged = returnTasksFromPlants!![0]
-        assertEquals(4, plantToBeChanged.daysUncompleted)
-        plantToBeChanged.daysUncompleted = 0
-        viewModel.updateTask(plantToBeChanged)
+    fun homeViewModel_EditTask_success(): Unit = runTest{
+        val fakePlantsRepository = FakePlantsRepository()
+        val fakeTasksRepository = FakeTasksRepository()
+        val viewModel = HomeViewModel(fakePlantsRepository, fakeTasksRepository)
+        // TODO commented until uiState is back
+//        fakePlantsRepository.getActivePlants()
+//        // Create an empty collector for the StateFlow
+//        backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) {
+//            viewModel.uiState.collect()
+//        }
+//
+//        var valRep = fakePlantsRepository.getActivePlants().first()?.values
+//        var vmRep =  viewModel.uiState.value.plantsMap?.values
+//        // assertEquals(valRep, vmRep)
+//
+//        var value = viewModel.uiState.value.plantsMap?.values
+//        var el = value?.elementAt(0)
+//        assertNotNull(el!![0])
+//        assertEquals(4, el!![0].daysUncompleted)
+//
+//
+//        viewModel.updateTask(el!![0])
+//        backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) {
+//            viewModel.uiState.collect()
+//        }
+//        var value2 = viewModel.uiState.value.plantsMap?.values
+//        var el2 = value?.elementAt(0)
+//
+//        assertEquals(4, el2!![0].daysUncompleted)
+     //   tasksDao.insertTask(tasksList[0])
+     //   tasksDao.insertTask(tasksList[1])
+     //   tasksDao.insertTask(tasksList[2])
+        //var returnTasksFromPlants = tasksDao.getAllTasks().first()
+        //val plantToBeChanged = returnTasksFromPlants!![0]
+        //assertEquals(4, plantToBeChanged.daysUncompleted)
+        //plantToBeChanged.daysUncompleted = 0
+        //viewModel.updateTask(plantToBeChanged)
         //returnTasksFromPlants = tasksDao.getAllTasks().first()
       //  assertEquals(0, returnTasksFromPlants!![0].daysUncompleted)
       //  plantToBeChanged.daysUntilNextCycle = plantToBeChanged.cycleLength

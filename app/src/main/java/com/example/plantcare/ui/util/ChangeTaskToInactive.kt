@@ -13,7 +13,7 @@ public fun ChangeTaskToInactive(task: Tasks, date: Date) : Tasks {
     task.lastCompleted = date
     task.daysUncompleted = passedDays
     task.urgency = CheckUrgencyLevel(passedDays)
-    task.nextCycleDate = getDateInMillis(task.cycleLength - passedDays)
+    task.nextCycleDate = GetDateInMillis(task.cycleLength - passedDays)
     task.daysUntilNextCycle = task.cycleLength - passedDays
     return task
 }

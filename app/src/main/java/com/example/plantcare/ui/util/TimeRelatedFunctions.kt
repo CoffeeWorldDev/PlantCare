@@ -2,12 +2,10 @@ package com.example.plantcare.ui.util
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import java.text.SimpleDateFormat
 import java.time.LocalDate
-import java.time.LocalDateTime
 import java.time.Period
 import java.time.ZoneId
-import java.time.format.DateTimeFormatter
-import java.time.temporal.ChronoUnit
 import java.util.Calendar
 import java.util.Date
 
@@ -15,16 +13,27 @@ import java.util.Date
     /**
      * Returns the start of today in milliseconds
      */
-    fun getDateInMillis(addedDay: Int = 0): Date {
+    fun GetDateInMillis(addedDay: Int = 0): Date {
         val cal = Calendar.getInstance()
         val year = cal.get(Calendar.YEAR)
         val month = cal.get(Calendar.MONTH)
         val date = cal.get(Calendar.DATE)
-        cal.add(Calendar.DAY_OF_YEAR, addedDay)
         cal.clear()
         cal.set(year, month, date)
+        cal.add(Calendar.DAY_OF_YEAR, addedDay)
         return cal.time
     }
+
+fun GetDateInString(day: Int = 0):String{
+    val time = Calendar.getInstance().time
+    val ca = Calendar.getInstance()
+    ca.time = time
+    ca.add(Calendar.DAY_OF_YEAR, day)
+    val formatter = SimpleDateFormat("MMM\ndd")
+    val current = formatter.format(ca.time)
+    //Log.d("Click", current)
+    return current
+}
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun getElapsedTime(oldDate: Date): Int {

@@ -24,7 +24,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.plantcare.ui.util.getDateInMillis
+import com.example.plantcare.ui.util.GetDateInMillis
+import com.example.plantcare.ui.util.GetDateInString
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -49,11 +50,11 @@ fun HomeTop(onValueChange: (Date) -> Unit,
                                  defaultElevation = 5.dp
                                  ),
                     modifier = Modifier.clickable {
-                        onValueChange(getDateInMillis(it))
+                        onValueChange(GetDateInMillis(it))
                     }
                 ) {
                     Text(
-                        text = AddDay(it),
+                        text = GetDateInString(it),
                         fontWeight = FontWeight.SemiBold,
                         textAlign = TextAlign.Center,
                         fontSize = 12.sp,
@@ -79,16 +80,4 @@ fun HomeTop(onValueChange: (Date) -> Unit,
             )
         }
     }
-}
-
-
-fun AddDay(day: Int):String{
-    val time = Calendar.getInstance().time
-    val ca = Calendar.getInstance()
-    ca.time = time
-    ca.add(Calendar.DAY_OF_YEAR, day)
-    val formatter = SimpleDateFormat("MMM\ndd")
-    val current = formatter.format(ca.time)
-    Log.d("Click", current)
-    return current
 }

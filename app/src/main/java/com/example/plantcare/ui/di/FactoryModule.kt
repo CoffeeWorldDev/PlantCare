@@ -1,5 +1,7 @@
 package com.example.plantcare.ui.di
 
+import com.example.plantcare.domain.repository.PlantsRepository
+import com.example.plantcare.domain.repository.TasksRepository
 import com.example.plantcare.domain.useCase.plants.AddPlantsUseCase
 import com.example.plantcare.domain.useCase.plants.GetPlantsAndTasksUseCase
 import com.example.plantcare.domain.useCase.plants.GetActivePlantsUseCase
@@ -18,14 +20,12 @@ class FactoryModule {
     @Singleton
     @Provides
 fun ProvidesHomeFactoryModel(
-        getActivePlantsUseCase: GetActivePlantsUseCase,
-        updateTasksUseCase: UpdateTasksUseCase,
-        getFutureActivePlantsUseCase: GetFutureActivePlantsUseCase
+        plantsRepository: PlantsRepository,
+        tasksRepository: TasksRepository
 ): HomeViewModelFactory {
     return HomeViewModelFactory(
-        getActivePlantsUseCase,
-        updateTasksUseCase,
-        getFutureActivePlantsUseCase
+        plantsRepository,
+        tasksRepository
     )
 }
 }

@@ -4,6 +4,7 @@ import com.example.plantcare.data.model.Plants
 import com.example.plantcare.data.model.Tasks
 import com.example.plantcare.data.repository.dataSource.PlantsLocalDataSource
 import com.example.plantcare.domain.repository.PlantsRepository
+import com.example.plantcare.ui.util.GetDateInMillis
 import kotlinx.coroutines.flow.Flow
 import java.util.Date
 
@@ -16,8 +17,12 @@ class PlantsRepositoryImpl (private val plantsLocalDataSource : PlantsLocalDataS
         plantsLocalDataSource.deletePlant(plant)
     }
 
-    override fun getActivePlants(): Flow<Map<Plants?, List<Tasks>>?> {
-        return plantsLocalDataSource.getActivePlants()
+    override fun getActivePlants(date: Date): Flow<Map<Plants?, List<Tasks>>?> {
+        if (date != GetDateInMillis()){
+            return plantsLocalDataSource.getFutureActivePlants(date)
+        } else {
+            return plantsLocalDataSource.getActivePlants()
+        }
     }
 
     override fun updatePlants(plant: Plants) {
@@ -29,6 +34,7 @@ class PlantsRepositoryImpl (private val plantsLocalDataSource : PlantsLocalDataS
     }
 
     override fun getFutureActivePlants(date: Date): Flow<Map<Plants?, List<Tasks>>?> {
+
         return plantsLocalDataSource.getFutureActivePlants(date)
     }
 
