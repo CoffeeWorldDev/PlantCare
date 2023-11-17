@@ -6,6 +6,7 @@ import com.example.plantcare.data.model.Tasks
 import java.util.Date
 
 //TODO check about build versions
+//
 @RequiresApi(Build.VERSION_CODES.O)
 public fun ChangeTaskToInactive(task: Tasks, date: Date) : Tasks {
     val passedDays = getElapsedTime(date)

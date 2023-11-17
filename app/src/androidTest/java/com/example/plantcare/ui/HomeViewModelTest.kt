@@ -11,6 +11,7 @@ import com.example.plantcare.ui.home.HomeViewModel
 import com.example.plantcare.ui.util.GetDateInMillis
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.toList
@@ -47,6 +48,7 @@ class homeViewModelTest {
         hiltRule.inject()
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun homeViewModel_flowTest_success() = runTest {
         val fakePlantsRepository = FakePlantsRepository()
@@ -54,6 +56,7 @@ class homeViewModelTest {
         val viewModel = HomeViewModel(fakePlantsRepository, fakeTasksRepository)
         fakePlantsRepository.getActivePlants(GetDateInMillis(70))
 
+        viewModel.changeQuery(GetDateInMillis(70))
        backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) {
             viewModel.uiState.collect()
         }
@@ -62,11 +65,13 @@ class homeViewModelTest {
         //advanceTimeBy(500)
 
         var valRep = fakePlantsRepository.getActivePlants(GetDateInMillis()).first()?.keys
-        var vmRep =  viewModel.uiState.value
-        //assertNotNull(uiState.plantsMap)
-      //  assertEquals(valRep, vmRep)
-      //  assertEquals(valRep?.size, vmRep?.size)
-      //  assertEquals(2, vmRep?.size)
+        var vmRep =  viewModel.uiState.value.plantsMap!!.keys
+        assertNotNull(uiState.plantsMap)
+        assertEquals(valRep, vmRep)
+        assertEquals(valRep?.size, vmRep.size)
+        assertEquals(2, vmRep.size)
+
+        //TODO find out how to test different dates
       //  viewModel.observeMap(GetDateInMillis(7))
       //  valRep = fakePlantsRepository.getFutureActivePlants(GetDateInMillis(7)).first()?.keys
       //  vmRep = viewModel.uiState.value.plantsMap?.keys

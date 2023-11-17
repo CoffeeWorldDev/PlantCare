@@ -36,9 +36,9 @@ fun GetDateInString(day: Int = 0):String{
 }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun getElapsedTime(oldDate: Date): Int {
+    fun getElapsedTime(previousDate: Date): Int {
         // parse the date with a suitable formatter
-       val changedOldDate = oldDate.toInstant()
+       val changedOldDate = previousDate.toInstant()
             .atZone(ZoneId.systemDefault())
             .toLocalDate();
        // val from = LocalDate.parse("04112005", DateTimeFormatter.ofPattern("ddMMyyyy"))

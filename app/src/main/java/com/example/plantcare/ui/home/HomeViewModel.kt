@@ -20,6 +20,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
@@ -41,105 +42,32 @@ class HomeViewModel @Inject constructor (
     //savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    // private val _uiState : MutableStateFlow(HomeUiState()) = pla
-    //  var uiState = ChangeDataQuery(GetDateInMillis()).map { map ->  }
-    private var _uiState = MutableStateFlow(HomeUiState())
-    val uiState : StateFlow<HomeUiState> = _uiState
+    private val _uiState = MutableStateFlow(HomeUiState(isLoading = true))
+    val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
 
     init {
         changeQuery(GetDateInMillis())
-
-        // Observe for favorite changes in the repo layer
-        viewModelScope.launch {
-            _uiState = plantsRepository.getActivePlants(GetDateInMillis()).map {
-                HomeUiState(plantsMap = it)
-            }   .stateIn(
-                scope = viewModelScope,
-                started = SharingStarted.WhileSubscribed(5000),
-                initialValue = HomeUiState(plantsMap = mapOf())
-                    )
-            plantsRepository.getActivePlants(GetDateInMillis()).collect { map ->
-                HomeUiState.update { it.copy(plantsMap = map) }
-            }
-        }
     }
 
     fun changeQuery(date: Date) {
         // Ui state is refreshing
-        viewModelState.update { it.copy(isLoading = true) }
+        _uiState.update { it.copy(isLoading = true) }
 
         viewModelScope.launch {
             plantsRepository.getActivePlants(date).collect { map ->
-                viewModelState.update { it.copy(plantsMap = map, isLoading = false) }
+                _uiState.update {
+                    it.copy(plantsMap = map, isLoading = false)
+                }
             }
         }
     }
 
-        //  val uiState = combine(
-        //      plantsRepository.getActivePlants(),
-        //      plantsRepository.getFutureActivePlants(GetDateInMillis()),
-        //  ) { current, future ->
-        //      HomeUiState.Queries(
-        //          currentPlantsMap = current,
-        //          futurePlantsMap = future
-        //      )
-        //  }
-        //      .stateIn(
-        //          scope = viewModelScope,
-        //          started = SharingStarted.WhileSubscribed(5_000),
-        //          initialValue = HomeUiState.Loading
-        //      )
 
-          fun ChangeDataQuery(date: Date): StateFlow<HomeUiState> {
-              val currentDate = GetDateInMillis()
-              var query = plantsRepository.getActivePlants(date)
-              if(date != currentDate) {
-                  Log.e("HERE", "future ${date.toString()}")
-                  query = plantsRepository.getFutureActivePlants(date)
-              } else {
-                  Log.e("HERE","current ${currentDate.toString()}")
-                  query = plantsRepository.getActivePlants()
-              }
-             // uiState =  query.map {
-             //     HomeUiState(plantsMap = it)
-             // }   .stateIn(
-             //     scope = viewModelScope,
-             //     started = SharingStarted.WhileSubscribed(5000),
-             //     initialValue = HomeUiState(plantsMap = mapOf()),
-              )
-              return uiState
-          }
-
-        @RequiresApi(Build.VERSION_CODES.O)
-        fun updateTask(task: Tasks) = viewModelScope.launch {
-            var taskToUpdate = ChangeTaskToInactive(task, GetDateInMillis())
-            tasksRepository.updateTasks(taskToUpdate)
-        }
-
-
-    companion object {
-        private const val TIMEOUT_MILLIS = 5_000L
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun updateTask(task: Tasks) = viewModelScope.launch {
+        var taskToUpdate = ChangeTaskToInactive(task, GetDateInMillis())
+        tasksRepository.updateTasks(taskToUpdate)
     }
-    }
+}
 
 
-
-        //  data class HomeUiState(
-        //      var lists :
-        //      var currentPlantsMap: Map<Plants?, List<Tasks>>?,
-        //      var futurePlantsMap: Map<Plants?, List<Tasks>>?,
-        //      val isLoading: Boolean = false
-        //  )
-
-
-
-//sealed interface HomeUiState {
-//    data object Loading : HomeUiState
-//
-//    data class Queries(
-//        var currentPlantsMap: Map<Plants?, List<Tasks>>?,
-//        var futurePlantsMap: Map<Plants?, List<Tasks>>?
-//    ) : HomeUiState
-//
-//    data object Empty : HomeUiState
-//}

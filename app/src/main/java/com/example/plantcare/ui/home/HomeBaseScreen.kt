@@ -20,16 +20,15 @@ fun HomeBaseScreen(viewModel: HomeViewModel = hiltViewModel(),
 
 
     Column() {
-      //  HomeTop(
-      //      onValueChange = { viewModel.changeDataQuery(it) },
-      //      modifier = Modifier
-      //  )
+        HomeTop(
+            onValueChange = { viewModel.changeQuery(it) },
+            modifier = Modifier
+        )
     }
 
-    //    HomeMainBlock(plantsState.plantsMap,
-    //                  onTaskClicked = { viewModel.ChangeDataQuery(it)})
-    //}
-}
+        HomeMainBlock(plantsState.plantsMap,
+                      onTaskClicked = { viewModel.updateTask(it)})
+    }
 // fun HomeBaseScreen(
 //    onDateChanged: (Date) -> Unit,
 
