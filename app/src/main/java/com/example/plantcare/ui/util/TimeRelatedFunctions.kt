@@ -8,9 +8,10 @@ import java.time.Period
 import java.time.ZoneId
 import java.util.Calendar
 import java.util.Date
+import java.util.concurrent.TimeUnit
 
 
-    /**
+/**
      * Returns the start of today in milliseconds
      */
     fun GetDateInMillis(addedDay: Int = 0): Date {
@@ -35,22 +36,26 @@ fun GetDateInString(day: Int = 0):String{
     return current
 }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     fun getElapsedTime(previousDate: Date): Int {
         // parse the date with a suitable formatter
-       val changedOldDate = previousDate.toInstant()
-            .atZone(ZoneId.systemDefault())
-            .toLocalDate();
-       // val from = LocalDate.parse("04112005", DateTimeFormatter.ofPattern("ddMMyyyy"))
-        // get today's date
-        val today = LocalDate.now()
-        // calculate the period between those two
-        return Period.between(changedOldDate, today).days
-        // and print it in a human-readable way
-       // println("The difference between " + from.format(DateTimeFormatter.ISO_LOCAL_DATE)
-       //         + " and " + today.format(DateTimeFormatter.ISO_LOCAL_DATE) + " is "
-       //         + period.years + " years, " + period.months + " months and "
-       //         + period.days + " days")
+        if(android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            val changedOldDate = previousDate.toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
+            // val from = LocalDate.parse("04112005", DateTimeFormatter.ofPattern("ddMMyyyy"))
+            // get today's date
+            val today = LocalDate.now()
+            // calculate the period between those two
+            return Period.between(changedOldDate, today).days
+            // and print it in a human-readable way
+            // println("The difference between " + from.format(DateTimeFormatter.ISO_LOCAL_DATE)
+            //         + " and " + today.format(DateTimeFormatter.ISO_LOCAL_DATE) + " is "
+            //         + period.years + " years, " + period.months + " months and "
+            //         + period.days + " days")
+        }
+
+        val diff: Long = previousDate.time - GetDateInMillis(0).time
+        return TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS).toInt()
     }
 
 

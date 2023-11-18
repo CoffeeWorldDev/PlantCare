@@ -63,7 +63,6 @@ class HomeViewModel @Inject constructor (
     }
 
 
-    @RequiresApi(Build.VERSION_CODES.O)
     fun updateTask(task: Tasks) = viewModelScope.launch {
         var taskToUpdate = ChangeTaskToInactive(task, GetDateInMillis())
         tasksRepository.updateTasks(taskToUpdate)

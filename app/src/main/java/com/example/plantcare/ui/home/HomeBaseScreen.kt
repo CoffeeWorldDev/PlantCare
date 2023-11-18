@@ -10,13 +10,11 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
-//TODO make an alternative for older versions really
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun HomeBaseScreen(viewModel: HomeViewModel = hiltViewModel(),
                    modifier: Modifier = Modifier) {
     val plantsState by viewModel.uiState.collectAsStateWithLifecycle()
-    Log.e("HERE", plantsState.toString())
+    Log.e("HOME BASE", plantsState.toString())
 
 
     Column() {

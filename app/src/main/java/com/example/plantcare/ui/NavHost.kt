@@ -13,6 +13,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.plantcare.ui.BottomNavBar.BottomNavItem
 import com.example.plantcare.ui.home.HomeBaseScreen
+import com.example.plantcare.ui.plantsGallery.PlantsGalleryScreenBase
 
 @Composable
 fun PlantCareNavHost(
@@ -28,7 +29,9 @@ fun PlantCareNavHost(
             )
         }
         composable(BottomNavItem.PlantsGallery.screen_route){
-        //    PlantsGalleryScreenBase(uiState)
+            PlantsGalleryScreenBase(modifier = Modifier.fillMaxSize()
+                                              .background(MaterialTheme.colorScheme.background)
+                                              .wrapContentSize(align = Alignment.TopCenter))
         }
         composable(BottomNavItem.Settings.screen_route){
         //    SettingsScreen()
