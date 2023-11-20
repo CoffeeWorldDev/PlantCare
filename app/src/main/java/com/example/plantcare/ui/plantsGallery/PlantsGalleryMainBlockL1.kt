@@ -22,15 +22,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.plantcare.R
 import com.example.plantcare.data.model.Plants
+import com.example.plantcare.data.model.Tasks
 
 
 @Composable
-fun PlantsGalleryMainBlockL1(plants: List<Plants>) {
-    val primaryColor = MaterialTheme.colorScheme.primary
-    val onPrimaryColor = MaterialTheme.colorScheme.onPrimary
-    val shape = RoundedCornerShape(topStartPercent = 50, bottomStartPercent = 50)
+fun PlantsGalleryMainBlockL1(plants: Map<Plants?, List<Tasks>>?) {
+    val plantsList = plants?.toList()
     val headlineLarge = MaterialTheme.typography.headlineLarge
-    LazyColumn(){ items(plants.size) {
+    LazyColumn(){ items(plantsList!!.size) {
         Row(modifier = Modifier.padding(15.dp, 0.dp,0.dp, 20.dp)) {
             Image(painter = painterResource(id = R.drawable.baseline_image_24),
                 contentDescription = "plant image",
@@ -43,7 +42,7 @@ fun PlantsGalleryMainBlockL1(plants: List<Plants>) {
                 .weight(3f)
                 .padding(10.dp, 0.dp, 0.dp, 0.dp),
                 horizontalAlignment = Alignment.End) {
-                Text(text = plants[it].name,
+                Text(text = plantsList[it].first!!.name,
                     modifier = Modifier
                         .padding(0.dp, 0.dp, 10.dp, 0.dp)
                         .fillMaxWidth(),
@@ -55,11 +54,11 @@ fun PlantsGalleryMainBlockL1(plants: List<Plants>) {
                     modifier = Modifier
                         .padding(0.dp, 0.dp, 10.dp, 0.dp)
                         .fillMaxWidth()) {
-                    plants[it].age?.let { it1 ->
-                        Text(text = "${it1} days old" ,
+                    plantsList[it].first!!.age?.let { it1 ->
+                        Text(text = "$it1 days old" ,
                              modifier = Modifier)
                     }
-                    plants[it].type?.let { it1 ->
+                    plantsList[it].first!!.type?.let { it1 ->
                         Text(text = it1,
                              modifier = Modifier)
                     }
@@ -67,6 +66,5 @@ fun PlantsGalleryMainBlockL1(plants: List<Plants>) {
             }
         }
     }
-
     }
 }

@@ -1,8 +1,6 @@
 package com.example.plantcare.ui.home
 
-import android.os.Build
 import android.util.Log
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -13,8 +11,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 @Composable
 fun HomeBaseScreen(viewModel: HomeViewModel = hiltViewModel(),
                    modifier: Modifier = Modifier) {
-    val plantsState by viewModel.uiState.collectAsStateWithLifecycle()
-    Log.e("HOME BASE", plantsState.toString())
+    val homeUiState by viewModel.uiState.collectAsStateWithLifecycle()
+    Log.e("HOME BASE", homeUiState.toString())
 
 
     Column() {
@@ -24,7 +22,7 @@ fun HomeBaseScreen(viewModel: HomeViewModel = hiltViewModel(),
         )
     }
 
-        HomeMainBlock(plantsState.plantsMap,
+        HomeMainBlock(homeUiState.plantsMap,
                       onTaskClicked = { viewModel.updateTask(it)})
     }
 // fun HomeBaseScreen(

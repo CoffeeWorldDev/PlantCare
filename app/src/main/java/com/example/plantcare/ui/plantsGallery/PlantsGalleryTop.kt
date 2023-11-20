@@ -31,8 +31,10 @@ import com.example.plantcare.ui.util.TitlesBackgroundShape
 
 
 @Composable
-fun PlantsGalleryTop(plants: Map<Plants?, List<Tasks>>?,
-    modifier: Modifier
+fun PlantsGalleryTop(
+    plants: Map<Plants?, List<Tasks>>?,
+    modifier: Modifier,
+    onValueChange: (Int) -> Unit
 ) {
     val plantsList = plants?.keys?.toList()
     val primaryColor = MaterialTheme.colorScheme.primary

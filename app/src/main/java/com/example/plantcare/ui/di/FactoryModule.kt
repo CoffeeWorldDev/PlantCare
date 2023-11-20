@@ -8,6 +8,7 @@ import com.example.plantcare.domain.useCase.plants.GetActivePlantsUseCase
 import com.example.plantcare.domain.useCase.plants.GetFutureActivePlantsUseCase
 import com.example.plantcare.domain.useCase.tasks.UpdateTasksUseCase
 import com.example.plantcare.ui.home.HomeViewModelFactory
+import com.example.plantcare.ui.plantsGallery.PlantsGalleryViewModelFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -28,4 +29,14 @@ fun ProvidesHomeFactoryModel(
         tasksRepository
     )
 }
+
+    @Singleton
+    @Provides
+    fun ProvidesPlantsGalleryFactoryModel(
+        plantsRepository: PlantsRepository
+    ): PlantsGalleryViewModelFactory {
+        return PlantsGalleryViewModelFactory(
+            plantsRepository
+        )
+    }
 }

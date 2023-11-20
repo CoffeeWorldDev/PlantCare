@@ -6,17 +6,19 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.example.plantcare.data.model.Plants
+import com.example.plantcare.data.model.Tasks
 
 @Composable
 fun PlantsGalleryMainBlockL2(
-    plants: List<Plants>,
+    plants: Map<Plants?, List<Tasks>>?,
     columns: Int,
-    onNavigateToSecondScreen: (String) -> Unit
+    //onNavigateToSecondScreen: (String) -> Unit
 ) {
+    val plantsList = plants?.toList()
     //var plantsList : Set<Plants> = plants
     LazyVerticalGrid(columns = GridCells.Fixed(columns),
                      modifier = Modifier.fillMaxSize()){
-        items(plants.size) {plant ->
+        items(plantsList!!.size) {plant ->
  //          Row(modifier = Modifier.padding(15.dp, 0.dp,0.dp, 20.dp)
  //              .clickable { onNavigateToSecondScreen(plants[plant])
  //              Log.d("ERROR", plants[plant].plantsId.toString())}) {
