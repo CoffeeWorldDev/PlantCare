@@ -1,6 +1,4 @@
-package com.example.plantcare.ui.util
-
-import androidx.compose.ui.unit.dp
+package com.example.plantcare.ui.utils
 
 enum class urgency {
     normal,

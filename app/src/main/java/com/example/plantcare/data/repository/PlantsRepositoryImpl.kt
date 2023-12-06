@@ -4,7 +4,7 @@ import com.example.plantcare.data.model.Plants
 import com.example.plantcare.data.model.Tasks
 import com.example.plantcare.data.repository.dataSource.PlantsLocalDataSource
 import com.example.plantcare.domain.repository.PlantsRepository
-import com.example.plantcare.ui.util.GetDateInMillis
+import com.example.plantcare.ui.utils.GetDateInMillis
 import kotlinx.coroutines.flow.Flow
 import java.util.Date
 

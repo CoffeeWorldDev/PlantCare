@@ -1,4 +1,4 @@
-package com.example.plantcare.ui.home
+package com.example.plantcare.ui.plantCreationEdit
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -17,20 +17,20 @@ import kotlinx.coroutines.launch
 import java.util.Date
 import javax.inject.Inject
 
-data class HomeUiState(
+data class PlantCreationEditUiState(
     val plantsMap: Map<Plants?, List<Tasks>>? = null,
     val isLoading: Boolean = false,
     val userErrorMessage: Int? = null
 )
 @HiltViewModel
-class HomeViewModel @Inject constructor (
+class PlantCreationEditViewModel @Inject constructor (
     private val plantsRepository: PlantsRepository,
     private val tasksRepository: TasksRepository,
     //savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(HomeUiState(isLoading = true))
-    val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
+    private val _uiState = MutableStateFlow(PlantCreationEditUiState(isLoading = true))
+    val uiState: StateFlow<PlantCreationEditUiState> = _uiState.asStateFlow()
 
     init {
         changeQuery(GetDateInMillis())

@@ -1,7 +1,7 @@
 package com.example.plantcare
 
 import com.example.plantcare.data.model.Plants
-import com.example.plantcare.ui.util.GetDateInMillis
+import com.example.plantcare.ui.utils.GetDateInMillis
 
 fun fakePlantsList() : MutableList<Plants> {
     var item1 = Plants(1, "Apples", "cactus",

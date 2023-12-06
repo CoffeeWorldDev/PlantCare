@@ -1,7 +1,7 @@
 package com.example.plantcare
 
 import com.example.plantcare.data.model.Tasks
-import com.example.plantcare.ui.util.GetDateInMillis
+import com.example.plantcare.ui.utils.GetDateInMillis
 
 fun fakeTasksList() : ArrayList<Tasks> {
 

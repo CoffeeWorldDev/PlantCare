@@ -1,6 +1,13 @@
 <resources>
     <string name="app_name">PlantCare</string>
+    <string name="label_back">Back</string>
 
+    <!-- Bottom Nav Items -->
+    <string name="bottom_nav_feed">Home</string>
+    <string name="bottom_nav_gallery">Gallery</string>
+    <string name="bottom_nav_settings">Settings</string>
+
+    <!-- Errors -->
     <string name="loading_plants_error">Error while loading plants</string>
     <string name="plants_not_found">Plants not found</string>
 </resources>

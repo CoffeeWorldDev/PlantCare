@@ -27,7 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.plantcare.data.model.Plants
 import com.example.plantcare.data.model.Tasks
-import com.example.plantcare.ui.util.TitlesBackgroundShape
+import com.example.plantcare.ui.utils.TitlesBackgroundShape
 
 
 @Composable

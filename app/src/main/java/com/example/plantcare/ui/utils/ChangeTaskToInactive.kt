@@ -1,7 +1,5 @@
-package com.example.plantcare.ui.util
+package com.example.plantcare.ui.utils
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import com.example.plantcare.data.model.Tasks
 import java.util.Date
 

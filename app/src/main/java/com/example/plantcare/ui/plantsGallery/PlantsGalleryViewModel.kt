@@ -1,21 +1,16 @@
 package com.example.plantcare.ui.plantsGallery
 
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.plantcare.data.model.Plants
 import com.example.plantcare.data.model.Tasks
 import com.example.plantcare.domain.repository.PlantsRepository
-import com.example.plantcare.domain.repository.TasksRepository
-import com.example.plantcare.ui.util.ChangeTaskToInactive
-import com.example.plantcare.ui.util.GetDateInMillis
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.util.Date
 import javax.inject.Inject
 
 data class PlantsGalleryUiState(
@@ -35,10 +30,10 @@ class PlantsGalleryViewModel @Inject constructor (
     val uiState: StateFlow<PlantsGalleryUiState> = _uiState.asStateFlow()
 
     init {
-        SetUpGallery()
+        setUpGallery()
     }
 
-    fun SetUpGallery() {
+    fun setUpGallery() {
         // Ui state is refreshing
         _uiState.update { it.copy(isLoading = true) }
 
@@ -52,12 +47,12 @@ class PlantsGalleryViewModel @Inject constructor (
     }
 
     //TODO implement search
-    fun SearchPlant(){
+    fun searchPlant(){
 
     }
 
     //TODO implement change Layout
-    fun SortGallery(layout : Int) {
+    fun sortGallery(layout : Int) {
         _uiState.update {
             it.copy(currentLayout = layout)
         }

@@ -24,10 +24,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.plantcare.ui.util.GetDateInMillis
-import com.example.plantcare.ui.util.GetDateInString
-import java.text.SimpleDateFormat
-import java.util.Calendar
+import com.example.plantcare.ui.utils.GetDateInMillis
+import com.example.plantcare.ui.utils.GetDateInString
 import java.util.Date
 
 @Composable

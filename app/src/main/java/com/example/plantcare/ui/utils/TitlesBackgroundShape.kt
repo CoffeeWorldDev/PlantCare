@@ -1,4 +1,4 @@
-package com.example.plantcare.ui.util
+package com.example.plantcare.ui.utils
 
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Outline

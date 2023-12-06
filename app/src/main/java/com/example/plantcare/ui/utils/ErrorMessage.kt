@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.example.plantcare.ui.util
+package com.example.plantcare.ui.utils
 
 import androidx.annotation.StringRes
 

@@ -1,7 +1,6 @@
-package com.example.plantcare.ui.util
+package com.example.plantcare.ui.utils
 
 import android.os.Build
-import androidx.annotation.RequiresApi
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.Period

@@ -28,7 +28,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.example.plantcare.ui.util.EmptyListMsg
+import com.example.plantcare.ui.utils.EmptyListMsg
 
 @Composable
 fun PlantDetailsNotes(notes: Map<String, String>){

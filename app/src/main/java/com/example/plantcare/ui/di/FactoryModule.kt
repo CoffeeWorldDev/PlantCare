@@ -2,12 +2,8 @@ package com.example.plantcare.ui.di
 
 import com.example.plantcare.domain.repository.PlantsRepository
 import com.example.plantcare.domain.repository.TasksRepository
-import com.example.plantcare.domain.useCase.plants.AddPlantsUseCase
-import com.example.plantcare.domain.useCase.plants.GetPlantsAndTasksUseCase
-import com.example.plantcare.domain.useCase.plants.GetActivePlantsUseCase
-import com.example.plantcare.domain.useCase.plants.GetFutureActivePlantsUseCase
-import com.example.plantcare.domain.useCase.tasks.UpdateTasksUseCase
 import com.example.plantcare.ui.home.HomeViewModelFactory
+import com.example.plantcare.ui.plantCreationEdit.PlantCreationEditViewModelFactory
 import com.example.plantcare.ui.plantsGallery.PlantsGalleryViewModelFactory
 import dagger.Module
 import dagger.Provides
@@ -39,4 +35,17 @@ fun ProvidesHomeFactoryModel(
             plantsRepository
         )
     }
+
+
+@Singleton
+@Provides
+fun ProvidesPlantCreationEditFactoryModel(
+    plantsRepository: PlantsRepository,
+    tasksRepository: TasksRepository
+): PlantCreationEditViewModelFactory {
+    return PlantCreationEditViewModelFactory(
+        plantsRepository,
+        tasksRepository
+    )
+}
 }

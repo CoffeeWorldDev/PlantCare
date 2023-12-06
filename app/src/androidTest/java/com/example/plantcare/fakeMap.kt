@@ -2,10 +2,6 @@ package com.example.plantcare
 
 import com.example.plantcare.data.model.Plants
 import com.example.plantcare.data.model.Tasks
-import com.example.plantcare.ui.util.GetDateInMillis
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOf
-import java.util.Date
 
 fun fakeMap() : Map<Plants?, List<Tasks>>? {
    var plants = fakePlantsList()

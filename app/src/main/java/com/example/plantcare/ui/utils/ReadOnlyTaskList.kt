@@ -1,4 +1,4 @@
-package com.example.plantcare.ui.util
+package com.example.plantcare.ui.utils
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer

@@ -1,22 +1,5 @@
 package com.example.plantcare.ui
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.BottomAppBar
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Scaffold
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
-import com.example.plantcare.data.model.Plants
-import com.example.plantcare.ui.BottomNavBar.BottomNav
-import com.example.plantcare.ui.home.HomeViewModel
-import com.example.plantcare.ui.home.HomeViewModelFactory
-
 //@OptIn(ExperimentalMaterial3Api::class)
 //@Composable
 //fun MainScreen() {
