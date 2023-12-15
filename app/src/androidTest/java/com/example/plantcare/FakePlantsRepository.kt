@@ -52,4 +52,8 @@ class FakePlantsRepository : PlantsRepository {
     override fun getFutureActivePlants(date: Date): Flow<Map<Plants?, List<Tasks>>?> = flow {
         emit(FakeMapDateQuery())
     }
+
+    override fun getPlantsFromId(plantId: Long): Flow<Map<Plants?, List<Tasks>>?> {
+        TODO("Not yet implemented")
+    }
 }

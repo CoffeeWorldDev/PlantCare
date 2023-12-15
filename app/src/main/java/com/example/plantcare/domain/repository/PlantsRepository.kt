@@ -12,4 +12,5 @@ interface PlantsRepository {
     fun updatePlants(plants: Plants)
     fun getPlantsAndTasks() : Flow<Map<Plants?, List<Tasks>>?>
     fun getFutureActivePlants(date: Date): Flow<Map<Plants?, List<Tasks>>?>
+    fun getPlantsFromId(plantId : Long): Flow<Map<Plants?, List<Tasks>>?>
 }

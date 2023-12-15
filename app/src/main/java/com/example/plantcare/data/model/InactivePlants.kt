@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "inactivePlants")
 class InactivePlants (
     @PrimaryKey(autoGenerate = true)
-    var InactivePlantsId: Int,
+    var InactivePlantsId: Long,
     //@ColumnInfo(name = "Name")
     var Name : String,
     //@ColumnInfo(name = "DateTurnedInactive")

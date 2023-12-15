@@ -25,7 +25,7 @@ import com.example.plantcare.data.model.Tasks
 
 
 @Composable
-fun PlantsGalleryMainBlockL1(plants: Map<Plants?, List<Tasks>>?) {
+fun PlantsGalleryBodyVerL1(plants: Map<Plants?, List<Tasks>>?) {
     val plantsList = plants?.toList()
     val headlineLarge = MaterialTheme.typography.headlineLarge
     LazyColumn(){ items(plantsList!!.size) {

@@ -25,4 +25,7 @@ interface PlantsDao {
 
     @Query("SELECT * FROM plants JOIN tasks ON plants.Plant_id = tasks.Task_owner_plant_id WHERE tasks.Task_next_cycle_date = :date")
     fun getFutureActivePlants(date: Date): Flow<Map<Plants?, List<Tasks>>?>
+
+    @Query("SELECT * FROM plants JOIN tasks ON plants.Plant_id = tasks.Task_owner_plant_id WHERE plants.Plant_id = :plantId")
+    fun getPlantsFromId(plantId : Long):Flow<Map<Plants?, List<Tasks>>?>
 }

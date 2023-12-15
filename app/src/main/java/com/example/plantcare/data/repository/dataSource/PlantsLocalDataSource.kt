@@ -11,5 +11,6 @@ interface PlantsLocalDataSource {
     fun getActivePlants() : Flow<Map<Plants?, List<Tasks>>?>
     fun getPlantsAndTasks() : Flow<Map<Plants?, List<Tasks>>?>
     fun getFutureActivePlants(date: Date): Flow<Map<Plants?, List<Tasks>>?>
+    fun getPlantsFromId(plantId : Long): Flow<Map<Plants?, List<Tasks>>?>
 }
 

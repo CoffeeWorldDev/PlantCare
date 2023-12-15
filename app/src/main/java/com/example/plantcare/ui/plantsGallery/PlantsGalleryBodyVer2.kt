@@ -9,7 +9,7 @@ import com.example.plantcare.data.model.Plants
 import com.example.plantcare.data.model.Tasks
 
 @Composable
-fun PlantsGalleryMainBlockL2(
+fun PlantsGalleryBodyVerL2(
     plants: Map<Plants?, List<Tasks>>?,
     columns: Int,
     //onNavigateToSecondScreen: (String) -> Unit

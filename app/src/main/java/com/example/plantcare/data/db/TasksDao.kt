@@ -25,5 +25,5 @@ interface TasksDao {
     fun getAllTasks(): Flow<List<Tasks>?>
 
     @Query("SELECT * FROM tasks WHERE tasks.Task_owner_plant_id LIKE :plantId")
-    fun getTasksFromPlants(plantId: Int): Flow<List<Tasks>?>
+    fun getTasksFromPlants(plantId: Long): Flow<List<Tasks>?>
 }

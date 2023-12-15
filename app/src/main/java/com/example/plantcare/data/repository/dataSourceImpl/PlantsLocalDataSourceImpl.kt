@@ -27,4 +27,8 @@ class PlantsLocalDataSourceImpl(private val plantsDao : PlantsDao) : PlantsLocal
     override fun getFutureActivePlants(date: Date): Flow<Map<Plants?, List<Tasks>>?> {
         return plantsDao.getFutureActivePlants(date)
     }
+
+    override fun getPlantsFromId(plantId: Long): Flow<Map<Plants?, List<Tasks>>?> {
+        return plantsDao.getPlantsFromId(plantId)
+    }
 }

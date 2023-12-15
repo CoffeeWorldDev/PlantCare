@@ -14,8 +14,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -24,8 +22,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.plantcare.R
 import com.example.plantcare.ui.utils.GetDateInMillis
 import com.example.plantcare.ui.utils.GetDateInString
+import com.example.plantcare.ui.components.PlantCareIconButton
 import java.util.Date
 
 @Composable
@@ -64,18 +64,14 @@ fun HomeTop(onValueChange: (Date) -> Unit,
                 }
             }
         }
-        IconButton(
-            //TODO create sorting menu home page
-            modifier = Modifier
-                .weight(0.5f)
-                .padding(0.dp, 5.dp, 12.dp, 5.dp)
-                .height(45.dp)
-                .width(45.dp),
-            onClick = { Log.d("Click", "IconExample")}) {
-            Icon(
-                imageVector = Icons.Filled.Menu,
-                contentDescription = "Home Icon"
-            )
-        }
+       PlantCareIconButton(
+           iconImage = Icons.Filled.Menu,
+           contentDescription = R.string.hamburger_button_icon,
+           onClick = { Log.d("Click", "IconExample") },
+           modifier = Modifier
+               .weight(0.5f)
+               .padding(0.dp, 5.dp, 12.dp, 5.dp)
+               .height(45.dp)
+               .width(45.dp))
     }
 }

@@ -9,9 +9,9 @@ import java.util.Date
 class Tasks (
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "Task_id")
-    var taskId: Int,
+    var taskId: Long,
     @ColumnInfo(name = "Task_owner_plant_id")
-    var ownerPlantId : Int,
+    var ownerPlantId : Long,
     @ColumnInfo(name = "Task_name")
     var name : String,
     @ColumnInfo(name = "Task_is_active")

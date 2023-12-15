@@ -31,7 +31,7 @@ import com.example.plantcare.ui.utils.TitlesBackgroundShape
 
 
 @Composable
-fun PlantsGalleryTop(
+fun PlantsGalleryHeader(
     plants: Map<Plants?, List<Tasks>>?,
     modifier: Modifier,
     onValueChange: (Int) -> Unit

@@ -9,7 +9,7 @@ import java.util.Date
 data class Plants(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "Plant_id")
-    var plantsId: Int,
+    var plantsId: Long,
     @ColumnInfo(name = "Plant_name")
     var name : String,
     //TODO implement type

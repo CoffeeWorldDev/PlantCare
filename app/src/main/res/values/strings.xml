@@ -10,4 +10,10 @@
     <!-- Errors -->
     <string name="loading_plants_error">Error while loading plants</string>
     <string name="plants_not_found">Plants not found</string>
+
+    <!-- Content Descriptions -->
+    <string name="plants_photo_description">Plants not found</string>
+    <string name="hamburger_button_icon">menu icon</string>
+    <string name="photo_from_camera_icon">add photo from camera icon</string>
+    <string name="photo_from_gallery_icon">add photo from gallery icon</string>
 </resources>

@@ -18,10 +18,10 @@ class PlantsRepositoryImpl (private val plantsLocalDataSource : PlantsLocalDataS
     }
 
     override fun getActivePlants(date: Date): Flow<Map<Plants?, List<Tasks>>?> {
-        if (date != GetDateInMillis()){
-            return plantsLocalDataSource.getFutureActivePlants(date)
+        return if (date != GetDateInMillis()){
+            plantsLocalDataSource.getFutureActivePlants(date)
         } else {
-            return plantsLocalDataSource.getActivePlants()
+            plantsLocalDataSource.getActivePlants()
         }
     }
 
@@ -36,6 +36,10 @@ class PlantsRepositoryImpl (private val plantsLocalDataSource : PlantsLocalDataS
     override fun getFutureActivePlants(date: Date): Flow<Map<Plants?, List<Tasks>>?> {
 
         return plantsLocalDataSource.getFutureActivePlants(date)
+    }
+
+    override fun getPlantsFromId(plantId: Long): Flow<Map<Plants?, List<Tasks>>?> {
+        return plantsLocalDataSource.getPlantsFromId(plantId)
     }
 
 }
