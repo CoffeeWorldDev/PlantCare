@@ -14,6 +14,8 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertNull
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -54,10 +56,13 @@ class MapTest {
         tasksDao.insertTask(tasksList[0])
         tasksDao.insertTask(tasksList[1])
         tasksDao.insertTask(tasksList[2])
-        var returnPlants = plantsDao.getActivePlants().first()
+        var returnPlants = plantsDao.getPlantsAndTasks().first()
         var returnAllTasks = tasksDao.getAllTasks().first()
+
+        assertEquals(3, returnAllTasks!!.size)
+
         //assertEquals(2, returnPlants!!.size)
-        //assertEquals(3, returnAllTasks!!.size)
+        assertNull(returnPlants)
 //        var plantsMap = plantsDao.getPlantsAndTasks().first()
 //        var mapToList = plantsMap.toString()
 //        Log.e("HERE", mapToList)

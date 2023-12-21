@@ -1,19 +1,25 @@
 package com.example.plantcare.data.repository.dataSourceImpl
 
+import android.util.Log
 import com.example.plantcare.data.db.PlantsDao
 import com.example.plantcare.data.model.Plants
 import com.example.plantcare.data.model.Tasks
 import com.example.plantcare.data.repository.dataSource.PlantsLocalDataSource
 import kotlinx.coroutines.flow.Flow
 import java.util.Date
+import javax.inject.Inject
 
-class PlantsLocalDataSourceImpl(private val plantsDao : PlantsDao) : PlantsLocalDataSource {
+class PlantsLocalDataSourceImpl @Inject constructor(private val plantsDao : PlantsDao) : PlantsLocalDataSource {
     override suspend fun savePlantToDb(plant: Plants) {
         plantsDao.insertPlant(plant)
     }
 
     override fun deletePlant(plant: Plants) {
         plantsDao.deletePlant(plant)
+    }
+
+    override fun getPlants(): Flow<Array<Plants>> {
+        return plantsDao.getPlants()
     }
 
     override fun getActivePlants(): Flow<Map<Plants?, List<Tasks>>?> {

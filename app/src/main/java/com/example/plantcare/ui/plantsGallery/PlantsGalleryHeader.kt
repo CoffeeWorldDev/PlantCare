@@ -102,7 +102,8 @@ fun PlantsGalleryHeader(
                     .padding(0.dp, 5.dp, 12.dp, 5.dp)
                     .height(45.dp)
                     .width(45.dp),
-                onClick = { Log.d("Click", "IconExample") }) {
+                onClick = { onValueChange(4)
+                    Log.d("Click", "IconExample") }) {
                 Icon(
                     imageVector = Icons.Filled.Menu,
                     contentDescription = "Home Icon"

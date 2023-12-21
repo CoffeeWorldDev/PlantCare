@@ -34,14 +34,13 @@ object DatabaseModule {
             "tasks_database"
         ).build()
     }
-
-    @Singleton
     @Provides
+    @Singleton
     fun providePlantsDao(plantsDatabase: PlantsDatabase): PlantsDao {
         return plantsDatabase.getPlantsDao()
     }
-    @Singleton
     @Provides
+    @Singleton
     fun provideTasksDao(tasksDatabase: TasksDatabase): TasksDao {
         return tasksDatabase.GetTasksDao()
     }

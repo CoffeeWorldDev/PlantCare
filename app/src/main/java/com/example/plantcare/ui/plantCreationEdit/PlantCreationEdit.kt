@@ -31,20 +31,24 @@ fun PlantCreationEdit(plantId: Long,
                       viewModel: PlantCreationEditViewModel = hiltViewModel()
 ) {
 
+    Log.e("PLANT id", plantId.toString())
+
     if (plantId.toInt() != -1){
         viewModel.getPlantWithId(plantId)
     }
     val plantEditCreationUiState by viewModel.uiState.collectAsStateWithLifecycle()
+    Log.e("PLANT id", plantEditCreationUiState.toString())
 
     val scrollState = rememberScrollState()
-    Log.e("PLANT id", plantEditCreationUiState.plantMap.toString())
+    //Log.e("PLANT id", plantEditCreationUiState.plantMap.toString())
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
             Up(upPress)
-            PlantCreationEditForm(plantEditCreationUiState.plantMap)
+            PlantCreationEditForm(plantEditCreationUiState.plantMap,
+                                  onButtonClick = {viewModel.createPlant(it)})
           //  PlantCreationEditTasksList(plants[3])
           //  Spacer(modifier = Modifier.height(30.dp))
         }

@@ -1,16 +1,22 @@
 package com.example.plantcare.ui.plantsGallery
 
+import android.util.Log
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import com.example.plantcare.data.model.Plants
 import com.example.plantcare.data.model.Tasks
 
 @Composable
 fun PlantsGalleryBodyVerL2(
     plants: Map<Plants?, List<Tasks>>?,
+    onPlantClick: (Long) -> Unit,
     columns: Int,
     //onNavigateToSecondScreen: (String) -> Unit
 ) {
@@ -18,12 +24,12 @@ fun PlantsGalleryBodyVerL2(
     //var plantsList : Set<Plants> = plants
     LazyVerticalGrid(columns = GridCells.Fixed(columns),
                      modifier = Modifier.fillMaxSize()){
-        items(plantsList!!.size) {plant ->
+ //       items(plantsList!!.size) {plant ->
  //          Row(modifier = Modifier.padding(15.dp, 0.dp,0.dp, 20.dp)
- //              .clickable { onNavigateToSecondScreen(plants[plant])
+ //              .clickable {onPlantClick(plantsList[it].first!!.plantsId))
  //              Log.d("ERROR", plants[plant].plantsId.toString())}) {
  //              Card {
-
+//
  //              }
  //              Image(painter = painterResource(id = R.drawable.baseline_image_24),
  //                  contentDescription = "plant image",
@@ -55,6 +61,6 @@ fun PlantsGalleryBodyVerL2(
  //                      }
  //              }
  //          }
-            }
+ //           }
         }
     }

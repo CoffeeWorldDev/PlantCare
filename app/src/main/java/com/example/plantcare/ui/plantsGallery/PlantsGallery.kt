@@ -2,6 +2,7 @@ package com.example.plantcare.ui.plantsGallery
 
 import android.util.Log
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -47,7 +48,7 @@ fun PlantsGallery(onPlantClick: (Long) -> Unit,
         },
         modifier = modifier
     ) { innerPadding ->
-        Box(
+        Column(
             modifier = Modifier.padding(
                 PaddingValues(
                     0.dp,
@@ -59,16 +60,18 @@ fun PlantsGallery(onPlantClick: (Long) -> Unit,
         ) {
             PlantsGalleryHeader(
                 galleryUiState.plantsMap,
-                onValueChange = { viewModel.sortGallery(it) },
+                onValueChange = { viewModel.sortGallery(3) },
                 modifier = Modifier
             )
             if (galleryUiState.plantsMap?.isEmpty() == false) {
                 when (galleryUiState.currentLayout) {
-                    1 -> PlantsGalleryBodyVerL1(galleryUiState.plantsMap)
-                    2 -> PlantsGalleryBodyVerL2(galleryUiState.plantsMap, 1)
+                    1 -> PlantsGalleryBodyVerL1(galleryUiState.plantsMap,
+                                                onPlantClick = {onPlantClick(it)})
+                    2 -> PlantsGalleryBodyVerL2(galleryUiState.plantsMap,
+                        onPlantClick = {onPlantClick(it)}, 1)
                     3 -> PlantsGalleryBodyVerL3(galleryUiState.plantsMap, 2)
                 }
-            } else {
+            }
                 Box(
                     modifier = Modifier.fillMaxSize()
                         .padding(0.dp, 40.dp),
@@ -88,10 +91,11 @@ fun PlantsGallery(onPlantClick: (Long) -> Unit,
                         Icon(Icons.Filled.Add, "Floating action button.")
                     }
                 }
-            }
+
         }
     }
 }
+
 
 //    Column {
 //

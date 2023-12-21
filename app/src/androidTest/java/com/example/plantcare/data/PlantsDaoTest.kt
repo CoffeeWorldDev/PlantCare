@@ -44,10 +44,10 @@ class daoTest{
     fun dao_AddAndGetPlants_success() = runBlocking{
         plantsDao.insertPlant(plantsList[0])
         plantsDao.insertPlant(plantsList[1])
-        var returnPlants = plantsDao.getActivePlants().first()
+        var returnPlants = plantsDao.getPlants().first()
         assertNotNull(returnPlants)
- //       assertEquals(plantsList[0], returnPlants?.get(0))
- //       assertEquals(plantsList[1], returnPlants?.get(1))
+        assertEquals(plantsList[0], returnPlants[0])
+        assertEquals(plantsList[1], returnPlants[1])
     }
 //    @Test
 //    @Throws(Exception::class)

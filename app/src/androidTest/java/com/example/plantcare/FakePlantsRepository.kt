@@ -37,6 +37,10 @@ class FakePlantsRepository : PlantsRepository {
         TODO("Not yet implemented")
     }
 
+    override fun getPlants(): Flow<Array<Plants>> = flow {
+        emit(fakePlantsList())
+    }
+
     override fun getActivePlants(date: Date): Flow<Map<Plants?, List<Tasks>>?> = flow {
         emit(fakeMap())
     }
@@ -45,8 +49,8 @@ class FakePlantsRepository : PlantsRepository {
         TODO("Not yet implemented")
     }
 
-    override fun getPlantsAndTasks(): Flow<Map<Plants?, List<Tasks>>?> {
-        TODO("Not yet implemented")
+    override fun getPlantsAndTasks(): Flow<Map<Plants?, List<Tasks>>?> = flow {
+        emit(fakeMap())
     }
 
     override fun getFutureActivePlants(date: Date): Flow<Map<Plants?, List<Tasks>>?> = flow {

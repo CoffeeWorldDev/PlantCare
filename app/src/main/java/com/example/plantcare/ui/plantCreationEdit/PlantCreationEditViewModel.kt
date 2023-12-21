@@ -56,8 +56,10 @@ class PlantCreationEditViewModel @Inject constructor (
         }
     }
 
-    fun getPhotoFromCamera(){
-
+    fun createPlant(plant : Plants){
+        viewModelScope.launch {
+            plantsRepository.addPlants(plant)
+        }
     }
 }
 

@@ -7,7 +7,8 @@ import com.example.plantcare.ui.utils.GetDateInMillis
 import kotlinx.coroutines.flow.Flow
 
 class GetActivePlantsUseCase(private val plantsRepository: PlantsRepository) {
-    fun execute(): Flow<Map<Plants?, List<Tasks>>?> {
-        return plantsRepository.getActivePlants(GetDateInMillis())
+    fun execute(): Flow<Array<Plants>> {
+        return plantsRepository.getPlants()
+       // return plantsRepository.getActivePlants(GetDateInMillis())
     }
 }

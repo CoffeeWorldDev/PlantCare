@@ -17,6 +17,10 @@ class PlantsRepositoryImpl (private val plantsLocalDataSource : PlantsLocalDataS
         plantsLocalDataSource.deletePlant(plant)
     }
 
+    override fun getPlants(): Flow<Array<Plants>> {
+        return plantsLocalDataSource.getPlants()
+    }
+
     override fun getActivePlants(date: Date): Flow<Map<Plants?, List<Tasks>>?> {
         return if (date != GetDateInMillis()){
             plantsLocalDataSource.getFutureActivePlants(date)

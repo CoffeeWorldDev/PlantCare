@@ -2,6 +2,7 @@ package com.example.plantcare.ui.di
 
 import com.example.plantcare.domain.repository.PlantsRepository
 import com.example.plantcare.domain.repository.TasksRepository
+import com.example.plantcare.domain.useCase.plants.GetActivePlantsUseCase
 import com.example.plantcare.ui.home.HomeViewModelFactory
 import com.example.plantcare.ui.plantCreationEdit.PlantCreationEditViewModelFactory
 import com.example.plantcare.ui.plantsGallery.PlantsGalleryViewModelFactory
@@ -29,7 +30,7 @@ fun ProvidesHomeFactoryModel(
     @Singleton
     @Provides
     fun ProvidesPlantsGalleryFactoryModel(
-        plantsRepository: PlantsRepository
+        plantsRepository: PlantsRepository 
     ): PlantsGalleryViewModelFactory {
         return PlantsGalleryViewModelFactory(
             plantsRepository

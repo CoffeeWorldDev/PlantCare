@@ -2,7 +2,6 @@ package com.example.plantcare.ui.plantCreationEdit
 
 import android.net.Uri
 import android.util.Log
-import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -20,18 +19,18 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountBox
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.plantcare.R
@@ -39,34 +38,57 @@ import com.example.plantcare.data.model.Plants
 import com.example.plantcare.data.model.Tasks
 import com.example.plantcare.ui.components.PlantCareIconButton
 import com.example.plantcare.ui.components.PlantCareImage
+import com.example.plantcare.ui.utils.GetDateInMillis
 
 //var plantToCreate = Plants(0, "", "", "", "", 0,
 //    "", emptyMap(), "")
 
 @Composable
-fun PlantCreationEditForm(plantMap: Map<Plants?, List<Tasks>>?){
+fun PlantCreationEditForm(plantMap: Map<Plants?, List<Tasks>>?,
+                          onButtonClick : (Plants) -> Unit){
+
     val plantToList = plantMap?.toList()
     val plant = plantToList?.get(0)?.first
     val tasks = plantToList?.get(0)?.second
+    Log.e("PLANT id testing", plant?.name.toString())
 
     // Data
-    var name = plant?.name
-    var type = plant?.type
-    var species = plant?.species
-    var position = plant?.position
-    var age = plant?.age
-    var photo = plant?.photo
-    var notes = plant?.notes
-    var currentSeason = plant?.currentSeason
-    //Log.d("uri2", photoUri.toString())
-        //plant to Pair<Plants?, List<Tasks>>(plant.entries.)
+    var name by remember { mutableStateOf(plant?.name ?: "")}
+    Log.d("input name", name)
+    var type by remember { mutableStateOf(plant?.type ?: "")}
+    var species by remember { mutableStateOf(plant?.species ?: "")}
+    Log.d("input species", species)
+    var position by remember { mutableStateOf(plant?.position ?: "")}
+    var age by remember { mutableStateOf(plant?.age ?: "")}
+    var photo by remember { mutableStateOf(plant?.photo ?: "")}
+    var notes by remember { mutableStateOf(plant?.notes ?: "")}
+    var currentSeason by remember { mutableStateOf(plant?.currentSeason ?: "")}
+
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         ImageSection(photo = photo,
                     onSelect = {photo = it.toString() })
         PlantCareTextInput(value = name,
-                           onTextChanged = {name = it},
+                           onTextChanged = {name = it
+                               Log.d("inFun name", it)},
                            label = "Name",
-                           maxLength = 18)
+                           maxLength = 18,
+                           isObligatory = true)
+        PlantCareTextInput(value = species,
+                           onTextChanged = {species = it
+                               Log.d("inFun species", it)},
+                           label = "Species")
+        PlantCareTextInput(value = type,
+                           onTextChanged = {type = it},
+                           label = "Type")
+        PlantCareTextInput(value = position,
+                           onTextChanged = {position = it},
+                           label = "Position")
+        PlantCareButton(onButtonClick = {onButtonClick(it)},
+                                         name = name,
+                                         type = type.orEmpty(),
+                                         species = species.orEmpty(),
+                                         photo = photo.orEmpty(),
+                                         position = position.orEmpty())
     }
 }
 
@@ -123,13 +145,16 @@ fun ImageSection(photo : String?,
 
 @Composable
 fun PlantCareTextInput(value: String?,
-                       onTextChanged: (String?) -> Unit,
+                       onTextChanged: (String) -> Unit,
                        label: String,
-                       maxLength: Int = 0){
+                       maxLength: Int = 40,
+                       isObligatory: Boolean = false){
 
     var inputValue by remember { mutableStateOf(value ?: "")}
 
     var isError by remember { mutableStateOf(false)}
+
+    val focusManager = LocalFocusManager.current
 
     OutlinedTextField(value = inputValue,
                       onValueChange = { if (it.length <= maxLength) inputValue = it },
@@ -138,7 +163,7 @@ fun PlantCareTextInput(value: String?,
                       isError = isError,
                       modifier = Modifier.fillMaxWidth(),
                       supportingText = {
-                          if(maxLength != 0) {
+                          if(maxLength < 40) {
                               Text(
                                   text = "${inputValue.length} / $maxLength",
                                   modifier = Modifier.fillMaxWidth(),
@@ -148,6 +173,29 @@ fun PlantCareTextInput(value: String?,
                       },
                       keyboardOptions = KeyboardOptions(autoCorrect = false),
                       //TODO check text
-                      keyboardActions = KeyboardActions()
+                      keyboardActions = KeyboardActions {
+                            isError = if (isObligatory && inputValue == ""){
+                                true
+                            } else {
+                                onTextChanged(inputValue.trim())
+                                false
+                            }
+                            focusManager.clearFocus()
+                      }
     )
+}
+
+@Composable
+fun PlantCareButton(onButtonClick: (Plants) -> Unit,
+                    name: String,
+                    type : String?,
+                    species: String?,
+                    photo: String?,
+                    position: String?){
+    var plant = Plants(0, name, type, species, position, GetDateInMillis(), photo,
+        mapOf("" to ""), "summer"
+    )
+    Button(onClick = { onButtonClick(plant) }) {
+        Text(text = "click")
+    }
 }

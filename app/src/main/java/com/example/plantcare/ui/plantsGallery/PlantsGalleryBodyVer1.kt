@@ -2,6 +2,7 @@ package com.example.plantcare.ui.plantsGallery
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -22,21 +23,24 @@ import androidx.compose.ui.unit.dp
 import com.example.plantcare.R
 import com.example.plantcare.data.model.Plants
 import com.example.plantcare.data.model.Tasks
+import com.example.plantcare.ui.components.PlantCareImage
 
 
 @Composable
-fun PlantsGalleryBodyVerL1(plants: Map<Plants?, List<Tasks>>?) {
+fun PlantsGalleryBodyVerL1(plants: Map<Plants?, List<Tasks>>?,
+                           onPlantClick: (Long) -> Unit) {
     val plantsList = plants?.toList()
     val headlineLarge = MaterialTheme.typography.headlineLarge
     LazyColumn(){ items(plantsList!!.size) {
-        Row(modifier = Modifier.padding(15.dp, 0.dp,0.dp, 20.dp)) {
-            Image(painter = painterResource(id = R.drawable.baseline_image_24),
-                contentDescription = "plant image",
-                modifier = Modifier
-                    .border(1.dp, color = Color.Black)
-                    .weight(1.1f)
-                    .height(95.dp)
-            )
+        Row(modifier = Modifier.padding(15.dp, 0.dp,0.dp, 20.dp)
+            .clickable { onPlantClick(plantsList[it].first!!.plantsId) }) {
+            PlantCareImage(imageUrl = plantsList[it].first!!.photo!!,
+                           contentDescription = "plant image",
+                           modifier = Modifier
+                               .border(1.dp, color = Color.Black)
+                               .weight(1.1f)
+                               .height(95.dp)
+                          )
             Column(modifier = Modifier
                 .weight(3f)
                 .padding(10.dp, 0.dp, 0.dp, 0.dp),
