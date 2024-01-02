@@ -13,7 +13,7 @@ class PlantsRepositoryImpl (private val plantsLocalDataSource : PlantsLocalDataS
         plantsLocalDataSource.savePlantToDb(plant)
     }
 
-    override fun deletePlants(plant: Plants) {
+    override suspend fun deletePlants(plant: Plants) {
         plantsLocalDataSource.deletePlant(plant)
     }
 

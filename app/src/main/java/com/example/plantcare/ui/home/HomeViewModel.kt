@@ -9,6 +9,7 @@ import com.example.plantcare.domain.repository.TasksRepository
 import com.example.plantcare.ui.utils.ChangeTaskToInactive
 import com.example.plantcare.ui.utils.GetDateInMillis
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -40,7 +41,8 @@ class HomeViewModel @Inject constructor (
         // Ui state is refreshing
         _uiState.update { it.copy(isLoading = true) }
 
-        viewModelScope.launch {
+        //TODO to test if flow should emit instead of being a suspended fun
+        viewModelScope.launch(Dispatchers.IO) {
             plantsRepository.getActivePlants(date).collect { map ->
                 _uiState.update {
                     it.copy(plantsMap = map, isLoading = false)

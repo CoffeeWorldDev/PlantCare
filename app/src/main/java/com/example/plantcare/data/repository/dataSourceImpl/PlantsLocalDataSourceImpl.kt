@@ -14,7 +14,7 @@ class PlantsLocalDataSourceImpl @Inject constructor(private val plantsDao : Plan
         plantsDao.insertPlant(plant)
     }
 
-    override fun deletePlant(plant: Plants) {
+    override suspend fun deletePlant(plant: Plants) {
         plantsDao.deletePlant(plant)
     }
 

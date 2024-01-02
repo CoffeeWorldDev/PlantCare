@@ -7,7 +7,7 @@ import java.util.Date
 
 interface PlantsRepository {
     suspend fun addPlants(plants: Plants)
-    fun deletePlants(plants: Plants)
+    suspend fun deletePlants(plants: Plants)
     fun getPlants() : Flow<Array<Plants>>
     fun getActivePlants(date: Date) : Flow<Map<Plants?, List<Tasks>>?>
     fun updatePlants(plants: Plants)

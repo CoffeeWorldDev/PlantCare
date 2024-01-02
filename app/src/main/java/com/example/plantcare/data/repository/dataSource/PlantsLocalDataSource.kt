@@ -7,7 +7,7 @@ import java.util.Date
 
 interface PlantsLocalDataSource {
     suspend fun savePlantToDb(plant: Plants)
-    fun deletePlant(plant: Plants)
+    suspend fun deletePlant(plant: Plants)
     fun getPlants() : Flow<Array<Plants>>
     fun getActivePlants() : Flow<Map<Plants?, List<Tasks>>?>
     fun getPlantsAndTasks() : Flow<Map<Plants?, List<Tasks>>?>

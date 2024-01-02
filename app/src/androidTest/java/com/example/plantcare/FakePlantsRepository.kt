@@ -33,7 +33,7 @@ class FakePlantsRepository : PlantsRepository {
         TODO("Not yet implemented")
     }
 
-    override fun deletePlants(plants: Plants) {
+    override suspend fun deletePlants(plants: Plants) {
         TODO("Not yet implemented")
     }
 
