@@ -59,6 +59,8 @@ dependencies {
     implementation("androidx.test:core-ktx:1.5.0")
     implementation("androidx.test.ext:junit-ktx:1.1.5")
 
+    implementation("com.google.accompanist:accompanist-permissions:0.32.0")
+
     val room_version = "2.6.1"
     val nav_version = "2.7.5"
 

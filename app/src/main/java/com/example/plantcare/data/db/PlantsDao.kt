@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Update
 import com.example.plantcare.data.model.Plants
 import com.example.plantcare.data.model.Tasks
 import kotlinx.coroutines.flow.Flow
@@ -16,6 +17,9 @@ interface PlantsDao {
 
     @Delete
     suspend fun deletePlant(plant: Plants)
+
+    @Update
+    suspend fun updatePlant(plant: Plants)
 
     @Query("SELECT * FROM plants")
     fun getPlants() : Flow<Array<Plants>>

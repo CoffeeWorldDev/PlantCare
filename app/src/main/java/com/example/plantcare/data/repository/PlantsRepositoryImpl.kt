@@ -29,8 +29,8 @@ class PlantsRepositoryImpl (private val plantsLocalDataSource : PlantsLocalDataS
         }
     }
 
-    override fun updatePlants(plant: Plants) {
-        TODO("Not yet implemented")
+    override suspend fun updatePlants(plant: Plants) {
+        plantsLocalDataSource.updatePlant(plant)
     }
 
     override fun getPlantsAndTasks(): Flow<Map<Plants?, List<Tasks>>?> {

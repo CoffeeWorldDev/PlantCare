@@ -45,7 +45,7 @@ class FakePlantsRepository : PlantsRepository {
         emit(fakeMap())
     }
 
-    override fun updatePlants(plants: Plants) {
+    override suspend fun updatePlants(plants: Plants) {
         TODO("Not yet implemented")
     }
 

@@ -10,7 +10,7 @@ interface PlantsRepository {
     suspend fun deletePlants(plants: Plants)
     fun getPlants() : Flow<Array<Plants>>
     fun getActivePlants(date: Date) : Flow<Map<Plants?, List<Tasks>>?>
-    fun updatePlants(plants: Plants)
+    suspend fun updatePlants(plants: Plants)
     fun getPlantsAndTasks() : Flow<Map<Plants?, List<Tasks>>?>
     fun getFutureActivePlants(date: Date): Flow<Map<Plants?, List<Tasks>>?>
     fun getPlantsFromId(plantId : Long): Flow<Map<Plants?, List<Tasks>>?>

@@ -27,6 +27,7 @@ fun PlantCareImage(
             .build(),
         contentDescription = contentDescription,
         placeholder = painterResource(id = R.drawable.baseline_image_24),
+        fallback = painterResource(id = R.drawable.placeholderimage),
         modifier = modifier.clip(RoundedCornerShape(3)),
         contentScale = ContentScale.Crop,
     )

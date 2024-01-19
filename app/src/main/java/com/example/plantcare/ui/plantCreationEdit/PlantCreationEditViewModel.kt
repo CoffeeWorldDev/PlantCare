@@ -8,6 +8,7 @@ import com.example.plantcare.domain.repository.PlantsRepository
 import com.example.plantcare.domain.repository.TasksRepository
 import com.example.plantcare.ui.utils.GetDateInMillis
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -32,7 +33,7 @@ class PlantCreationEditViewModel @Inject constructor (
     private val tasksRepository: TasksRepository,
     //savedStateHandle: SavedStateHandle
 ) : ViewModel() {
-
+    //TODO something about flow??????/
     private val _uiState = MutableStateFlow(PlantCreationEditUiState(isLoading = true))
     val uiState: StateFlow<PlantCreationEditUiState> = _uiState.asStateFlow()
 
@@ -45,12 +46,13 @@ class PlantCreationEditViewModel @Inject constructor (
         _uiState.update { it.copy(isLoading = true) }
 
         if (plantId.toInt() != -1) {
-            viewModelScope.launch(Dispatchers.IO) {
+            viewModelScope.launch {
                 plantsRepository.getPlantsFromId(plantId).collect { map ->
                     _uiState.update {
                         it.copy(
                             plant = map!!.keys.first()!!,
                             tasks = map.values.first(),
+                            isEdit = true,
                             isLoading = false
                         )
                     }
@@ -65,14 +67,21 @@ class PlantCreationEditViewModel @Inject constructor (
         }
     }
 
-    fun createPlant(plant : Plants){
+    fun savePlant(plant : Plants){
         viewModelScope.launch {
-            plantsRepository.addPlants(plant)
+            if(uiState.value.isEdit){
+                plantsRepository.updatePlants(plant)
+            } else {
+                plantsRepository.addPlants(plant)
+            }
         }
+    }
+    val coroutineExceptionHandler = CoroutineExceptionHandler{_, throwable ->
+        throwable.printStackTrace()
     }
 
     fun deletePlant(plant : Plants){
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO + coroutineExceptionHandler) {
             plantsRepository.deletePlants(plant)
         }
     }
