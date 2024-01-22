@@ -70,17 +70,17 @@ import com.example.plantcare.ui.components.PlantCareSnackbar
 import com.example.plantcare.ui.components.PlantCareUpPress
 import com.example.plantcare.ui.utils.GetDateInMillis
 import com.example.plantcare.ui.utils.getTypesOfPlantsList
-import java.text.DateFormatSymbols
-import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Date
-import java.util.Locale
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.google.accompanist.permissions.rememberPermissionState
 import kotlinx.coroutines.launch
 import java.io.File
+import java.text.DateFormatSymbols
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Date
+import java.util.Locale
 
 @Composable
 fun PlantCreationEdit(
@@ -94,7 +94,7 @@ fun PlantCreationEdit(
     viewModel.getPlantWithId(plantId)
     val plantEditCreationUiState by viewModel.uiState.collectAsStateWithLifecycle()
     val snackbarHostState = remember { SnackbarHostState() }
-
+    Log.e("PLANT ui state", plantEditCreationUiState.plant.toString())
     Scaffold(
         snackbarHost = {
             SnackbarHost(
@@ -112,6 +112,7 @@ fun PlantCreationEdit(
             //contentAlignment = Alignment.TopStart
         ) {
             PlantCareUpPress(upPress)
+            //if(plantEditCreationUiState.plant != null)
             PlantCreationEditForm(
                 plantEditCreationUiState.plant,
                 plantEditCreationUiState.isEdit,
@@ -136,6 +137,7 @@ fun PlantCreationEditForm(
     //TODO delete log
     Log.e("PLANT ui state", plant.toString())
 
+    val currentPhoto = plant.photo?.toUri()
     val plantToBeChanged = plant
 
     Column(horizontalAlignment = Alignment.CenterHorizontally,
@@ -169,10 +171,12 @@ fun PlantCreationEditForm(
             onButtonClick = {onSave(it)},
             snackbarHostState,
             plant = plantToBeChanged,
+            currentPhoto = currentPhoto,
             goBack = goBack)
         if(isEdit){
             DeletePlant(
                 plant = plant,
+                currentPhoto = currentPhoto,
                 onButtonClick = onDelete,
                 goBack = goBack)
         }
@@ -355,6 +359,18 @@ fun saveImageToInternalStorage(context: Context, uri: Uri) : String {
     Log.e("file", file.exists().toString())
     return file.path.toString()
 }
+fun deletePreviousPhoto(context: Context, uri: Uri){
+    //val file = File(uri.path.toString())
+    //file.delete()
+    val fdelete = File(uri.path.toString())
+    if (fdelete.exists()) {
+        if (fdelete.delete()) {
+            System.out.println("file Deleted :" + uri.path)
+        } else {
+            System.out.println("file not Deleted :" + uri.path)
+        }
+    }
+}
 
 
 
@@ -515,17 +531,14 @@ fun Date.toFormattedString(): String {
 fun validatePlant(
     plant : Plants,
     snackbarHostState : SnackbarHostState) : Boolean{
-    if (plant.name.isNotEmpty()) {
-        return true
-    } else {
-       // snackbarHostState.showSnackbar("hey")
-        return false
-    }
+     // snackbarHostState.showSnackbar("hey")
+    return plant.name.isNotEmpty()
 }
 
 @Composable
 fun DeletePlant(
     plant: Plants,
+    currentPhoto: Uri?,
     onButtonClick: (Plants) -> Unit,
     goBack: () -> Unit){
     Button(onClick = {
@@ -545,10 +558,12 @@ fun preview(){
 
 
 @Composable
-fun SavePlant(onButtonClick: (Plants) -> Unit,
-              snackbarHostState : SnackbarHostState,
-              goBack: () -> Unit,
-              plant: Plants,
+fun SavePlant(
+    onButtonClick: (Plants) -> Unit,
+    snackbarHostState: SnackbarHostState,
+    goBack: () -> Unit,
+    plant: Plants,
+    currentPhoto: Uri?
 ){
     var isValid = plant.name.isNotEmpty()
 
