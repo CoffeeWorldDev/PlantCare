@@ -1,5 +1,8 @@
 package com.example.plantcare.ui.plantCreationEdit
 
+import android.os.Parcelable
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.plantcare.data.model.Plants
@@ -27,19 +30,23 @@ data class PlantCreationEditUiState(
     val isEdit: Boolean = false,
     val userErrorMessage: Int? = null
 )
+
+data class InputWrapper(
+    val value: String = "",
+    val errorId: Int? = null
+)
+
 @HiltViewModel
 class PlantCreationEditViewModel @Inject constructor (
     private val plantsRepository: PlantsRepository,
     private val tasksRepository: TasksRepository,
     //savedStateHandle: SavedStateHandle
 ) : ViewModel() {
-    //TODO something about flow??????/
+
+
+
     private val _uiState = MutableStateFlow(PlantCreationEditUiState(isLoading = true))
     val uiState: StateFlow<PlantCreationEditUiState> = _uiState.asStateFlow()
-
-//    init {
-//        changeQuery(GetDateInMillis())
-//    }
 
     fun getPlantWithId(plantId: Long) {
         // Ui state is refreshing
@@ -48,22 +55,18 @@ class PlantCreationEditViewModel @Inject constructor (
         if (plantId.toInt() != -1) {
             viewModelScope.launch {
                 plantsRepository.getPlantsFromId(plantId).collect { map ->
-                    _uiState.update {
-                        it.copy(
-                            plant = map!!.keys.first()!!,
-                            tasks = map.values.first(),
-                            isEdit = true,
-                            isLoading = false
-                        )
+                    if (map!!.isNotEmpty()) {
+                        _uiState.update {
+                            it.copy(
+                                plant = map.keys.first()!!,
+                                tasks = map.values.first(),
+                                isEdit = true,
+                                isLoading = false
+                            )
+                        }
                     }
                 }
             }
-       // } else {
-       //     _uiState.update {
-       //         it.copy(plant = mapOf(Plants(0, "", "", "", "", GetDateInMillis(), "",
-       //             mapOf("" to ""), "summer") to emptyList<Tasks>()
-       //         ),
-       //         isLoading = true) }
         }
     }
 
@@ -86,15 +89,10 @@ class PlantCreationEditViewModel @Inject constructor (
         }
     }
 
-    fun isValid(
+    fun isFormValid(
         plant : Plants
     ) : Boolean{
-        if (plant.name.isNotEmpty()) {
-            return true
-        } else {
-            // snackbarHostState.showSnackbar("hey")
-            return false
-        }
+        return plant.name.isNotEmpty()
     }
 }
 

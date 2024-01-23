@@ -117,6 +117,7 @@ fun PlantCreationEdit(
                 plantEditCreationUiState.isEdit,
                 snackbarHostState,
                 onSave = viewModel::savePlant,
+                //onDelete = {viewModel.deletePlant(it)},
                 onDelete = viewModel::deletePlant,
                 goBack = upPress
             )
@@ -136,7 +137,13 @@ fun PlantCreationEditForm(
     //TODO delete log
     Log.e("PLANT ui state", plant.toString())
 
+    val currentPhoto = plant.photo!!.toUri()
+    Log.e("current photo saved", currentPhoto.toString())
     val plantToBeChanged = plant
+    Log.e("new photo saved", plantToBeChanged.photo.toString())
+    Log.e("new other saved", plantToBeChanged.species.toString())
+
+
 
     Column(horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.padding(15.dp, 0.dp)) {
@@ -169,7 +176,8 @@ fun PlantCreationEditForm(
             onButtonClick = {onSave(it)},
             snackbarHostState,
             plant = plantToBeChanged,
-            goBack = goBack)
+            goBack = goBack,
+            currentlySavedPhoto = currentPhoto)
         if(isEdit){
             DeletePlant(
                 plant = plant,
@@ -342,7 +350,6 @@ fun Context.createTempPictureUri(
 
 fun saveImageToInternalStorage(context: Context, uri: Uri) : String {
 
-    //TODO make it work without images
     val fileName = "Image-${System.currentTimeMillis()}.jpg"
     val inputStream = context.contentResolver.openInputStream(uri)
     val outputStream = context.openFileOutput(fileName, Context.MODE_PRIVATE)
@@ -355,9 +362,16 @@ fun saveImageToInternalStorage(context: Context, uri: Uri) : String {
     Log.e("file", file.exists().toString())
     return file.path.toString()
 }
-
-
-
+fun deletePreviousPhoto(context: Context, uri: Uri){
+    val fdelete = File(uri.path.toString())
+    if (fdelete.exists()) {
+        if (fdelete.delete()) {
+            System.out.println("file Deleted :" + uri.path)
+        } else {
+            System.out.println("file not Deleted :" + uri.path)
+        }
+    }
+}
 @Composable
 fun PlantCareTextInput(value: String,
                        onTextChanged: (String) -> Unit,
@@ -529,8 +543,8 @@ fun DeletePlant(
     onButtonClick: (Plants) -> Unit,
     goBack: () -> Unit){
     Button(onClick = {
-        goBack()
         onButtonClick(plant)
+        goBack()
     }) {
         Text(text = "delete")
     }
@@ -549,17 +563,25 @@ fun SavePlant(onButtonClick: (Plants) -> Unit,
               snackbarHostState : SnackbarHostState,
               goBack: () -> Unit,
               plant: Plants,
+              currentlySavedPhoto : Uri
 ){
     var isValid = plant.name.isNotEmpty()
 
     val context = LocalContext.current
     //val file = File(context.filesDir, "test")
-    //Log.e("file", file.path.toString())
+    Log.e("savePlant", plant.toString())
     //file.toUri()
     Button(onClick = {
         //todo empty image
-        plant.photo = saveImageToInternalStorage(context, plant.photo!!.toUri())
+        if (plant.photo != "" || plant.photo != currentlySavedPhoto.toString()){
+            Log.e("worked","if started to save image")
+            plant.photo = saveImageToInternalStorage(context, plant.photo!!.toUri())
+        }
         onButtonClick(plant)
+        if(plant.photo != "" || plant.photo != currentlySavedPhoto.toString()){
+            deletePreviousPhoto(context, currentlySavedPhoto!!)
+            Log.e("worked","if started to delete image")
+        }
         goBack()
     }) {
         Text(text = "click")

@@ -63,17 +63,20 @@ fun PlantsGallery(onPlantClick: (Long) -> Unit,
                 onValueChange = { viewModel.sortGallery(3) },
                 modifier = Modifier
             )
-            if (galleryUiState.plantsMap?.isEmpty() == false) {
-                when (galleryUiState.currentLayout) {
-                    1 -> PlantsGalleryBodyVerL1(galleryUiState.plantsMap,
-                                                onPlantClick = {onPlantClick(it)})
-                    2 -> PlantsGalleryBodyVerL2(galleryUiState.plantsMap,
-                        onPlantClick = {onPlantClick(it)}, 1)
-                    3 -> PlantsGalleryBodyVerL3(galleryUiState.plantsMap, 2)
+            Box {
+                if (galleryUiState.plantsMap?.isEmpty() == false) {
+                    when (galleryUiState.currentLayout) {
+                        1 -> PlantsGalleryBodyVerL1(galleryUiState.plantsMap,
+                            onPlantClick = {onPlantClick(it)},
+                            modifier = Modifier)
+                        2 -> PlantsGalleryBodyVerL2(galleryUiState.plantsMap,
+                            onPlantClick = {onPlantClick(it)}, 1)
+                        3 -> PlantsGalleryBodyVerL3(galleryUiState.plantsMap, 2)
+                    }
                 }
-            }
                 Box(
-                    modifier = Modifier.fillMaxSize()
+                    modifier = Modifier
+                        .fillMaxSize()
                         .padding(0.dp, 40.dp),
                     contentAlignment = Alignment.BottomEnd
                 ) {
@@ -91,42 +94,7 @@ fun PlantsGallery(onPlantClick: (Long) -> Unit,
                         Icon(Icons.Filled.Add, "Floating action button.")
                     }
                 }
-
+            }
         }
     }
 }
-
-
-//    Column {
-//
-//        PlantsGalleryTop(galleryUiState.plantsMap,
-//                         onValueChange = { viewModel.sortGallery(it) },
-//                         modifier = Modifier)
-//
-//        if (galleryUiState.plantsMap?.isEmpty() == false){
-//            when (galleryUiState.currentLayout){
-//                1 -> PlantsGalleryMainBlockL1(galleryUiState.plantsMap)
-//                2 -> PlantsGalleryMainBlockL2(galleryUiState.plantsMap, 1)
-//                3 -> PlantsGalleryMainBlockL3(galleryUiState.plantsMap, 2)
-//            }
-//        } else {
-//            Box( modifier = Modifier.fillMaxSize()
-//                .padding(0.dp, 40.dp),
-//                contentAlignment = Alignment.BottomEnd
-//            ){
-//                //TODO make plant button hover
-//                FloatingActionButton(onClick = { navController.navigate(PlantNav.PLANT_EDIT_CREATION_SCREEN) },
-//                    containerColor = Color.White,
-//                    shape = RoundedCornerShape(50.dp),
-//                    modifier = Modifier
-//                        .padding(20.dp, 0.dp)
-//                        .height(50.dp)
-//                        .width(50.dp)
-//                        .offset(0.dp, 20.dp)
-//                ) {
-//                    Icon(Icons.Filled.Add, "Floating action button.")
-//                }
-//            }
-//        }
-//    }
-//}
