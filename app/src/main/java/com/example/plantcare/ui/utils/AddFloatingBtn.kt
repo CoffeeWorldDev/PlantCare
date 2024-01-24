@@ -15,15 +15,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun AddFloatingBtn(modifier: Modifier) {
-    FloatingActionButton(onClick = { /*TODO*/ },
+fun AddFloatingBtn(
+    onClick: () -> Unit,
+    modifier: Modifier) {
+    FloatingActionButton(
+        onClick = onClick,
         containerColor = Color.White,
         shape = RoundedCornerShape(50.dp),
         modifier = Modifier
-            .padding(20.dp, 0.dp)
             .height(50.dp)
             .width(50.dp)
-            .offset(0.dp, 20.dp)
     ) {
         Icon(Icons.Filled.Add, "Floating action button.")
     }

@@ -10,6 +10,9 @@
     <!-- Errors -->
     <string name="loading_plants_error">Error while loading plants</string>
     <string name="plants_not_found">Plants not found</string>
+    <string name="form_not_valid">Name can\'t be left empty</string>
+    <string name="permission_needed_camera">Permission to use camera needed to use this function</string>
+    <string name="permission_needed_gallery">Permission to open the gallery needed to use this function</string>
 
     <!-- Content Descriptions -->
     <string name="plants_photo_description">Plants not found</string>

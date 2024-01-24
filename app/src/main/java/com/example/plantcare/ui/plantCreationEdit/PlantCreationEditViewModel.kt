@@ -24,7 +24,6 @@ data class PlantCreationEditUiState(
     //val plant: Map<Plants?, List<Tasks>>? = null,
     val plant: Plants = Plants(0, "", "", "", "", GetDateInMillis(), "",
                 mapOf("" to ""), "summer"),
-    //TODO confirm it's the list that has to be null and not the task
     val tasks: List<Tasks>? = emptyList(),
     val isLoading: Boolean = false,
     val isEdit: Boolean = false,
@@ -60,14 +59,14 @@ class PlantCreationEditViewModel @Inject constructor (
                             it.copy(
                                 plant = map.keys.first()!!,
                                 tasks = map.values.first(),
-                                isEdit = true,
-                                isLoading = false
+                                isEdit = true
                             )
                         }
                     }
                 }
             }
         }
+        _uiState.update { it.copy(isLoading = false) }
     }
 
     fun savePlant(plant : Plants){

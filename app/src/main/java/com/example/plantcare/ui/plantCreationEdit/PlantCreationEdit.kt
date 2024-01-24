@@ -6,8 +6,10 @@ import android.Manifest.permission.READ_MEDIA_IMAGES
 import android.Manifest.permission.READ_MEDIA_VISUAL_USER_SELECTED
 import android.app.DatePickerDialog
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import android.os.Build
+import android.provider.Settings
 import android.util.Log
 import android.widget.DatePicker
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -40,8 +42,10 @@ import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -58,6 +62,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat.startActivity
 import androidx.core.content.FileProvider
 import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -70,17 +75,19 @@ import com.example.plantcare.ui.components.PlantCareSnackbar
 import com.example.plantcare.ui.components.PlantCareUpPress
 import com.example.plantcare.ui.utils.GetDateInMillis
 import com.example.plantcare.ui.utils.getTypesOfPlantsList
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.isGranted
+import com.google.accompanist.permissions.rememberMultiplePermissionsState
+import com.google.accompanist.permissions.rememberPermissionState
+import com.google.accompanist.permissions.shouldShowRationale
+import kotlinx.coroutines.launch
+import java.io.File
 import java.text.DateFormatSymbols
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
-import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import com.google.accompanist.permissions.isGranted
-import com.google.accompanist.permissions.rememberMultiplePermissionsState
-import com.google.accompanist.permissions.rememberPermissionState
-import kotlinx.coroutines.launch
-import java.io.File
+
 
 @Composable
 fun PlantCreationEdit(
@@ -93,6 +100,7 @@ fun PlantCreationEdit(
 
     viewModel.getPlantWithId(plantId)
     val plantEditCreationUiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val scope = rememberCoroutineScope()
     val snackbarHostState = remember { SnackbarHostState() }
 
     Scaffold(
@@ -102,7 +110,7 @@ fun PlantCreationEdit(
                 modifier = Modifier.systemBarsPadding(),
                 snackbar = { snackbarData -> PlantCareSnackbar(snackbarData) }
             )
-        }
+        },
     ) { paddingValues ->
         Column(
             modifier = Modifier
@@ -148,7 +156,8 @@ fun PlantCreationEditForm(
     Column(horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.padding(15.dp, 0.dp)) {
         ImageBlock(
-            photo = plant.photo?.toUri()
+            photo = plant.photo?.toUri(),
+            snackbarHostState = snackbarHostState
         ) {
             if (it != null) {
                 plantToBeChanged.photo = it.toString()
@@ -191,6 +200,7 @@ fun PlantCreationEditForm(
     @Composable
     fun ImageBlock(
         photo: Uri?,
+        snackbarHostState: SnackbarHostState,
         onSelect: (Uri?) -> Unit
     ) {
 
@@ -262,8 +272,6 @@ fun PlantCreationEditForm(
                 modifier = Modifier.fillMaxHeight()
                 //.background(Color.Cyan)
             ) {
-                //TODO open camera function
-
                 PlantCareIconButton(
                     Icons.Filled.AccountBox,
                     R.string.photo_from_camera_icon,
@@ -271,27 +279,30 @@ fun PlantCreationEditForm(
                         if (cameraPermissionState.status.isGranted){
                             Log.d("Click", "open camera permission granted")
                             coroutineScope.launch {
-                               // val values = ContentValues()
-                               // values.put(
-                               //     MediaStore.Images.Media.TITLE,
-                               //     "New PictureGroup"
-                               // )
-                               // values.put(
-                               //     MediaStore.Images.Media.DESCRIPTION,
-                               //     "From the Camera"
-                               // )
-                               // photoUri = context.contentResolver.insert(
-                               //     MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                               //     values
-                               // )
                                 tempPhotoUri = context.createTempPictureUri()
                                 launcherCamera.launch(tempPhotoUri)
                             }
                         } else {
-                            Log.d("Click", "open camera permission to ask")
+                            if (cameraPermissionState.status.shouldShowRationale) {
+                                cameraPermissionState.launchPermissionRequest()
+                            } else {
+                                coroutineScope.launch {
+                                    val result = snackbarHostState
+                                        .showSnackbar(
+                                            message = context.resources.getString(R.string.permission_needed_camera),
+                                            actionLabel = "Settings",
+                                            duration = SnackbarDuration.Short
+                                        )
+                                    if (result == SnackbarResult.ActionPerformed) {
+                                        Log.d("Clicked", "settings")
+                                        val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                                        intent.setData(Uri.fromParts("package", context.packageName, null))
+                                            startActivity(context, intent, null)
+                                       }
+                                }
+                            }
                             cameraPermissionState.launchPermissionRequest()
                         }
-                        //addPhotoFromCamera()
                     },
                     Modifier.padding(10.dp)
                 )
@@ -299,33 +310,35 @@ fun PlantCreationEditForm(
                     Icons.Filled.Settings,
                     R.string.photo_from_gallery_icon,
                     {
-                        //launcher.launch("image/*")
-                        // launcher.launch(
-                        //     PickVisualMediaRequest(
-                        //     mediaType = ActivityResultContracts.PickVisualMedia.ImageOnly))
-
-                        // Permission request logic
-                        //if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-                        //    requestPermissions.launch(arrayOf(READ_MEDIA_IMAGES, READ_MEDIA_VIDEO, READ_MEDIA_VISUAL_USER_SELECTED))
-                        //} else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                        //    requestPermissions.launch(arrayOf(READ_MEDIA_IMAGES, READ_MEDIA_VIDEO))
-                        //} else {
-                        //    requestPermissions.launch(arrayOf(READ_EXTERNAL_STORAGE))
-                        //}
-                        if (cameraPermissionState.status.isGranted){
-                            launcherGallery.launch("image/*")
-                           // launcher.launch(
-                           //     PickVisualMediaRequest(
-                           //         mediaType = ActivityResultContracts.PickVisualMedia.ImageOnly
-                           //     )
-                           // )
-                        } else {
-                            cameraPermissionState.launchPermissionRequest()
-                        }
                         if (galleryPermissionState.allPermissionsGranted){
                             Log.d("Click", "open gallery permission granted")
+                            launcherGallery.launch("image/*")
                         } else {
-                            Log.d("Click", "open gallery permission to ask")
+                            if (galleryPermissionState.shouldShowRationale) {
+                                galleryPermissionState.launchMultiplePermissionRequest()
+                            } else {
+                                coroutineScope.launch {
+                                    val result = snackbarHostState
+                                        .showSnackbar(
+                                            message = context.resources.getString(R.string.permission_needed_gallery),
+                                            actionLabel = "Settings",
+                                            duration = SnackbarDuration.Short
+                                        )
+                                    if (result == SnackbarResult.ActionPerformed) {
+                                        Log.d("Clicked", "settings")
+                                        val intent =
+                                            Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                                        intent.setData(
+                                            Uri.fromParts(
+                                                "package",
+                                                context.packageName,
+                                                null
+                                            )
+                                        )
+                                        startActivity(context, intent, null)
+                                    }
+                                }
+                            }
                             galleryPermissionState.launchMultiplePermissionRequest()
                         }
                     },
@@ -334,7 +347,6 @@ fun PlantCreationEditForm(
             }
         }
     }
-
 fun Context.createTempPictureUri(
     provider: String = "com.example.plantcare.fileProvider",
     fileName: String = "picture_${System.currentTimeMillis()}",
@@ -381,9 +393,7 @@ fun PlantCareTextInput(value: String,
                        isError: Boolean = false){
 
     val text = remember(value) { mutableStateOf(value) }
-    //var inputValue = value
-    //Log.e("in text fun", inputValue)
-    var isError by remember { mutableStateOf(isError)}
+    var error by remember { mutableStateOf(isError)}
 
     val focusManager = LocalFocusManager.current
 
@@ -395,7 +405,7 @@ fun PlantCareTextInput(value: String,
         }},
         label = { Text(label) },
         singleLine = true,
-        isError = isError,
+        isError = error,
         modifier = Modifier.fillMaxWidth(),
         supportingText = {
             if(maxLength < 40) {
@@ -408,8 +418,8 @@ fun PlantCareTextInput(value: String,
         },
         keyboardOptions = KeyboardOptions(autoCorrect = false),
         //TODO check text
-        keyboardActions = KeyboardActions(onDone = {
-            isError = if (isObligatory && text.value == ""){
+        keyboardActions = KeyboardActions(onAny = {
+            error = if (isObligatory && text.value == ""){
                 true
             } else {
                 onTextChanged(text.value.trim())
@@ -500,6 +510,7 @@ fun PlantCareDatePicker(
                 onDatePicked(newDate.time)
                 Log.e("selected date",newDate.time.toString())
             }, year, month, day)
+        datePickerDialog.datePicker.maxDate = System.currentTimeMillis()
 
         TextField(
             modifier = Modifier.fillMaxWidth(),
@@ -567,22 +578,28 @@ fun SavePlant(onButtonClick: (Plants) -> Unit,
 ){
     var isValid = plant.name.isNotEmpty()
 
+    val scope = rememberCoroutineScope()
     val context = LocalContext.current
     //val file = File(context.filesDir, "test")
     Log.e("savePlant", plant.toString())
     //file.toUri()
     Button(onClick = {
-        //todo empty image
-        if (plant.photo != "" || plant.photo != currentlySavedPhoto.toString()){
-            Log.e("worked","if started to save image")
-            plant.photo = saveImageToInternalStorage(context, plant.photo!!.toUri())
-        }
-        onButtonClick(plant)
-        if(plant.photo != "" || plant.photo != currentlySavedPhoto.toString()){
-            deletePreviousPhoto(context, currentlySavedPhoto!!)
-            Log.e("worked","if started to delete image")
-        }
-        goBack()
+        //if (plant.name == ""){
+        //    scope.launch {
+        //        snackbarHostState.showSnackbar(context.resources.getString(R.string.form_not_valid))
+        //    }
+        //} else {
+            if (plant.photo != "" || plant.photo != currentlySavedPhoto.toString()){
+                Log.e("worked","if started to save image")
+                plant.photo = saveImageToInternalStorage(context, plant.photo!!.toUri())
+            }
+            onButtonClick(plant)
+            if(plant.photo != "" || plant.photo != currentlySavedPhoto.toString()){
+                deletePreviousPhoto(context, currentlySavedPhoto!!)
+                Log.e("worked","if started to delete image")
+            }
+            goBack()
+       // }
     }) {
         Text(text = "click")
     }
