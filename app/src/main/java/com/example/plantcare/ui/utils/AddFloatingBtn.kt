@@ -22,9 +22,7 @@ fun AddFloatingBtn(
         onClick = onClick,
         containerColor = Color.White,
         shape = RoundedCornerShape(50.dp),
-        modifier = Modifier
-            .height(50.dp)
-            .width(50.dp)
+        modifier = modifier
     ) {
         Icon(Icons.Filled.Add, "Floating action button.")
     }

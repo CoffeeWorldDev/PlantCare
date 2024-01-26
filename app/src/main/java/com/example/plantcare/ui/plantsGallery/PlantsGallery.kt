@@ -52,7 +52,8 @@ fun PlantsGallery(onPlantClick: (Long) -> Unit,
         floatingActionButton = {
             AddFloatingBtn(
                 onClick = { onPlantClick(-1) },
-                modifier = Modifier
+                modifier = Modifier.height(50.dp)
+                                   .width(50.dp)
             )
         },
         floatingActionButtonPosition = FabPosition.End

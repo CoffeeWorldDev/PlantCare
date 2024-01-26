@@ -21,18 +21,12 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 data class PlantCreationEditUiState(
-    //val plant: Map<Plants?, List<Tasks>>? = null,
     val plant: Plants = Plants(0, "", "", "", "", GetDateInMillis(), "",
                 mapOf("" to ""), "summer"),
     val tasks: List<Tasks>? = emptyList(),
     val isLoading: Boolean = false,
     val isEdit: Boolean = false,
     val userErrorMessage: Int? = null
-)
-
-data class InputWrapper(
-    val value: String = "",
-    val errorId: Int? = null
 )
 
 @HiltViewModel
@@ -48,7 +42,6 @@ class PlantCreationEditViewModel @Inject constructor (
     val uiState: StateFlow<PlantCreationEditUiState> = _uiState.asStateFlow()
 
     fun getPlantWithId(plantId: Long) {
-        // Ui state is refreshing
         _uiState.update { it.copy(isLoading = true) }
 
         if (plantId.toInt() != -1) {
@@ -78,20 +71,11 @@ class PlantCreationEditViewModel @Inject constructor (
             }
         }
     }
-    val coroutineExceptionHandler = CoroutineExceptionHandler{_, throwable ->
-        throwable.printStackTrace()
-    }
 
     fun deletePlant(plant : Plants){
-        viewModelScope.launch(Dispatchers.IO + coroutineExceptionHandler) {
+        viewModelScope.launch(Dispatchers.IO) {
             plantsRepository.deletePlants(plant)
         }
-    }
-
-    fun isFormValid(
-        plant : Plants
-    ) : Boolean{
-        return plant.name.isNotEmpty()
     }
 }
 

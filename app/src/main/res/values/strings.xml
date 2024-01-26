@@ -6,6 +6,10 @@
     <string name="bottom_nav_feed">Home</string>
     <string name="bottom_nav_gallery">Gallery</string>
     <string name="bottom_nav_settings">Settings</string>
+    <!-- Plant Nav Items -->
+    <string name="plant_nav_main">Plant</string>
+    <string name="plant_nav_tasks">Tasks</string>
+    <string name="plant_nav_notes">Notes</string>
 
     <!-- Errors -->
     <string name="loading_plants_error">Error while loading plants</string>
@@ -19,4 +23,7 @@
     <string name="hamburger_button_icon">menu icon</string>
     <string name="photo_from_camera_icon">add photo from camera icon</string>
     <string name="photo_from_gallery_icon">add photo from gallery icon</string>
+
+    <!-- Messages -->
+    <string name="empty_task_list">You haven\'t set any\ntask for this plant yet</string>
 </resources>

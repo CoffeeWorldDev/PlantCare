@@ -17,6 +17,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -48,10 +49,10 @@ fun SeasonsSegmentedButton(
     cornerRadius: Int = 50,
     onItemSelection: (selectedItem: String) -> Unit
 ) {
-    var currentSeason by remember { mutableStateOf(currentSeason)}
+    val currentSeason by remember { mutableStateOf(currentSeason)}
     val seasons = listOf("summer", "winter", "dormant")
     val selectedIndex = remember { mutableStateOf(currentSeason) }
-    val itemIndex = remember { mutableStateOf(defaultSelectedItemIndex) }
+    val itemIndex = remember { mutableIntStateOf(defaultSelectedItemIndex) }
 Box(modifier = Modifier.fillMaxWidth()
     .padding(0.dp, 10.dp),
     contentAlignment = Alignment.Center) {

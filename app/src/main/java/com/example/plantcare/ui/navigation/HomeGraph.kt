@@ -52,6 +52,29 @@ fun NavGraphBuilder.addHomeGraph(
         Settings(onNavigateToRoute, modifier)
     }
 }
+fun NavGraphBuilder.addPlantGraph(
+    onDetailSelected: (Long, NavBackStackEntry) -> Unit,
+    onNavigateToRoute: (String) -> Unit,
+    modifier: Modifier = Modifier
+) {
+ //   composable(PlantSections.PLANT.route) { from ->
+ //       Home(onPlantClick = { id -> onPlantSelected(id, from) },
+ //           onNavigateToRoute,
+ //           modifier = Modifier.fillMaxSize()
+ //               .background(MaterialTheme.colorScheme.background)
+ //               .wrapContentSize(align = Alignment.TopCenter))
+ //   }
+ //   composable(PlantSections.TASKS.route) { from ->
+ //       PlantsGallery(onPlantClick = { id -> onPlantSelected(id, from) },
+ //           onNavigateToRoute,
+ //           modifier = Modifier.fillMaxSize()
+ //               .background(MaterialTheme.colorScheme.background)
+ //               .wrapContentSize(align = Alignment.TopCenter))
+ //   }
+ //   composable(PlantSections.NOTES.route) {
+ //       Settings(onNavigateToRoute, modifier)
+ //   }
+}
 
 enum class HomeSections(
     @StringRes val title: Int,
@@ -62,6 +85,15 @@ enum class HomeSections(
     GALLERY(R.string.bottom_nav_gallery, Icons.Filled.Favorite, "home/gallery"),
     SETTINGS(R.string.bottom_nav_settings, Icons.Filled.Settings, "home/settings")
 }
+enum class PlantSections(
+    @StringRes val title: Int,
+    val route: String
+) {
+    PLANT(R.string.plant_nav_main,  "plant/main"),
+    TASKS(R.string.plant_nav_tasks,  "plant/tasks"),
+    NOTES(R.string.plant_nav_notes,  "plant/notes")
+}
+
 
 @Composable
 fun PlantCareBottomBar(
