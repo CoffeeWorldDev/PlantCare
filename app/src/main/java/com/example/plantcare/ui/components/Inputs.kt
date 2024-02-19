@@ -23,6 +23,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -30,6 +31,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import java.text.DateFormatSymbols
@@ -44,26 +46,27 @@ fun TextInputRow(
     value : String,
     onTextChanged: (String) -> Unit,
     maxLength: Int = 40,
-    isError: Boolean = false
+    isError: Boolean = false,
+    modifier: Modifier
 ){
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(5.dp, 0.dp, 5.dp, 10.dp)
     ) {
         Text(
             text = "$label: ",
             textAlign = TextAlign.Start,
-            modifier = Modifier.width(80.dp)
+            modifier = Modifier.fillMaxWidth(0.24f)
         )
         PlantCareTextInput(
             value = value,
             onTextChanged = onTextChanged,
             maxLength = maxLength,
             isError = isError,
-            modifier = Modifier
+            modifier = Modifier.fillMaxWidth(0.76f)
         )
     }
 }
@@ -72,7 +75,8 @@ fun DropdownMenuRow(
     label : String,
     value : String,
     onSelect: (String) -> Unit,
-    options : List<String>
+    options : List<String>,
+    modifier: Modifier
 ){
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -84,35 +88,71 @@ fun DropdownMenuRow(
         Text(
             text = "$label: ",
             textAlign = TextAlign.Start,
-            modifier = Modifier.width(80.dp)
+            modifier = Modifier.fillMaxWidth(0.24f)
         )
         PlantCareDropDownMenu(
             value = value,
             onSelect = onSelect,
-            options = options)
+            options = options,
+            modifier = Modifier.fillMaxWidth(0.76f))
     }
 }
 @Composable
 fun DatePickerMenuRow(
     label : String,
     value : Date,
-    onSelect: (Date) -> Unit
+    onSelect: (Date) -> Unit,
+    modifier: Modifier
 ){
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(5.dp, 0.dp, 5.dp, 10.dp)
     ) {
         Text(
             text = "$label: ",
             textAlign = TextAlign.Start,
-            modifier = Modifier.width(80.dp)
+            modifier = Modifier.fillMaxWidth(0.24f)
         )
         PlantCareDatePicker(
             startingDate = value,
-            onDatePicked = onSelect)
+            onDatePicked = onSelect,
+            modifier = Modifier.fillMaxWidth(0.76f))
+    }
+}
+@Composable
+fun TimePeriodPickerRow(
+    label : String,
+    value : Int,
+    onTextChanged: (Int) -> Unit,
+    isError: Boolean = false,
+    modifier: Modifier
+){
+    Row(
+        horizontalArrangement = Arrangement.Start,
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(5.dp, 0.dp, 5.dp, 10.dp)
+    ) {
+        Text(
+            text = "$label: ",
+            textAlign = TextAlign.Start,
+            modifier = Modifier.fillMaxWidth(0.24f)
+        )
+        PlantCareNumberInput(
+            value = value,
+            onTextChanged = onTextChanged,
+            isError = isError,
+            modifier = Modifier.fillMaxWidth(0.25f)
+        )
+        Text(
+            text = " days",
+            textAlign = TextAlign.Start,
+            modifier = Modifier.fillMaxWidth(0.30f)
+        )
     }
 }
 
@@ -154,13 +194,54 @@ fun PlantCareTextInput(value: String,
         })
     )
 }
+@Composable
+fun PlantCareNumberInput(value: Int,
+                         onTextChanged: (Int) -> Unit,
+                         isError: Boolean = false,
+                         modifier: Modifier){
+
+    val number = remember(value) { mutableIntStateOf(value) }
+    var error = if(number.intValue != 0){false} else isError
+
+    val focusManager = LocalFocusManager.current
+
+    OutlinedTextField(
+        value = number.intValue.toString(),
+        onValueChange = {
+            if(it.isNotBlank()) {
+                if (number.intValue == 0){
+                    number.intValue = it.toInt()
+                    number.intValue = number.intValue.toString()[0].toString().toInt()
+                } else {
+                    number.intValue = it.toInt()
+                }
+                onTextChanged(number.intValue)
+            } else {
+                number.intValue = 0
+                onTextChanged(number.intValue)
+            }
+        },
+        singleLine = true,
+        modifier = modifier,
+        supportingText = {Text(text = "")},
+        isError = error,
+        keyboardOptions = KeyboardOptions(
+            autoCorrect = false,
+            keyboardType = KeyboardType.Number),
+        keyboardActions = KeyboardActions(onAny = {
+            onTextChanged(number.intValue)
+            focusManager.clearFocus()
+        })
+    )
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PlantCareDropDownMenu(
     value: String?,
     onSelect: (String) -> Unit,
-    options : List<String>) {
+    options : List<String>,
+    modifier: Modifier) {
     var expanded by remember { mutableStateOf(false) }
     var selectedOptionText by remember(value) { mutableStateOf(value) }
     ExposedDropdownMenuBox(
@@ -168,7 +249,8 @@ fun PlantCareDropDownMenu(
         onExpandedChange = { expanded = !expanded },
     ) {
         TextField(
-            modifier = Modifier.menuAnchor()
+            modifier = Modifier
+                .menuAnchor()
                 .fillMaxWidth(),
             readOnly = true,
             value = selectedOptionText!!,
@@ -198,7 +280,8 @@ fun PlantCareDropDownMenu(
 @Composable
 fun PlantCareDatePicker(
     startingDate : Date,
-    onDatePicked : (Date) -> Unit) {
+    onDatePicked : (Date) -> Unit,
+    modifier: Modifier) {
 
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed: Boolean by interactionSource.collectIsPressedAsState()

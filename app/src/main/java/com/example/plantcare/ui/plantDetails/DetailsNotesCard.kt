@@ -37,35 +37,35 @@ fun PlantDetailsNotes(notes: Map<String, String>){
         .fillMaxWidth()
         .padding(0.dp,0.dp,0.dp, 30.dp),
         contentAlignment = Alignment.BottomEnd){
-    Column(modifier = Modifier,
-        verticalArrangement = Arrangement.SpaceEvenly,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(
-            text = "Notes:",
-            style = MaterialTheme.typography.titleLarge,
-            modifier = Modifier
-                .padding(10.dp, 20.dp, 0.dp, 5.dp)
-                .fillMaxWidth()
-        )
-        Card(shape = CardDefaults.elevatedShape,
-            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
-            elevation = CardDefaults.cardElevation(
-                defaultElevation = 8.dp
-            ),
-            border = BorderStroke(1.dp, Color.Black),
-            modifier = Modifier
-                .fillMaxWidth(0.96f)
-                .height(330.dp)
+        Column(modifier = Modifier,
+            verticalArrangement = Arrangement.SpaceEvenly,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            if (notes!!.isNotEmpty()){
+            Text(
+                text = "Notes:",
+                style = MaterialTheme.typography.titleLarge,
+                modifier = Modifier
+                    .padding(10.dp, 20.dp, 0.dp, 5.dp)
+                    .fillMaxWidth()
+            )
+            Card(shape = CardDefaults.elevatedShape,
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
+                elevation = CardDefaults.cardElevation(
+                    defaultElevation = 8.dp
+                ),
+                border = BorderStroke(1.dp, Color.Black),
+                modifier = Modifier
+                    .fillMaxWidth(0.96f)
+                    .height(330.dp)
+            ) {
+                if (notes!!.isNotEmpty()){
                     NotesList(notes)
 
-            } else{
-                EmptyListMsg("You haven't saved any\nnotes for this plant yet")
+                } else{
+                    EmptyListMsg("You haven't saved any\nnotes for this plant yet")
+                }
             }
         }
-    }
         FloatingActionButton(onClick = { /*TODO*/ },
             containerColor = Color.White,
             shape = RoundedCornerShape(50.dp),
@@ -85,24 +85,24 @@ fun PlantDetailsNotes(notes: Map<String, String>){
 fun NotesList(notes: Map<String, String>) {
     Column( modifier = Modifier
         .verticalScroll(rememberScrollState()) ){
-    notes.forEach {
-        Column(verticalArrangement = Arrangement.Top,) {
-            Text(
-                text = "${it.key}\n\n${it.value}",
-                textAlign = TextAlign.Start,
-                modifier = Modifier
-                    .padding(15.dp, 10.dp)
-                    .fillMaxWidth()
-            )
-            if(it != notes.entries.last()) {
-                Divider(
-                    thickness = 1.dp,
-                    modifier = Modifier.padding(7.dp, 2.dp)
+        notes.forEach {
+            Column(verticalArrangement = Arrangement.Top,) {
+                Text(
+                    text = "${it.key}\n\n${it.value}",
+                    textAlign = TextAlign.Start,
+                    modifier = Modifier
+                        .padding(15.dp, 10.dp)
+                        .fillMaxWidth()
                 )
-            } else {
-                Spacer(modifier = Modifier.height(30.dp))
+                if(it != notes.entries.last()) {
+                    Divider(
+                        thickness = 1.dp,
+                        modifier = Modifier.padding(7.dp, 2.dp)
+                    )
+                } else {
+                    Spacer(modifier = Modifier.height(30.dp))
+                }
             }
         }
-    }
     }
 }

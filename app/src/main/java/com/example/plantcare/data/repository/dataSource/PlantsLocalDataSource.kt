@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 import java.util.Date
 
 interface PlantsLocalDataSource {
-    suspend fun savePlantToDb(plant: Plants)
+    suspend fun savePlantToDb(plant: Plants) : Long
     suspend fun updatePlant(plant: Plants)
     suspend fun deletePlant(plant: Plants)
     fun getPlants() : Flow<Array<Plants>>

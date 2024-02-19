@@ -13,7 +13,7 @@ import java.util.Date
 @Dao
 interface PlantsDao {
     @Insert
-    suspend fun insertPlant(plant: Plants)
+    suspend fun insertPlant(plant: Plants): Long
 
     @Delete
     suspend fun deletePlant(plant: Plants)

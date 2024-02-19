@@ -10,8 +10,8 @@ import java.util.Date
 import javax.inject.Inject
 
 class PlantsLocalDataSourceImpl @Inject constructor(private val plantsDao : PlantsDao) : PlantsLocalDataSource {
-    override suspend fun savePlantToDb(plant: Plants) {
-        plantsDao.insertPlant(plant)
+    override suspend fun savePlantToDb(plant: Plants): Long {
+        return plantsDao.insertPlant(plant)
     }
 
     override suspend fun updatePlant(plant: Plants) {

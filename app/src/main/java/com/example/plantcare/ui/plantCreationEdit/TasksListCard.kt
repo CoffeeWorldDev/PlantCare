@@ -27,6 +27,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.plantcare.R
 import com.example.plantcare.data.model.Tasks
+import com.example.plantcare.ui.navigation.PlantSections
 import com.example.plantcare.ui.utils.AddFloatingBtn
 import com.example.plantcare.ui.utils.EmptyListMsg
 import com.example.plantcare.ui.utils.ReadOnlyTaskList
@@ -35,13 +36,16 @@ import com.example.plantcare.ui.utils.SeasonsSegmentedButton
 
 @Composable
 fun TasksListCard(
+    plantId: Long,
     tasks : List<Tasks>?,
     activeSeason : String,
-    isEdit : Boolean
+    isEdit : Boolean,
+    onSeasonChange: (String) -> Unit,
+    onNavigateToDetail: (String, Long) -> Unit
 ) {
     var currentSeason by remember(activeSeason) { mutableStateOf(activeSeason) }
     val activeTasks: MutableList<Tasks> = mutableListOf()
-    Log.e("task", tasks.toString())
+    //   Log.e("task", tasks.toString())
     Column(
         modifier = Modifier
             .height(300.dp)
@@ -80,6 +84,7 @@ fun TasksListCard(
                     if (isEdit){
                         SeasonsSegmentedButton(modifier = Modifier, currentSeason) {
                             currentSeason = it
+                            onSeasonChange(it)
                         }
                     }
                     ReadOnlyTaskList(activeTasks)
@@ -88,7 +93,12 @@ fun TasksListCard(
                 }
             }
             AddFloatingBtn(
-                onClick = { /*TODO*/ },
+                onClick = {
+                    onNavigateToDetail(
+                        PlantSections.TASKS.route,
+                        plantId
+                    )
+                },
                 modifier = Modifier
                     .padding(20.dp, 0.dp)
                     .height(50.dp)

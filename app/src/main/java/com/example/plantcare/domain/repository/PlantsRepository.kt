@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 import java.util.Date
 
 interface PlantsRepository {
-    suspend fun addPlants(plants: Plants)
+    suspend fun addPlants(plants: Plants) : Long
     suspend fun deletePlants(plants: Plants)
     fun getPlants() : Flow<Array<Plants>>
     fun getActivePlants(date: Date) : Flow<Map<Plants?, List<Tasks>>?>

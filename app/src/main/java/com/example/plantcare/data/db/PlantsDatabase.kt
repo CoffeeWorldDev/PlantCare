@@ -10,4 +10,5 @@ import com.example.plantcare.data.model.Tasks
 @TypeConverters(MapConverters::class, DateConverters::class)
 abstract class PlantsDatabase : RoomDatabase() {
     abstract fun getPlantsDao() : PlantsDao
+    abstract fun GetTasksDao() : TasksDao
 }

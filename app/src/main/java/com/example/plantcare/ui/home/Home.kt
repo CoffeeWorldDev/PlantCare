@@ -2,6 +2,7 @@ package com.example.plantcare.ui.home
 
 import android.util.Log
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
@@ -35,7 +36,7 @@ fun Home(
         },
         modifier = modifier
     ) { innerPadding ->
-        Box(
+        Column(
             modifier = Modifier.padding(
                 PaddingValues(
                     0.dp,
@@ -49,12 +50,11 @@ fun Home(
                 onValueChange = { viewModel.changeQuery(it) },
                 modifier = Modifier
             )
-        }
-
-        HomeMainBlock(homeUiState.plantsMap,
-            onTaskClicked = { viewModel.updateTask(it)})
+            HomeMainBlock(homeUiState.plantsMap,
+                onTaskClicked = { viewModel.updateTask(it)})
         }
     }
+}
 
 //    Column() {
 //        HomeTop(

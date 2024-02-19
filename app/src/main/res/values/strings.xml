@@ -10,6 +10,7 @@
     <string name="plant_nav_main">Plant</string>
     <string name="plant_nav_tasks">Tasks</string>
     <string name="plant_nav_notes">Notes</string>
+    <string name="plant_nav_edit_create">EditCreate</string>
 
     <!-- Errors -->
     <string name="loading_plants_error">Error while loading plants</string>
@@ -17,12 +18,16 @@
     <string name="form_not_valid">Name can\'t be left empty</string>
     <string name="permission_needed_camera">Permission to use camera needed to use this function</string>
     <string name="permission_needed_gallery">Permission to open the gallery needed to use this function</string>
+    <string name="number_zero">0 is not allowed</string>
 
     <!-- Content Descriptions -->
     <string name="plants_photo_description">Plants not found</string>
     <string name="hamburger_button_icon">menu icon</string>
     <string name="photo_from_camera_icon">add photo from camera icon</string>
     <string name="photo_from_gallery_icon">add photo from gallery icon</string>
+    <string name="delete_task">delete task icon</string>
+    <string name="open_close_task_icon">open or close task card</string>
+    <string name="task_icon_animation">close and open task icon animation</string>
 
     <!-- Messages -->
     <string name="empty_task_list">You haven\'t set any\ntask for this plant yet</string>

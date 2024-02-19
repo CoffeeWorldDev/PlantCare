@@ -74,11 +74,19 @@ import java.io.File
 @Composable
 fun PlantCreationEdit(
     plantId: Long,
+    onNavigateToDetail: (String, Long) -> Unit,
     upPress: () -> Unit,
-    viewModel: PlantCreationEditViewModel = hiltViewModel()
+    viewModel: PlantDetailsViewModel
 ) {
     viewModel.getPlantWithId(plantId)
     val plantEditCreationUiState by viewModel.uiState.collectAsStateWithLifecycle()
+    //Log.e("PLANT ui state photo", plantEditCreationUiState.photo.toString())
+    //todo delete
+    if (plantEditCreationUiState.tasks?.isEmpty() == false){
+        val test = plantEditCreationUiState.tasks?.get(0)
+        Log.e("TASK", test!!.currentSeason)
+    }
+    // Log.e("TASK", viewModel.getAllTasks().toString())
     val snackbarHostState = remember { SnackbarHostState() }
 
     Scaffold(
@@ -104,6 +112,7 @@ fun PlantCreationEdit(
                 snackbarHostState,
                 onSave = viewModel::savePlant,
                 onDelete = viewModel::deletePlant,
+                onNavigateToDetail = onNavigateToDetail,
                 goBack = upPress
             )
         }
@@ -118,16 +127,16 @@ fun PlantCreationEditForm(
     snackbarHostState: SnackbarHostState,
     onSave: (Plants) -> Unit,
     onDelete: (Plants) -> Unit,
+    onNavigateToDetail: (String, Long) -> Unit,
     goBack: () -> Unit){
 
     //TODO delete log
-    Log.e("PLANT ui state", plant.toString())
+    //Log.e("PLANT ui state", plant.toString())
 
     val currentPhoto = plant.photo!!.toUri()
-    Log.e("current photo saved", currentPhoto.toString())
-    val plantToBeChanged = plant
-    Log.e("new photo saved", plantToBeChanged.photo.toString())
-    Log.e("new other saved", plantToBeChanged.species.toString())
+    //Log.e("current photo saved", currentPhoto.toString())
+    //Log.e("new photo saved", plant.photo.toString())
+    //Log.e("new other saved", plant.species.toString())
 
     var isFormInvalid by remember {
         mutableStateOf(false)
@@ -140,45 +149,57 @@ fun PlantCreationEditForm(
             snackbarHostState = snackbarHostState
         ) {
             if (it != null) {
-                plantToBeChanged.photo = it.toString()
+                plant.photo = it.toString()
             }
         }
         TextInputRow(
             label = "Name",
             value = plant.name,
-            onTextChanged = { plantToBeChanged.name = it },
+            onTextChanged = { plant.name = it },
             maxLength = 18,
-            isError = isFormInvalid
+            isError = isFormInvalid,
+            modifier = Modifier
         )
         TextInputRow(
             label = "Species",
             value = plant.species!!,
-            onTextChanged = {plantToBeChanged.species = it})
+            onTextChanged = { plant.species = it},
+            modifier = Modifier
+        )
         DropdownMenuRow(
             label = "Type",
             value = plant.type!!,
-            onSelect = {plantToBeChanged.type = it},
-            options = getTypesOfPlantsList().map { it.name })
+            onSelect = { plant.type = it},
+            options = getTypesOfPlantsList().map { it.name },
+            modifier = Modifier
+        )
         TextInputRow(
             label = "Position",
             value = plant.position!!,
-            onTextChanged = {plantToBeChanged.position = it},)
+            onTextChanged = { plant.position = it},
+            modifier = Modifier
+        )
         DatePickerMenuRow(
             label = "birthday",
             value = plant.age!!,
-            onSelect = {plantToBeChanged.age = it})
+            onSelect = { plant.age = it},
+            modifier = Modifier)
         TasksListCard(
+            plantId = plant.plantsId,
             tasks = tasks,
             activeSeason = plant.currentSeason,
-            isEdit = isEdit
+            isEdit = isEdit,
+            onSeasonChange = { plant.currentSeason = it},
+            onNavigateToDetail = onNavigateToDetail
         )
         SavePlant(
-            onButtonClick = {onSave(it)},
+            onButtonClick = { onSave(it) },
             snackbarHostState,
-            plant = plantToBeChanged,
+            plant = plant,
             goBack = goBack,
             currentlySavedPhoto = currentPhoto,
-            isError = {isFormInvalid = it})
+            isError = { isFormInvalid = it }
+        )
         if(isEdit){
             DeletePlant(
                 plant = plant,
@@ -196,147 +217,147 @@ fun ImageBlock(
     onSelect: (Uri?) -> Unit
 ) {
 
-        val coroutineScope = rememberCoroutineScope()
-        val context = LocalContext.current
+    val coroutineScope = rememberCoroutineScope()
+    val context = LocalContext.current
 
-        var photoUri by remember(photo) {
-            mutableStateOf<Uri?>(
-                if (photo.toString() == ""){null} else {photo}
-            )
-        }
-        var tempPhotoUri by remember {
-            mutableStateOf(value = Uri.EMPTY)
-        }
-
-        val cameraPermissionState = rememberPermissionState(Manifest.permission.CAMERA)
-        val galleryPermissionState =
-            when(Build.VERSION.SDK_INT){
-                Build.VERSION_CODES.UPSIDE_DOWN_CAKE ->  rememberMultiplePermissionsState(
-                    listOf(
-                        READ_MEDIA_IMAGES, READ_MEDIA_VISUAL_USER_SELECTED
-                    ))
-                Build.VERSION_CODES.TIRAMISU -> rememberMultiplePermissionsState(
-                    listOf(
-                        READ_MEDIA_IMAGES
-                    ))
-                else -> rememberMultiplePermissionsState(
-                    listOf(
-                        READ_EXTERNAL_STORAGE
-                    ))
-            }
-
-        val launcherCamera = rememberLauncherForActivityResult(
-            contract = ActivityResultContracts.TakePicture(),
-            onResult = { success ->
-                Log.d("camera", tempPhotoUri.toString())
-                    if (success) photoUri = tempPhotoUri
-                    onSelect(tempPhotoUri)
-                }
-            )
-
-        val launcherGallery = rememberLauncherForActivityResult(
-            contract = ActivityResultContracts.GetContent(),
-            onResult = { uri: Uri? ->
-                photoUri = uri
-                onSelect(uri)
-            }
+    var photoUri by remember(photo) {
+        mutableStateOf<Uri?>(
+            if (photo.toString() == ""){null} else {photo}
         )
-        Row(
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically,
+    }
+    var tempPhotoUri by remember {
+        mutableStateOf(value = Uri.EMPTY)
+    }
+
+    val cameraPermissionState = rememberPermissionState(Manifest.permission.CAMERA)
+    val galleryPermissionState =
+        when(Build.VERSION.SDK_INT){
+            Build.VERSION_CODES.UPSIDE_DOWN_CAKE ->  rememberMultiplePermissionsState(
+                listOf(
+                    READ_MEDIA_IMAGES, READ_MEDIA_VISUAL_USER_SELECTED
+                ))
+            Build.VERSION_CODES.TIRAMISU -> rememberMultiplePermissionsState(
+                listOf(
+                    READ_MEDIA_IMAGES
+                ))
+            else -> rememberMultiplePermissionsState(
+                listOf(
+                    READ_EXTERNAL_STORAGE
+                ))
+        }
+
+    val launcherCamera = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.TakePicture(),
+        onResult = { success ->
+            Log.d("camera", tempPhotoUri.toString())
+            if (success) photoUri = tempPhotoUri
+            onSelect(tempPhotoUri)
+        }
+    )
+
+    val launcherGallery = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent(),
+        onResult = { uri: Uri? ->
+            photoUri = uri
+            onSelect(uri)
+        }
+    )
+    Row(
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(40.dp, 0.dp, 0.dp, 20.dp)
+    ) {
+        PlantCareImage(
+            imageUrl = photoUri ?: R.drawable.placeholderimage,
+            contentDescription = stringResource(id = R.string.plants_photo_description),
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(40.dp, 0.dp, 0.dp, 20.dp)
+                .height(250.dp)
+                .width(250.dp)
+                .offset(25.dp)
+                .padding(10.dp)
+        )
+        Column(
+            verticalArrangement = Arrangement.Center,
+            modifier = Modifier.fillMaxHeight()
+            //.background(Color.Cyan)
         ) {
-            PlantCareImage(
-                imageUrl = photoUri ?: R.drawable.placeholderimage,
-                contentDescription = stringResource(id = R.string.plants_photo_description),
-                modifier = Modifier
-                    .height(250.dp)
-                    .width(250.dp)
-                    .offset(25.dp)
-                    .padding(10.dp)
-            )
-            Column(
-                verticalArrangement = Arrangement.Center,
-                modifier = Modifier.fillMaxHeight()
-                //.background(Color.Cyan)
-            ) {
-                PlantCareIconButton(
-                    Icons.Filled.AccountBox,
-                    R.string.photo_from_camera_icon,
-                    {
-                        if (cameraPermissionState.status.isGranted){
-                            Log.d("Click", "open camera permission granted")
-                            coroutineScope.launch {
-                                tempPhotoUri = context.createTempPictureUri()
-                                launcherCamera.launch(tempPhotoUri)
-                            }
-                        } else {
-                            if (cameraPermissionState.status.shouldShowRationale) {
-                                cameraPermissionState.launchPermissionRequest()
-                            } else {
-                                coroutineScope.launch {
-                                    val result = snackbarHostState
-                                        .showSnackbar(
-                                            message = context.resources.getString(R.string.permission_needed_camera),
-                                            actionLabel = "Settings",
-                                            duration = SnackbarDuration.Short
-                                        )
-                                    if (result == SnackbarResult.ActionPerformed) {
-                                        Log.d("Clicked", "settings")
-                                        val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-                                        intent.setData(Uri.fromParts("package", context.packageName, null))
-                                            startActivity(context, intent, null)
-                                       }
-                                }
-                            }
+            PlantCareIconButton(
+                Icons.Filled.AccountBox,
+                R.string.photo_from_camera_icon,
+                {
+                    if (cameraPermissionState.status.isGranted){
+                        Log.d("Click", "open camera permission granted")
+                        coroutineScope.launch {
+                            tempPhotoUri = context.createTempPictureUri()
+                            launcherCamera.launch(tempPhotoUri)
+                        }
+                    } else {
+                        if (cameraPermissionState.status.shouldShowRationale) {
                             cameraPermissionState.launchPermissionRequest()
-                        }
-                    },
-                    Modifier.padding(10.dp)
-                )
-                PlantCareIconButton(
-                    Icons.Filled.Settings,
-                    R.string.photo_from_gallery_icon,
-                    {
-                        if (galleryPermissionState.allPermissionsGranted){
-                            Log.d("Click", "open gallery permission granted")
-                            launcherGallery.launch("image/*")
                         } else {
-                            if (galleryPermissionState.shouldShowRationale) {
-                                galleryPermissionState.launchMultiplePermissionRequest()
-                            } else {
-                                coroutineScope.launch {
-                                    val result = snackbarHostState
-                                        .showSnackbar(
-                                            message = context.resources.getString(R.string.permission_needed_gallery),
-                                            actionLabel = "Settings",
-                                            duration = SnackbarDuration.Short
-                                        )
-                                    if (result == SnackbarResult.ActionPerformed) {
-                                        Log.d("Clicked", "settings")
-                                        val intent =
-                                            Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-                                        intent.setData(
-                                            Uri.fromParts(
-                                                "package",
-                                                context.packageName,
-                                                null
-                                            )
-                                        )
-                                        startActivity(context, intent, null)
-                                    }
+                            coroutineScope.launch {
+                                val result = snackbarHostState
+                                    .showSnackbar(
+                                        message = context.resources.getString(R.string.permission_needed_camera),
+                                        actionLabel = "Settings",
+                                        duration = SnackbarDuration.Short
+                                    )
+                                if (result == SnackbarResult.ActionPerformed) {
+                                    Log.d("Clicked", "settings")
+                                    val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                                    intent.setData(Uri.fromParts("package", context.packageName, null))
+                                    startActivity(context, intent, null)
                                 }
                             }
-                            galleryPermissionState.launchMultiplePermissionRequest()
                         }
-                    },
-                    Modifier.padding(10.dp)
-                )
-            }
+                        cameraPermissionState.launchPermissionRequest()
+                    }
+                },
+                Modifier.padding(10.dp)
+            )
+            PlantCareIconButton(
+                Icons.Filled.Settings,
+                R.string.photo_from_gallery_icon,
+                {
+                    if (galleryPermissionState.allPermissionsGranted){
+                        Log.d("Click", "open gallery permission granted")
+                        launcherGallery.launch("image/*")
+                    } else {
+                        if (galleryPermissionState.shouldShowRationale) {
+                            galleryPermissionState.launchMultiplePermissionRequest()
+                        } else {
+                            coroutineScope.launch {
+                                val result = snackbarHostState
+                                    .showSnackbar(
+                                        message = context.resources.getString(R.string.permission_needed_gallery),
+                                        actionLabel = "Settings",
+                                        duration = SnackbarDuration.Short
+                                    )
+                                if (result == SnackbarResult.ActionPerformed) {
+                                    Log.d("Clicked", "settings")
+                                    val intent =
+                                        Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                                    intent.setData(
+                                        Uri.fromParts(
+                                            "package",
+                                            context.packageName,
+                                            null
+                                        )
+                                    )
+                                    startActivity(context, intent, null)
+                                }
+                            }
+                        }
+                        galleryPermissionState.launchMultiplePermissionRequest()
+                    }
+                },
+                Modifier.padding(10.dp)
+            )
         }
     }
+}
 fun Context.createTempPictureUri(
     provider: String = "com.example.plantcare.fileProvider",
     fileName: String = "picture_${System.currentTimeMillis()}",

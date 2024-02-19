@@ -9,8 +9,8 @@ import kotlinx.coroutines.flow.Flow
 import java.util.Date
 
 class PlantsRepositoryImpl (private val plantsLocalDataSource : PlantsLocalDataSource) : PlantsRepository {
-    override suspend fun addPlants(plant: Plants) {
-        plantsLocalDataSource.savePlantToDb(plant)
+    override suspend fun addPlants(plant: Plants): Long {
+        return plantsLocalDataSource.savePlantToDb(plant)
     }
 
     override suspend fun deletePlants(plant: Plants) {

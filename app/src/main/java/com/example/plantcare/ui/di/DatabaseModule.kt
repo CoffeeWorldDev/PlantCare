@@ -5,7 +5,6 @@ import androidx.room.Room
 import com.example.plantcare.data.db.PlantsDao
 import com.example.plantcare.data.db.PlantsDatabase
 import com.example.plantcare.data.db.TasksDao
-import com.example.plantcare.data.db.TasksDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -25,15 +24,15 @@ object DatabaseModule {
             "plants_database"
         ).build()
     }
-    @Provides
-    @Singleton
-    fun provideTasksDatabase(app: Application) : TasksDatabase{
-        return Room.databaseBuilder(
-            app,
-            TasksDatabase::class.java,
-            "tasks_database"
-        ).build()
-    }
+    //  @Provides
+    //  @Singleton
+    //  fun provideTasksDatabase(app: Application) : TasksDatabase{
+    //      return Room.databaseBuilder(
+    //          app,
+    //          TasksDatabase::class.java,
+    //          "tasks_database"
+    //      ).build()
+    //  }
     @Provides
     @Singleton
     fun providePlantsDao(plantsDatabase: PlantsDatabase): PlantsDao {
@@ -41,7 +40,7 @@ object DatabaseModule {
     }
     @Provides
     @Singleton
-    fun provideTasksDao(tasksDatabase: TasksDatabase): TasksDao {
-        return tasksDatabase.GetTasksDao()
+    fun provideTasksDao(plantsDatabase: PlantsDatabase): TasksDao {
+        return plantsDatabase.GetTasksDao()
     }
 }

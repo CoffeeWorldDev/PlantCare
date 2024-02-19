@@ -42,7 +42,7 @@ fun rememberPlantCareNavController(
 class PlantCareNavController(
     val navController: NavHostController,
 ) {
-    val currentRoute: String?
+    private val currentRoute: String?
         get() = navController.currentDestination?.route
 
     fun upPress() {
@@ -62,11 +62,22 @@ class PlantCareNavController(
             }
         }
     }
+    //crashes
+    fun navigateWithinPlantDetails(
+        route : String,
+        plantId: Long,
+        from: NavBackStackEntry
+    ){
+        if (from.lifecycleIsResumed()) {
+            navController.navigate("$route/$plantId")
+        }
+    }
 
-    fun navigateToPlantDetail(plantId: Long, from: NavBackStackEntry) {
+    //doesnt crash
+    fun navigateToEditCreate(plantId: Long, from: NavBackStackEntry) {
         // In order to discard duplicated navigation events, we check the Lifecycle
         if (from.lifecycleIsResumed()) {
-            navController.navigate("${MainDestinations.PLANT_DETAIL_ROUTE}/$plantId")
+            navController.navigate("${PlantSections.EDIT_CREATE.route}/$plantId")
         }
     }
 }

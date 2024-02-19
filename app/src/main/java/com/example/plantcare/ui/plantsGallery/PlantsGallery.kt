@@ -25,7 +25,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.plantcare.ui.PlantNav
 import com.example.plantcare.ui.navigation.HomeSections
 import com.example.plantcare.ui.navigation.PlantCareBottomBar
 import com.example.plantcare.ui.utils.AddFloatingBtn
@@ -34,8 +33,9 @@ import com.example.plantcare.ui.utils.AddFloatingBtn
 val column : Int = 2
 
 @Composable
-fun PlantsGallery(onPlantClick: (Long) -> Unit,
+fun PlantsGallery(onPlantClick: (String, Long) -> Unit,
                   onNavigateToRoute: (String) -> Unit,
+                  onCreateNew: (Long) -> Unit,
                   modifier: Modifier = Modifier,
                   viewModel: PlantsGalleryViewModel = hiltViewModel()) {
     val galleryUiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -51,9 +51,9 @@ fun PlantsGallery(onPlantClick: (Long) -> Unit,
         },
         floatingActionButton = {
             AddFloatingBtn(
-                onClick = { onPlantClick(-1) },
+                onClick = { onCreateNew(-1) },
                 modifier = Modifier.height(50.dp)
-                                   .width(50.dp)
+                    .width(50.dp)
             )
         },
         floatingActionButtonPosition = FabPosition.End
@@ -73,16 +73,16 @@ fun PlantsGallery(onPlantClick: (Long) -> Unit,
                 onValueChange = { viewModel.sortGallery(3) },
                 modifier = Modifier
             )
-             if (galleryUiState.plantsMap?.isEmpty() == false) {
-                 when (galleryUiState.currentLayout) {
-                     1 -> PlantsGalleryBodyVerL1(galleryUiState.plantsMap,
-                         onPlantClick = {onPlantClick(it)},
-                         modifier = Modifier)
-                     2 -> PlantsGalleryBodyVerL2(galleryUiState.plantsMap,
-                         onPlantClick = {onPlantClick(it)}, 1)
-                     3 -> PlantsGalleryBodyVerL3(galleryUiState.plantsMap, 2)
-                 }
-             }
+            if (galleryUiState.plantsMap?.isEmpty() == false) {
+                when (galleryUiState.currentLayout) {
+                    1 -> PlantsGalleryBodyVerL1(galleryUiState.plantsMap,
+                        onPlantClick = onPlantClick,
+                        modifier = Modifier)
+                    //  2 -> PlantsGalleryBodyVerL2(galleryUiState.plantsMap,
+                    //      onPlantClick = {onPlantClick(it)}, 1)
+                    3 -> PlantsGalleryBodyVerL3(galleryUiState.plantsMap, 2)
+                }
+            }
         }
     }
 }

@@ -4,11 +4,7 @@ import com.example.plantcare.data.model.Plants
 import com.example.plantcare.data.model.Tasks
 import com.example.plantcare.domain.repository.PlantsRepository
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.map
 import java.util.Date
 
 class FakePlantsRepository : PlantsRepository {
@@ -29,7 +25,7 @@ class FakePlantsRepository : PlantsRepository {
  //   }
 
 
-    override suspend fun addPlants(plants: Plants) {
+    override suspend fun addPlants(plants: Plants): Long {
         TODO("Not yet implemented")
     }
 

@@ -9,7 +9,7 @@ class PlantCreationEditViewModelFactory(private val plantsRepository: PlantsRepo
                                         private val tasksRepository: TasksRepository
 ): ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return PlantCreationEditViewModel(
+        return PlantDetailsViewModel(
             plantsRepository,
             tasksRepository
         ) as T

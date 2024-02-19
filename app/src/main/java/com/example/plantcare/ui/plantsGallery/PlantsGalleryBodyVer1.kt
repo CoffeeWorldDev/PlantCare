@@ -25,19 +25,28 @@ import com.example.plantcare.R
 import com.example.plantcare.data.model.Plants
 import com.example.plantcare.data.model.Tasks
 import com.example.plantcare.ui.components.PlantCareImage
+import com.example.plantcare.ui.navigation.PlantSections
 import com.example.plantcare.ui.utils.getElapsedTime
 
 
 @Composable
 fun PlantsGalleryBodyVerL1(plants: Map<Plants?, List<Tasks>>?,
-                           onPlantClick: (Long) -> Unit,
+                           onPlantClick: (String, Long) -> Unit,
                            modifier: Modifier) {
     val plantsList = plants?.toList()
     val headlineLarge = MaterialTheme.typography.headlineLarge
     LazyColumn(){ items(plantsList!!.size) {
         Row(modifier = Modifier
             .padding(15.dp, 0.dp, 0.dp, 20.dp)
-            .clickable { onPlantClick(plantsList[it].first!!.plantsId) }) {
+            .clickable(
+                onClick = {
+                    onPlantClick(
+                        PlantSections.PLANT.route,
+                        plantsList[it].first!!.plantsId
+                    )
+                }
+            )
+        ) {
             PlantCareImage(imageUrl = plantsList[it].first!!.photo!!,
                 contentDescription = "plant image",
                 modifier = Modifier
