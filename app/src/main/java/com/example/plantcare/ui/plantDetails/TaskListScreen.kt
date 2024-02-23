@@ -67,7 +67,7 @@ fun TaskListScreen(
     val plantEditCreationUiState by viewModel.uiState.collectAsStateWithLifecycle()
     val plant = plantEditCreationUiState.plant
     val tasks = plantEditCreationUiState.tasks
-    Log.e("VIEWMODEL IN SECOND SCREEN", plant.toString())
+    //Log.e("VIEWMODEL IN SECOND SCREEN", plant.toString())
 
     var isCreateNewOpen by remember {
         mutableStateOf(false)
@@ -122,10 +122,8 @@ fun TaskListScreen(
                 currentSeason = it
                 activeTasks.clear()
                 tasks?.forEach {task ->
-                    Log.e("task in list", task.currentSeason)
                     if (task.currentSeason == plant.currentSeason) {
                         activeTasks.add(task)
-                        Log.e("current p season", plant.currentSeason)
                     }
                 }
             }

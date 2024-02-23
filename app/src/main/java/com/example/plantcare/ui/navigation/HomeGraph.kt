@@ -90,10 +90,13 @@ fun NavGraphBuilder.addPlantGraph(
         ) { from ->
             val arguments = requireNotNull(from.arguments)
             val plantId = arguments.getLong(MainDestinations.PLANT_ID_KEY)
+            val plantDetailsBackStackEntry = remember(from) { controller.getBackStackEntry(MainDestinations.PLANT_DETAIL_ROUTE) }
+            val plantDetailsViewModel: PlantDetailsViewModel = hiltViewModel(plantDetailsBackStackEntry)
             PlantDetails(
                 plantId = plantId,
-                onNavigateToDetail = navigateWithinPlantDetails,
-                upPress = upPress
+                onNavigateToDetail = { route, id -> navigateWithinPlantDetails(route, id, from) },
+                upPress = upPress,
+                viewModel = plantDetailsViewModel
             )
         }
         composable(

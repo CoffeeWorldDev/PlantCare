@@ -39,7 +39,7 @@ fun PlantsGallery(onPlantClick: (String, Long) -> Unit,
                   modifier: Modifier = Modifier,
                   viewModel: PlantsGalleryViewModel = hiltViewModel()) {
     val galleryUiState by viewModel.uiState.collectAsStateWithLifecycle()
-    Log.e("PLANTS GALLERY", galleryUiState.toString())
+    //Log.e("PLANTS GALLERY", galleryUiState.toString())
 
     Scaffold(
         bottomBar = {
@@ -51,7 +51,7 @@ fun PlantsGallery(onPlantClick: (String, Long) -> Unit,
         },
         floatingActionButton = {
             AddFloatingBtn(
-                onClick = { onCreateNew(-1) },
+                onClick = { onCreateNew(1) },
                 modifier = Modifier.height(50.dp)
                     .width(50.dp)
             )

@@ -7,7 +7,6 @@ import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
 import com.example.plantcare.data.db.PlantsDao
 import com.example.plantcare.data.db.PlantsDatabase
 import com.example.plantcare.data.db.TasksDao
-import com.example.plantcare.data.db.TasksDatabase
 import com.example.plantcare.fakePlantsList
 import com.example.plantcare.fakeTasksList
 import kotlinx.coroutines.flow.first
@@ -26,7 +25,6 @@ class MapTest {
     private lateinit var plantsDao: PlantsDao
     private lateinit var Plantsdb: PlantsDatabase
     private lateinit var tasksDao: TasksDao
-    private lateinit var tasksDb: TasksDatabase
 
     private val plantsList = fakePlantsList()
     private val tasksList = fakeTasksList()
@@ -36,16 +34,13 @@ class MapTest {
         val context = ApplicationProvider.getApplicationContext<Context>()
         Plantsdb = Room.inMemoryDatabaseBuilder(
             context, PlantsDatabase::class.java).build()
-        tasksDb = Room.inMemoryDatabaseBuilder(
-            context, TasksDatabase::class.java).build()
-        tasksDao = tasksDb.GetTasksDao()
+        tasksDao = Plantsdb.GetTasksDao()
         plantsDao = Plantsdb.getPlantsDao()
     }
     @After
     @Throws(IOException::class)
     fun closeDb() {
         Plantsdb.close()
-        tasksDb.close()
     }
 
     @Test

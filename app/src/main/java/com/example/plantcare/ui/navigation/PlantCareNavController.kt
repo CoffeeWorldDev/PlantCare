@@ -17,6 +17,7 @@
 package com.example.plantcare.ui.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.remember
 import androidx.lifecycle.Lifecycle
@@ -62,14 +63,15 @@ class PlantCareNavController(
             }
         }
     }
-    //crashes
+    //TODO delete one of these they're basically the same thing
     fun navigateWithinPlantDetails(
         route : String,
         plantId: Long,
         from: NavBackStackEntry
     ){
         if (from.lifecycleIsResumed()) {
-            navController.navigate("$route/$plantId")
+            navController.navigate("$route/$plantId") {
+            }
         }
     }
 

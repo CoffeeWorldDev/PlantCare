@@ -10,7 +10,7 @@ class TasksLocalDataSourceImpl(private val tasksDao : TasksDao) : TasksLocalData
         tasksDao.insertTask(tasks)
     }
 
-    override fun deleteTasks(tasks: Tasks) {
+    override suspend fun deleteTasks(tasks: Tasks) {
         tasksDao.deleteTask(tasks)
     }
 

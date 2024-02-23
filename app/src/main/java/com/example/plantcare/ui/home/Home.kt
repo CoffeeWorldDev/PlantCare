@@ -23,7 +23,7 @@ fun Home(
     viewModel: HomeViewModel = hiltViewModel()
 ) {
     val homeUiState by viewModel.uiState.collectAsStateWithLifecycle()
-    Log.e("HOME BASE", homeUiState.toString())
+    //Log.e("HOME BASE", homeUiState.toString())
 
 
     Scaffold(
