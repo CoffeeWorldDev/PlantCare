@@ -51,7 +51,7 @@ fun PlantsGallery(onPlantClick: (String, Long) -> Unit,
         },
         floatingActionButton = {
             AddFloatingBtn(
-                onClick = { onCreateNew(1) },
+                onClick = { onCreateNew(-1) },
                 modifier = Modifier.height(50.dp)
                     .width(50.dp)
             )

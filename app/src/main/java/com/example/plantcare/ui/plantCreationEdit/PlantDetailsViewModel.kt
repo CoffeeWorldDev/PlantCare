@@ -1,5 +1,6 @@
 package com.example.plantcare.ui.plantCreationEdit
 
+import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.plantcare.data.model.Plants
@@ -10,8 +11,11 @@ import com.example.plantcare.ui.utils.GetDateInMillis
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.mapLatest
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -33,9 +37,16 @@ class PlantDetailsViewModel @Inject constructor (
     //savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(PlantCreationEditUiState(isLoading = true))
-    val uiState: StateFlow<PlantCreationEditUiState> = _uiState.asStateFlow()
 
+    private val _uiState = MutableStateFlow(PlantCreationEditUiState(isLoading = true))
+    //: StateFlow<PlantCreationEditUiState> down
+    val uiState = _uiState
+    //    .stateIn(
+    //            scope = viewModelScope,
+    //            started = SharingStarted.WhileSubscribed(),
+    //            initialValue = _uiState.value
+    //        )
+    .asStateFlow()
     fun getPlantWithId(plantId: Long) {
         _uiState.update { it.copy(isLoading = true) }
         if (plantId.toInt() != -1) {

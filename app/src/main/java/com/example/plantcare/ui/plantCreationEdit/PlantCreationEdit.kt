@@ -36,6 +36,8 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -44,13 +46,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat.startActivity
 import androidx.core.content.FileProvider
 import androidx.core.net.toUri
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.repeatOnLifecycle
 import com.example.plantcare.R
 import com.example.plantcare.data.model.Plants
 import com.example.plantcare.data.model.Tasks
@@ -78,12 +81,22 @@ fun PlantCreationEdit(
     upPress: () -> Unit,
     viewModel: PlantDetailsViewModel
 ) {
-    viewModel.getPlantWithId(plantId)
-    val plantEditCreationUiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val lifecycleOwner = LocalLifecycleOwner.current
+
+    LaunchedEffect(Unit) {
+        Log.e("empty screen log", "???")
+        lifecycleOwner.repeatOnLifecycle(Lifecycle.State.CREATED) {
+            launch {
+                viewModel.getPlantWithId(plantId)
+            }
+        }
+    }
+
+    val state by viewModel.uiState.collectAsState()
     //Log.e("PLANT ui state photo", plantEditCreationUiState.photo.toString())
     //todo delete
-    if (plantEditCreationUiState.tasks?.isEmpty() == false){
-        val test = plantEditCreationUiState.tasks?.get(0)
+    if (state.tasks?.isEmpty() == false){
+        val test = state.tasks?.get(0)
         Log.e("TASK", test!!.currentSeason)
     }
     // Log.e("TASK", viewModel.getAllTasks().toString())
@@ -106,9 +119,9 @@ fun PlantCreationEdit(
         ) {
             PlantCareUpPress(upPress)
             PlantCreationEditForm(
-                plantEditCreationUiState.plant,
-                plantEditCreationUiState.tasks,
-                plantEditCreationUiState.isEdit,
+                state.plant,
+                state.tasks,
+                state.isEdit,
                 snackbarHostState,
                 onSave = viewModel::savePlant,
                 onDelete = viewModel::deletePlant,
