@@ -31,11 +31,11 @@ import androidx.compose.ui.unit.dp
 import com.example.plantcare.ui.utils.EmptyListMsg
 
 @Composable
-fun PlantDetailsNotes(notes: Map<String, String>){
-    Box(modifier = Modifier
-        .height(330.dp)
-        .fillMaxWidth()
-        .padding(0.dp,0.dp,0.dp, 30.dp),
+fun PlantDetailsNotes(
+    notes: Map<String, String>,
+    modifier: Modifier
+){
+    Box(modifier = modifier,
         contentAlignment = Alignment.BottomEnd){
         Column(modifier = Modifier,
             verticalArrangement = Arrangement.SpaceEvenly,
@@ -55,8 +55,6 @@ fun PlantDetailsNotes(notes: Map<String, String>){
                 ),
                 border = BorderStroke(1.dp, Color.Black),
                 modifier = Modifier
-                    .fillMaxWidth(0.96f)
-                    .height(330.dp)
             ) {
                 if (notes!!.isNotEmpty()){
                     NotesList(notes)

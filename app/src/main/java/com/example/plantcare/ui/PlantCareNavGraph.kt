@@ -35,7 +35,8 @@ fun PlantCareNavGraph(){
             onPlantSelected = plantCareNavController::navigateToEditCreate,
             upPress = plantCareNavController::upPress,
             onNavigateToRoute = plantCareNavController::navigateToBottomBarRoute,
-            navigateWithinPlantDetails = plantCareNavController::navigateWithinPlantDetails
+            navigateWithinPlantDetails = plantCareNavController::navigateWithinPlantDetails,
+            navigateBackToGallery = plantCareNavController::navigateBackToGallery
         )
     }
 }
@@ -46,8 +47,9 @@ private fun NavGraphBuilder.plantCareNavGraph(
     upPress: () -> Unit,
     onNavigateToRoute: (String) -> Unit,
     navigateWithinPlantDetails: (String, Long, NavBackStackEntry) -> Unit,
+    navigateBackToGallery : (NavBackStackEntry) -> Unit
 ){
     addHomeGraph(onPlantSelected, onNavigateToRoute, navigateWithinPlantDetails)
-    addPlantGraph(controller, navigateWithinPlantDetails, upPress)
+    addPlantGraph(controller, navigateWithinPlantDetails, upPress, navigateBackToGallery)
 }
 

@@ -52,6 +52,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.example.plantcare.R
 import com.example.plantcare.data.model.Plants
 import com.example.plantcare.ui.components.PlantCareImage
+import com.example.plantcare.ui.navigation.PlantSections
 import com.example.plantcare.ui.plantCreationEdit.PlantCreationEditUiState
 import com.example.plantcare.ui.plantCreationEdit.PlantDetailsViewModel
 import com.example.plantcare.ui.plantCreationEdit.TasksListCard
@@ -95,16 +96,35 @@ fun PlantDetails(
         PlantDetailsScreenTop(
             state.plant
         )
-        //todo move it in its own file
-        TasksListCard(
-            plantId = state.plant.plantsId,
-            tasks = state.tasks,
-            activeSeason = state.plant.currentSeason,
-            isEdit = false,
-            onSeasonChange = { state.plant.currentSeason = it},
-            onNavigateToDetail = onNavigateToDetail
+        Column(
+            modifier = Modifier
+           .verticalScroll(scrollState)
+           .fillMaxHeight()
+        ) {
+            //todo move it in its own file
+            TasksListCard(
+                plantId = state.plant.plantsId,
+                tasks = state.tasks,
+                activeSeason = state.plant.currentSeason,
+                isEdit = false,
+                onSeasonChange = { state.plant.currentSeason = it},
+                onNavigateToDetail = onNavigateToDetail,
+                modifier = Modifier
+                    .height(300.dp)
+                    .fillMaxWidth()
+            )
+            PlantDetailsNotes(
+                state.plant.notes!!,
+                modifier = Modifier
+                    .height(300.dp)
+                    .fillMaxWidth()
+            )
+        }
+        PlantCareButton(
+            label = "edit",
+            onButtonClick = { onNavigateToDetail(  PlantSections.EDIT_CREATE.route, plantId)},
+            modifier = Modifier.align(Alignment.End)
         )
-          PlantDetailsNotes(state.plant.notes!!)
     }
 }
 //
@@ -112,12 +132,6 @@ fun PlantDetails(
 fun PlantDetailsScreenTop(
     plant : Plants
 ) {
-
-   // var photoUri by remember(plant.photo) {
-   //     mutableStateOf(
-   //        plant.photo.toString()
-   //     )
-   // }
 
     Row(modifier = Modifier
         .fillMaxWidth()
@@ -130,17 +144,10 @@ fun PlantDetailsScreenTop(
             imageUrl = plant.photo ?: R.drawable.placeholderimage,
             contentDescription = stringResource(id = R.string.plants_photo_description),
             modifier = Modifier
-                      .border(1.dp, color = Color.Black)
-                      .fillMaxWidth(0.5f)
-                      .fillMaxHeight()
+                .border(1.dp, color = Color.Black)
+                .fillMaxWidth(0.5f)
+                .fillMaxHeight()
         )
-        //Image(painter = painterResource(id = R.drawable.baseline_image_24),
-        //      contentDescription = "plant image",
-        //      modifier = Modifier
-        //          .border(1.dp, color = Color.Black)
-        //          .fillMaxWidth(0.5f)
-        //          .fillMaxHeight()
-        //)
         Column(modifier = Modifier
             .fillMaxHeight()
             .fillMaxWidth(),

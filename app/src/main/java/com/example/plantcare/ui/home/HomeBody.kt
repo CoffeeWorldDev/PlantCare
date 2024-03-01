@@ -21,11 +21,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.plantcare.R
 import com.example.plantcare.data.model.Plants
 import com.example.plantcare.data.model.Tasks
+import com.example.plantcare.ui.components.PlantCareImage
 
 
 @Composable
@@ -41,13 +43,21 @@ fun HomeMainBlock(plants: Map<Plants?, List<Tasks>>?, onTaskClicked: (Tasks) -> 
         if (plantsList != null) {
             items(plantsList.size) {
             Row(modifier = Modifier.padding(15.dp, 0.dp,0.dp, 20.dp)) {
-                Image(painter = painterResource(id = R.drawable.baseline_image_24),
-                      contentDescription = "plant image",
-                      modifier = Modifier
-                          .border(1.dp, color = Color.Black)
-                          .weight(1.1f)
-                          .height(95.dp)
-                              )
+                PlantCareImage(
+                    imageUrl = plantsList[it].first!!.photo ?: R.drawable.placeholderimage,
+                    contentDescription = stringResource(id = R.string.plants_photo_description),
+                    modifier = Modifier
+                        .border(1.dp, color = Color.Black)
+                        .weight(1.2f)
+                        .height(95.dp)
+                )
+              //  Image(painter = painterResource(id = R.drawable.baseline_image_24),
+              //        contentDescription = "plant image",
+              //        modifier = Modifier
+              //            .border(1.dp, color = Color.Black)
+              //            .weight(1.1f)
+              //            .height(95.dp)
+              //                )
                 Column(modifier = Modifier
                     .weight(3f)
                     .padding(10.dp, 0.dp, 0.dp, 0.dp),

@@ -78,6 +78,7 @@ fun NavGraphBuilder.addPlantGraph(
     controller : NavHostController,
     navigateWithinPlantDetails: (String, Long, NavBackStackEntry) -> Unit,
     upPress: () -> Unit,
+    navigateBackToGallery : (NavBackStackEntry) -> Unit,
     modifier: Modifier = Modifier
 ) {
     navigation(
@@ -137,6 +138,7 @@ fun NavGraphBuilder.addPlantGraph(
             PlantCreationEdit(
                 plantId = plantId,
                 onNavigateToDetail = { route, id -> navigateWithinPlantDetails(route, id, from) },
+                navigateBackToGallery = { navigateBackToGallery(from) },
                 upPress = upPress,
                 viewModel = plantDetailsViewModel
             )

@@ -64,6 +64,7 @@ import com.example.plantcare.ui.components.PlantCareImage
 import com.example.plantcare.ui.components.PlantCareSnackbar
 import com.example.plantcare.ui.components.PlantCareUpPress
 import com.example.plantcare.ui.components.TextInputRow
+import com.example.plantcare.ui.navigation.HomeSections
 import com.example.plantcare.ui.utils.getTypesOfPlantsList
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
@@ -78,6 +79,7 @@ import java.io.File
 fun PlantCreationEdit(
     plantId: Long,
     onNavigateToDetail: (String, Long) -> Unit,
+    navigateBackToGallery : () -> Unit,
     upPress: () -> Unit,
     viewModel: PlantDetailsViewModel
 ) {
@@ -126,6 +128,7 @@ fun PlantCreationEdit(
                 onSave = viewModel::savePlant,
                 onDelete = viewModel::deletePlant,
                 onNavigateToDetail = onNavigateToDetail,
+                navigateBackToGallery = navigateBackToGallery,
                 goBack = upPress
             )
         }
@@ -141,6 +144,7 @@ fun PlantCreationEditForm(
     onSave: (Plants) -> Unit,
     onDelete: (Plants) -> Unit,
     onNavigateToDetail: (String, Long) -> Unit,
+    navigateBackToGallery : () -> Unit,
     goBack: () -> Unit){
 
     //TODO delete log
@@ -203,7 +207,10 @@ fun PlantCreationEditForm(
             activeSeason = plant.currentSeason,
             isEdit = isEdit,
             onSeasonChange = { plant.currentSeason = it},
-            onNavigateToDetail = onNavigateToDetail
+            onNavigateToDetail = onNavigateToDetail,
+            modifier = Modifier
+                .height(300.dp)
+                .fillMaxWidth()
         )
         SavePlant(
             onButtonClick = { onSave(it) },
@@ -217,7 +224,7 @@ fun PlantCreationEditForm(
             DeletePlant(
                 plant = plant,
                 onButtonClick = onDelete,
-                goBack = goBack)
+                navigateBackToGallery = navigateBackToGallery)
         }
     }
 }
@@ -415,10 +422,11 @@ fun deletePreviousPhoto(context: Context, uri: Uri){
 fun DeletePlant(
     plant: Plants,
     onButtonClick: (Plants) -> Unit,
-    goBack: () -> Unit){
+    navigateBackToGallery : () -> Unit
+){
     Button(onClick = {
         onButtonClick(plant)
-        goBack()
+        navigateBackToGallery()
     }) {
         Text(text = "delete")
     }

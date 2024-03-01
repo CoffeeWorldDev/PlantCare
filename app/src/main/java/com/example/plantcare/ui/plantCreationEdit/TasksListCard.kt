@@ -41,15 +41,14 @@ fun TasksListCard(
     activeSeason : String,
     isEdit : Boolean,
     onSeasonChange: (String) -> Unit,
-    onNavigateToDetail: (String, Long) -> Unit
+    onNavigateToDetail: (String, Long) -> Unit,
+    modifier: Modifier
 ) {
     var currentSeason by remember(activeSeason) { mutableStateOf(activeSeason) }
     val activeTasks: MutableList<Tasks> = mutableListOf()
      //Log.e("task", tasks.toString())
     Column(
-        modifier = Modifier
-            .height(300.dp)
-            .fillMaxWidth(),
+        modifier = modifier,
         verticalArrangement = Arrangement.SpaceEvenly,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {

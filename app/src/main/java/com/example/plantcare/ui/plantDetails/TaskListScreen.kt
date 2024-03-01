@@ -80,6 +80,7 @@ fun TaskListScreen(
     val activeTasks = remember {
         mutableStateListOf<Tasks>()
     }
+    activeTasks.clear()
     tasks?.forEach {task ->
         if (task.currentSeason == plant.currentSeason && !activeTasks.contains(task)) {
             activeTasks.add(task)
@@ -137,7 +138,9 @@ fun TaskListScreen(
                     snackbarHostState = snackbarHostState,
                     onCreate = {
                         viewModel.createTask(it)
-                        activeTasks.add(it)
+                        if(!plantEditCreationUiState.isEdit) {
+                            activeTasks.add(it)
+                        }
                         isCreateNewOpen = false
                     }
                 )

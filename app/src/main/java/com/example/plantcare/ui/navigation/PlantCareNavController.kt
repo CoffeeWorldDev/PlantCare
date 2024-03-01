@@ -63,7 +63,7 @@ class PlantCareNavController(
             }
         }
     }
-    //TODO delete one of these they're basically the same thing
+    //todo delete one of these they're basically the same thing
     fun navigateWithinPlantDetails(
         route : String,
         plantId: Long,
@@ -80,6 +80,13 @@ class PlantCareNavController(
         // In order to discard duplicated navigation events, we check the Lifecycle
         if (from.lifecycleIsResumed()) {
             navController.navigate("${PlantSections.EDIT_CREATE.route}/$plantId")
+        }
+    }
+
+    fun navigateBackToGallery(from: NavBackStackEntry) {
+        // In order to discard duplicated navigation events, we check the Lifecycle
+        if (from.lifecycleIsResumed()) {
+            navController.navigate(HomeSections.GALLERY.route)
         }
     }
 }
