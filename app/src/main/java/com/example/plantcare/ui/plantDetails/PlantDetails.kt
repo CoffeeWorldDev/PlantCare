@@ -114,10 +114,13 @@ fun PlantDetails(
                     .fillMaxWidth()
             )
             PlantDetailsNotes(
+                plantId = state.plant.plantsId,
                 state.plant.notes!!,
+                onNavigateToDetail = onNavigateToDetail,
                 modifier = Modifier
                     .height(300.dp)
                     .fillMaxWidth()
+                    .padding(bottom = 23.dp)
             )
         }
         PlantCareButton(

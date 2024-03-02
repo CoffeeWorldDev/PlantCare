@@ -31,4 +31,5 @@
 
     <!-- Messages -->
     <string name="empty_task_list">You haven\'t set any\ntask for this plant yet</string>
+    <string name="empty_notes_list">You haven\'t written any\nnote for this plant yet</string>
 </resources>

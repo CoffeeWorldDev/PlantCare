@@ -65,6 +65,7 @@ import com.example.plantcare.ui.components.PlantCareSnackbar
 import com.example.plantcare.ui.components.PlantCareUpPress
 import com.example.plantcare.ui.components.TextInputRow
 import com.example.plantcare.ui.navigation.HomeSections
+import com.example.plantcare.ui.utils.PlantCareAlertDialog
 import com.example.plantcare.ui.utils.getTypesOfPlantsList
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
@@ -83,6 +84,7 @@ fun PlantCreationEdit(
     upPress: () -> Unit,
     viewModel: PlantDetailsViewModel
 ) {
+
     val lifecycleOwner = LocalLifecycleOwner.current
 
     LaunchedEffect(Unit) {
@@ -131,6 +133,7 @@ fun PlantCreationEdit(
                 navigateBackToGallery = navigateBackToGallery,
                 goBack = upPress
             )
+
         }
     }
 }
@@ -149,6 +152,7 @@ fun PlantCreationEditForm(
 
     //TODO delete log
     //Log.e("PLANT ui state", plant.toString())
+    var showDialog by remember { mutableStateOf(false) }
 
     val currentPhoto = plant.photo!!.toUri()
     //Log.e("current photo saved", currentPhoto.toString())
@@ -221,11 +225,27 @@ fun PlantCreationEditForm(
             isError = { isFormInvalid = it }
         )
         if(isEdit){
+            //TODO clean up to fit the new ver with dialog
             DeletePlant(
                 plant = plant,
-                onButtonClick = onDelete,
+                onButtonClick = {
+                    showDialog = true
+                   // onDelete
+                },
                 navigateBackToGallery = navigateBackToGallery)
         }
+        PlantCareAlertDialog(
+            title = "title",
+            message = "message",
+            cancelText = "cancel",
+            confirmText = "confirm",
+            isVisible = showDialog,
+            onConfirm = {
+                        onDelete(plant)
+                        navigateBackToGallery()
+                        showDialog = false
+            },
+            onDismiss = {showDialog = false})
     }
 }
 
@@ -426,7 +446,7 @@ fun DeletePlant(
 ){
     Button(onClick = {
         onButtonClick(plant)
-        navigateBackToGallery()
+       // navigateBackToGallery()
     }) {
         Text(text = "delete")
     }
