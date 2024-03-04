@@ -122,6 +122,12 @@ fun PlantDetails(
                     .fillMaxWidth()
                     .padding(bottom = 23.dp)
             )
+         //   if(showDialog){
+         //       NotesDialog(
+         //
+         //       )
+         //   }
+
         }
         PlantCareButton(
             label = "edit",

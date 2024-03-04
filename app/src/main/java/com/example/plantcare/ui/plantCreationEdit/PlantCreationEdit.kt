@@ -27,14 +27,13 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountBox
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -64,7 +63,7 @@ import com.example.plantcare.ui.components.PlantCareImage
 import com.example.plantcare.ui.components.PlantCareSnackbar
 import com.example.plantcare.ui.components.PlantCareUpPress
 import com.example.plantcare.ui.components.TextInputRow
-import com.example.plantcare.ui.navigation.HomeSections
+import com.example.plantcare.ui.plantDetails.PlantCareButton
 import com.example.plantcare.ui.utils.PlantCareAlertDialog
 import com.example.plantcare.ui.utils.getTypesOfPlantsList
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
@@ -152,12 +151,14 @@ fun PlantCreationEditForm(
 
     //TODO delete log
     //Log.e("PLANT ui state", plant.toString())
-    var showDialog by remember { mutableStateOf(false) }
+    var showConfirmationDialog by remember { mutableStateOf(false) }
 
     val currentPhoto = plant.photo!!.toUri()
     //Log.e("current photo saved", currentPhoto.toString())
     //Log.e("new photo saved", plant.photo.toString())
     //Log.e("new other saved", plant.species.toString())
+
+    var bottomArrangment = if (isEdit){Arrangement.SpaceBetween} else {Arrangement.End}
 
     var isFormInvalid by remember {
         mutableStateOf(false)
@@ -216,36 +217,44 @@ fun PlantCreationEditForm(
                 .height(300.dp)
                 .fillMaxWidth()
         )
+
+        PlantCareAlertDialog(
+            title = stringResource(id = R.string.delete_plant_title),
+            message = stringResource(id = R.string.delete_plant_message),
+            isVisible = showConfirmationDialog,
+            onConfirm = {
+                        onDelete(plant)
+                        deletePhotoFromDb(plant.photo?.toUri())
+                        navigateBackToGallery()
+                        showConfirmationDialog = false
+            },
+            onDismiss = {showConfirmationDialog = false})
+    }
+    Row(
+        horizontalArrangement = bottomArrangment,
+        modifier = Modifier
+            .padding(top = 30.dp, bottom = 15.dp)
+            .fillMaxWidth()
+    ) {
+        if(isEdit){
+            //TODO clean up to fit the new ver with dialog
+            DeletePlant(
+                plant = plant,
+                onButtonClick = {
+                    showConfirmationDialog = true
+                },
+                modifier = Modifier.align(Alignment.CenterVertically)
+            )
+        }
         SavePlant(
             onButtonClick = { onSave(it) },
             snackbarHostState,
             plant = plant,
             goBack = goBack,
             currentlySavedPhoto = currentPhoto,
-            isError = { isFormInvalid = it }
+            isError = { isFormInvalid = it },
+            modifier = Modifier.align(Alignment.CenterVertically)
         )
-        if(isEdit){
-            //TODO clean up to fit the new ver with dialog
-            DeletePlant(
-                plant = plant,
-                onButtonClick = {
-                    showDialog = true
-                   // onDelete
-                },
-                navigateBackToGallery = navigateBackToGallery)
-        }
-        PlantCareAlertDialog(
-            title = "title",
-            message = "message",
-            cancelText = "cancel",
-            confirmText = "confirm",
-            isVisible = showDialog,
-            onConfirm = {
-                        onDelete(plant)
-                        navigateBackToGallery()
-                        showDialog = false
-            },
-            onDismiss = {showDialog = false})
     }
 }
 
@@ -425,13 +434,15 @@ fun saveImageToInternalStorage(context: Context, uri: Uri) : String {
     Log.e("file", file.exists().toString())
     return file.path.toString()
 }
-fun deletePreviousPhoto(context: Context, uri: Uri){
-    val fdelete = File(uri.path.toString())
-    if (fdelete.exists()) {
-        if (fdelete.delete()) {
-            System.out.println("file Deleted :" + uri.path)
-        } else {
-            System.out.println("file not Deleted :" + uri.path)
+fun deletePhotoFromDb(uri: Uri?){
+    val fdelete = File(uri?.path.toString())
+    if (uri != null) {
+        if (fdelete.exists()) {
+            if (fdelete.delete()) {
+                println("file Deleted :" + uri.path)
+            } else {
+                println("file not Deleted :" + uri.path)
+            }
         }
     }
 }
@@ -442,14 +453,13 @@ fun deletePreviousPhoto(context: Context, uri: Uri){
 fun DeletePlant(
     plant: Plants,
     onButtonClick: (Plants) -> Unit,
-    navigateBackToGallery : () -> Unit
+    modifier: Modifier
 ){
-    Button(onClick = {
-        onButtonClick(plant)
-       // navigateBackToGallery()
-    }) {
-        Text(text = "delete")
-    }
+    PlantCareIconButton(
+        iconImage = Icons.Filled.Delete,
+        contentDescription = R.string.delete_plant_icon,
+        onClick = { onButtonClick(plant) },
+        modifier = modifier)
 }
 
 @Composable
@@ -458,33 +468,57 @@ fun SavePlant(onButtonClick: (Plants) -> Unit,
               goBack: () -> Unit,
               plant: Plants,
               currentlySavedPhoto : Uri,
-              isError : (Boolean) -> Unit
+              isError : (Boolean) -> Unit,
+              modifier: Modifier
 ){
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
-    Log.e("worked",plant.photo!!)
-    Log.e("worked",currentlySavedPhoto.toString())
-    Button(onClick = {
-        if (plant.name == ""){
-            scope.launch {
-                snackbarHostState.showSnackbar(context.resources.getString(R.string.form_not_valid))
+    PlantCareButton(
+        label = "save",
+        onButtonClick = {
+            if (plant.name == ""){
+                scope.launch {
+                    snackbarHostState.showSnackbar(context.resources.getString(R.string.form_not_valid))
+                }
+                isError(true)
+            } else {
+                if (plant.photo != "" && plant.photo != currentlySavedPhoto.toString()){
+                    Log.e("worked","if started to save image")
+                    Log.e("worked",plant.photo!!)
+                    Log.e("worked",currentlySavedPhoto.toString())
+                    plant.photo = saveImageToInternalStorage(context, plant.photo!!.toUri())
+                }
+                onButtonClick(plant)
+                if(plant.photo != "" && plant.photo != currentlySavedPhoto.toString()){
+                    deletePhotoFromDb(currentlySavedPhoto)
+                    Log.e("worked","if started to delete image")
+                }
+                goBack()
             }
-            isError(true)
-        } else {
-            if (plant.photo != "" && plant.photo != currentlySavedPhoto.toString()){
-                Log.e("worked","if started to save image")
-                Log.e("worked",plant.photo!!)
-                Log.e("worked",currentlySavedPhoto.toString())
-                plant.photo = saveImageToInternalStorage(context, plant.photo!!.toUri())
-            }
-            onButtonClick(plant)
-            if(plant.photo != "" && plant.photo != currentlySavedPhoto.toString()){
-                deletePreviousPhoto(context, currentlySavedPhoto)
-                Log.e("worked","if started to delete image")
-            }
-            goBack()
-        }
-    }) {
-        Text(text = "click")
-    }
+        },
+        modifier = modifier)
+ //   Button(onClick = {
+ //       if (plant.name == ""){
+ //           scope.launch {
+ //               snackbarHostState.showSnackbar(context.resources.getString(R.string.form_not_valid))
+ //           }
+ //           isError(true)
+ //       } else {
+ //           if (plant.photo != "" && plant.photo != currentlySavedPhoto.toString()){
+ //               Log.e("worked","if started to save image")
+ //               Log.e("worked",plant.photo!!)
+ //               Log.e("worked",currentlySavedPhoto.toString())
+ //               plant.photo = saveImageToInternalStorage(context, plant.photo!!.toUri())
+ //           }
+ //           onButtonClick(plant)
+ //           if(plant.photo != "" && plant.photo != currentlySavedPhoto.toString()){
+ //               deletePhotoFromDb(currentlySavedPhoto)
+ //               Log.e("worked","if started to delete image")
+ //           }
+ //           goBack()
+ //       }
+ //   },
+ //       modifier = modifier) {
+ //       Text(text = "save")
+ //   }
 }
