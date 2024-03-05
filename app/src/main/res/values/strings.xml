@@ -29,6 +29,7 @@
     <string name="open_close_task_icon">open or close task card</string>
     <string name="task_icon_animation">close and open task icon animation</string>
     <string name="delete_plant_icon">delete plant button</string>
+    <string name="close_btn">close button</string>
 
     <!-- Messages -->
     <string name="empty_task_list">You haven\'t set any\ntask for this plant yet</string>

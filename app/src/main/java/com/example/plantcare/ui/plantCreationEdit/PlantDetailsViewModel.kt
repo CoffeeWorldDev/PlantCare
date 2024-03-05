@@ -22,7 +22,7 @@ import javax.inject.Inject
 
 data class PlantCreationEditUiState(
     val plant: Plants = Plants(0, "", "", "", "", GetDateInMillis(), "",
-        mapOf("" to ""), "summer"),
+        "", "summer"),
     val tasks: List<Tasks>? = emptyList(),
     val photo : String = "",
     val isLoading: Boolean = false,

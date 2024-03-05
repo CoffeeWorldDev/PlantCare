@@ -151,7 +151,7 @@ fun PlantCreationEditForm(
 
     //TODO delete log
     //Log.e("PLANT ui state", plant.toString())
-    var showConfirmationDialog by remember { mutableStateOf(false) }
+    var showDialog by remember { mutableStateOf(false) }
 
     val currentPhoto = plant.photo!!.toUri()
     //Log.e("current photo saved", currentPhoto.toString())
@@ -221,14 +221,14 @@ fun PlantCreationEditForm(
         PlantCareAlertDialog(
             title = stringResource(id = R.string.delete_plant_title),
             message = stringResource(id = R.string.delete_plant_message),
-            isVisible = showConfirmationDialog,
+            isVisible = showDialog,
             onConfirm = {
                         onDelete(plant)
                         deletePhotoFromDb(plant.photo?.toUri())
                         navigateBackToGallery()
-                        showConfirmationDialog = false
+                        showDialog = false
             },
-            onDismiss = {showConfirmationDialog = false})
+            onDismiss = {showDialog = false})
     }
     Row(
         horizontalArrangement = bottomArrangment,
@@ -241,7 +241,7 @@ fun PlantCreationEditForm(
             DeletePlant(
                 plant = plant,
                 onButtonClick = {
-                    showConfirmationDialog = true
+                    showDialog = true
                 },
                 modifier = Modifier.align(Alignment.CenterVertically)
             )

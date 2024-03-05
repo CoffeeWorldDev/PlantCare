@@ -1,7 +1,6 @@
 package com.example.plantcare.ui.plantDetails
 
 import android.annotation.SuppressLint
-import android.net.Uri
 import android.util.Log
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -20,8 +19,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.State
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -43,22 +40,17 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.repeatOnLifecycle
 import com.example.plantcare.R
 import com.example.plantcare.data.model.Plants
 import com.example.plantcare.ui.components.PlantCareImage
 import com.example.plantcare.ui.navigation.PlantSections
-import com.example.plantcare.ui.plantCreationEdit.PlantCreationEditUiState
 import com.example.plantcare.ui.plantCreationEdit.PlantDetailsViewModel
 import com.example.plantcare.ui.plantCreationEdit.TasksListCard
 import com.example.plantcare.ui.utils.TitlesBackgroundShape
 import com.example.plantcare.ui.utils.getElapsedTime
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @SuppressLint("SuspiciousIndentation")
@@ -71,6 +63,7 @@ fun PlantDetails(
 ) {
 
     val lifecycleOwner = LocalLifecycleOwner.current
+    var showDialog by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         Log.e("empty screen log", "???")
@@ -117,16 +110,19 @@ fun PlantDetails(
                 plantId = state.plant.plantsId,
                 state.plant.notes!!,
                 onNavigateToDetail = onNavigateToDetail,
+                showDialog = {showDialog = true},
                 modifier = Modifier
                     .height(300.dp)
                     .fillMaxWidth()
                     .padding(bottom = 23.dp)
             )
-         //   if(showDialog){
-         //       NotesDialog(
-         //
-         //       )
-         //   }
+            if(showDialog){
+                NotesDialog(
+                    notes = state.plant.notes,
+                    closeDialog = {showDialog = false},
+                    save = {}
+                )
+            }
 
         }
         PlantCareButton(

@@ -12,22 +12,13 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -35,18 +26,15 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.plantcare.R
-import com.example.plantcare.data.model.Tasks
-import com.example.plantcare.ui.navigation.PlantSections
 import com.example.plantcare.ui.utils.AddFloatingBtn
 import com.example.plantcare.ui.utils.EmptyListMsg
-import com.example.plantcare.ui.utils.ReadOnlyTaskList
-import com.example.plantcare.ui.utils.SeasonsSegmentedButton
 
 @Composable
 fun PlantDetailsNotes(
     plantId: Long,
-    notes: Map<String, String>,
+    notes: String,
     onNavigateToDetail: (String, Long) -> Unit,
+    showDialog: () -> Unit,
     modifier: Modifier
 ){
     Column(
@@ -84,10 +72,11 @@ fun PlantDetailsNotes(
             }
             AddFloatingBtn(
                 onClick = {
-                    onNavigateToDetail(
-                        PlantSections.NOTES.route,
-                        plantId
-                    )
+                  //  onNavigateToDetail(
+                  //      PlantSections.NOTES.route,
+                  //      plantId
+                  //  )
+                          showDialog()
                 },
                 modifier = Modifier
                     .padding(20.dp, 0.dp)
@@ -98,9 +87,9 @@ fun PlantDetailsNotes(
     }
 }
 
-
+//TODO change to string not map
 @Composable
-fun NotesList(notes: Map<String, String>) {
+fun NotesList(notes: String) {
     Column( modifier = Modifier
         .verticalScroll(rememberScrollState()) ){
         notes.forEach {

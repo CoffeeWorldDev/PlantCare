@@ -1,14 +1,22 @@
 package com.example.plantcare.ui.plantDetails
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.Button
+import androidx.compose.material3.Card
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -21,6 +29,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import com.example.plantcare.R
+import com.example.plantcare.ui.components.PlantCareIconButton
+import com.example.plantcare.ui.navigation.PlantSections
 
 @Composable
 fun NotesScreen(
@@ -36,36 +47,42 @@ fun NotesScreen(
 
 @Composable
 fun NotesDialog(
-    notes: Map<String, String>,
-    showDialog : Boolean
+    notes: Map<String, String>?,
+    //showDialog : Boolean,
+    closeDialog : () -> Unit,
+    save : () -> Unit
 ) {
-    var showDialog by remember { mutableStateOf(showDialog) }
- //   Column {
- //       Button(onClick = { showDialog = true }) {
- //           Text(text = "Click to Show Full Screen Dialog" )
- //       }
- //   }
-    if (showDialog) {
-        Dialog(onDismissRequest = {showDialog = false}, properties = DialogProperties(usePlatformDefaultWidth = false)) {
-            // Custom layout for the dialog
-            Surface(
-                modifier = Modifier.fillMaxSize(),
-                shape = RoundedCornerShape(0.dp),
-                color = Color.Yellow
+    Dialog(
+        onDismissRequest = {closeDialog()},
+        properties = DialogProperties(usePlatformDefaultWidth = false)
+    ) {
+        Card(
+            modifier = Modifier.fillMaxSize(0.97f)
+        ) {
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier.fillMaxWidth()
             ) {
-                Column(
-                    modifier = Modifier.padding(16.dp).fillMaxWidth(),
-                    horizontalAlignment = Alignment.CenterHorizontally
+                PlantCareIconButton(
+                    iconImage = Icons.Filled.Close,
+                    contentDescription = R.string.close_btn,
+                    onClick = { closeDialog() }
+                )
+                Text(
+                    text = "Notes"
+                )
+                TextButton(
+                    onClick = { /*TODO*/ }
                 ) {
-                    Text("This is a full screen dialog")
-                    Button(
-                        onClick = {showDialog = false},
-                        modifier = Modifier.padding(top = 16.dp)
-                    ) {
-                        Text("Close Dialog")
-                    }
+                    Text("save")
                 }
             }
+            TextField(
+                modifier = Modifier.fillMaxSize(),
+                //readOnly = true,
+                value = "currentDate",
+                onValueChange = {},
+            )
         }
     }
 }
