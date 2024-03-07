@@ -30,7 +30,7 @@ fun ReadOnlyTaskList(tasks: List<Tasks>){
                         textAlign = TextAlign.Center)
                 }
                 Text(
-                    text = "last time was:\n${tasks[it].daysUncompleted} days ago",
+                    text = "last time was:\n${getElapsedTime(tasks[it].lastCompleted)} days ago",
                     textAlign = TextAlign.Center,
                     modifier = Modifier
                         .weight(1f)

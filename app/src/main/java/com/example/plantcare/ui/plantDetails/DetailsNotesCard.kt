@@ -31,9 +31,7 @@ import com.example.plantcare.ui.utils.EmptyListMsg
 
 @Composable
 fun PlantDetailsNotes(
-    plantId: Long,
     notes: String,
-    onNavigateToDetail: (String, Long) -> Unit,
     showDialog: () -> Unit,
     modifier: Modifier
 ){
@@ -72,11 +70,7 @@ fun PlantDetailsNotes(
             }
             AddFloatingBtn(
                 onClick = {
-                  //  onNavigateToDetail(
-                  //      PlantSections.NOTES.route,
-                  //      plantId
-                  //  )
-                          showDialog()
+                    showDialog()
                 },
                 modifier = Modifier
                     .padding(20.dp, 0.dp)
@@ -92,24 +86,13 @@ fun PlantDetailsNotes(
 fun NotesList(notes: String) {
     Column( modifier = Modifier
         .verticalScroll(rememberScrollState()) ){
-        notes.forEach {
-            Column(verticalArrangement = Arrangement.Top,) {
-                Text(
-                    text = "${it.key}\n\n${it.value}",
-                    textAlign = TextAlign.Start,
-                    modifier = Modifier
-                        .padding(15.dp, 10.dp)
-                        .fillMaxWidth()
-                )
-                if(it != notes.entries.last()) {
-                    Divider(
-                        thickness = 1.dp,
-                        modifier = Modifier.padding(7.dp, 2.dp)
-                    )
-                } else {
-                    Spacer(modifier = Modifier.height(30.dp))
-                }
-            }
-        }
+        Text(
+            text = notes,
+            textAlign = TextAlign.Start,
+            modifier = Modifier
+                .padding(15.dp, 10.dp)
+                .fillMaxWidth()
+        )
+        Spacer(modifier = Modifier.height(30.dp))
     }
 }

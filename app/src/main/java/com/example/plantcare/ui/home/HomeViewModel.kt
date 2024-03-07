@@ -6,7 +6,7 @@ import com.example.plantcare.data.model.Plants
 import com.example.plantcare.data.model.Tasks
 import com.example.plantcare.domain.repository.PlantsRepository
 import com.example.plantcare.domain.repository.TasksRepository
-import com.example.plantcare.ui.utils.ChangeTaskToInactive
+import com.example.plantcare.ui.utils.changeTaskToInactive
 import com.example.plantcare.ui.utils.GetDateInMillis
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -53,7 +53,7 @@ class HomeViewModel @Inject constructor (
 
 
     fun updateTask(task: Tasks) = viewModelScope.launch {
-        var taskToUpdate = ChangeTaskToInactive(task, GetDateInMillis())
+        var taskToUpdate = changeTaskToInactive(task, GetDateInMillis())
         tasksRepository.updateTasks(taskToUpdate)
     }
 }

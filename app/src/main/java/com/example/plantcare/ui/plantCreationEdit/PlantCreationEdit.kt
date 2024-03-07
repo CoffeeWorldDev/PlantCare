@@ -99,8 +99,8 @@ fun PlantCreationEdit(
     //Log.e("PLANT ui state photo", plantEditCreationUiState.photo.toString())
     //todo delete
     if (state.tasks?.isEmpty() == false){
-        val test = state.tasks?.get(0)
-        Log.e("TASK", test!!.currentSeason)
+        val test = state.tasks!![0]
+        Log.e("TASK", test.toString())
     }
     // Log.e("TASK", viewModel.getAllTasks().toString())
     val snackbarHostState = remember { SnackbarHostState() }

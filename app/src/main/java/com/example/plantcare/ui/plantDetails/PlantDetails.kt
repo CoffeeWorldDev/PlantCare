@@ -75,23 +75,21 @@ fun PlantDetails(
     }
 
     val state by viewModel.uiState.collectAsStateWithLifecycle()
-    val plant by remember { mutableStateOf(state.plant) }
-    val tasks by remember { mutableStateOf(state.tasks) }
-    Log.e("PLANT DETAIL", plant.toString())
+
 
     val scrollState = rememberScrollState()
     //TODO modify the parameter
     Column(
         verticalArrangement = Arrangement.Top,
         modifier = Modifier
-            //.verticalScroll(scrollState)
+            .verticalScroll(scrollState)
     ) {
         PlantDetailsScreenTop(
             state.plant
         )
         Column(
             modifier = Modifier
-           .verticalScroll(scrollState)
+           //.verticalScroll(scrollState)
            .fillMaxHeight()
         ) {
             //todo move it in its own file
@@ -107,9 +105,7 @@ fun PlantDetails(
                     .fillMaxWidth()
             )
             PlantDetailsNotes(
-                plantId = state.plant.plantsId,
                 state.plant.notes!!,
-                onNavigateToDetail = onNavigateToDetail,
                 showDialog = {showDialog = true},
                 modifier = Modifier
                     .height(300.dp)
@@ -120,10 +116,12 @@ fun PlantDetails(
                 NotesDialog(
                     notes = state.plant.notes,
                     closeDialog = {showDialog = false},
-                    save = {}
+                    onSave = {
+                        state.plant.notes = it
+                        viewModel.savePlant(state.plant)
+                    }
                 )
             }
-
         }
         PlantCareButton(
             label = "edit",
