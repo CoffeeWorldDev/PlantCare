@@ -1,6 +1,5 @@
 package com.example.plantcare.ui.plantsGallery
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -18,36 +17,34 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.example.plantcare.R
 import com.example.plantcare.data.model.Plants
-import com.example.plantcare.data.model.Tasks
 import com.example.plantcare.ui.components.PlantCareImage
 import com.example.plantcare.ui.navigation.PlantSections
 import com.example.plantcare.ui.utils.getElapsedTime
 
 
 @Composable
-fun PlantsGalleryBodyVerL1(plants: Map<Plants?, List<Tasks>>?,
-                           onPlantClick: (String, Long) -> Unit,
-                           modifier: Modifier) {
-    val plantsList = plants?.toList()
+fun PlantsGalleryBodyVerL1(
+    plants: List<Plants>,
+    onPlantClick: (String, Long) -> Unit,
+    modifier: Modifier) {
+    //val plantsList = plants?.toList()
     val headlineLarge = MaterialTheme.typography.headlineLarge
-    LazyColumn(){ items(plantsList!!.size) {
+    LazyColumn(){ items(plants.size) {
         Row(modifier = Modifier
             .padding(15.dp, 0.dp, 0.dp, 20.dp)
             .clickable(
                 onClick = {
                     onPlantClick(
                         PlantSections.PLANT.route,
-                        plantsList[it].first!!.plantsId
+                        plants[it].plantsId
                     )
                 }
             )
         ) {
-            PlantCareImage(imageUrl = plantsList[it].first!!.photo!!,
+            PlantCareImage(imageUrl = plants[it].photo!!,
                 contentDescription = "plant image",
                 modifier = Modifier
                     .border(1.dp, color = Color.Black)
@@ -58,7 +55,7 @@ fun PlantsGalleryBodyVerL1(plants: Map<Plants?, List<Tasks>>?,
                 .weight(3f)
                 .padding(10.dp, 0.dp, 0.dp, 0.dp),
                 horizontalAlignment = Alignment.End) {
-                Text(text = plantsList[it].first!!.name,
+                Text(text = plants[it].name,
                     modifier = Modifier
                         .padding(0.dp, 0.dp, 10.dp, 0.dp)
                         .fillMaxWidth(),
@@ -70,18 +67,18 @@ fun PlantsGalleryBodyVerL1(plants: Map<Plants?, List<Tasks>>?,
                     modifier = Modifier
                         .padding(0.dp, 0.dp, 10.dp, 0.dp)
                         .fillMaxWidth()) {
-                    plantsList[it].first!!.age?.let { it1 ->
+                    plants[it].age?.let { it1 ->
                         Text(text = "${getElapsedTime(it1)} days old" ,
                             modifier = Modifier)
                     }
-                    plantsList[it].first!!.type?.let { it1 ->
+                    plants[it].type?.let { it1 ->
                         Text(text = it1,
                             modifier = Modifier)
                     }
                 }
             }
         }
-        if(it == plantsList!!.size-1){
+        if(it == plants.size-1){
             Spacer(modifier = Modifier.padding(0.dp, 0.dp,0.dp, 35.dp))
         }
     }

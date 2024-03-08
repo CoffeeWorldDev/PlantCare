@@ -14,19 +14,17 @@ data class Plants(
     var name : String,
     //TODO implement type
     @ColumnInfo(name = "Plant_type")
-    var type : String?,
+    var type : String,
     @ColumnInfo(name = "Plant_species")
-    var species : String?,
+    var species : String,
     @ColumnInfo(name = "Plant_position")
-    var position : String?,
+    var position : String,
     @ColumnInfo(name = "Plant_birthday")
-    var age : Date?,
+    var age : Date,
     @ColumnInfo(name = "Plant_photo")
-    var photo : String?,
+    var photo : String,
     @ColumnInfo(name = "Plant_notes")
-    var notes : String?,
-    //@ColumnInfo(name = "Tasks")
-    //var tasks: List<Tasks>?,
+    var notes : String,
     @ColumnInfo(name = "Plant_current_season")
     var currentSeason: String
 )
