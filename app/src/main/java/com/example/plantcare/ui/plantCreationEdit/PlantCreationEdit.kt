@@ -153,12 +153,12 @@ fun PlantCreationEditForm(
     //Log.e("PLANT ui state", plant.toString())
     var showDialog by remember { mutableStateOf(false) }
 
-    val currentPhoto = plant.photo!!.toUri()
+    val currentPhoto = plant.photo.toUri()
     //Log.e("current photo saved", currentPhoto.toString())
     //Log.e("new photo saved", plant.photo.toString())
     //Log.e("new other saved", plant.species.toString())
 
-    var bottomArrangment = if (isEdit){Arrangement.SpaceBetween} else {Arrangement.End}
+    val bottomArrangement = if (isEdit){Arrangement.SpaceBetween} else {Arrangement.End}
 
     var isFormInvalid by remember {
         mutableStateOf(false)
@@ -167,7 +167,7 @@ fun PlantCreationEditForm(
     Column(horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.padding(15.dp, 0.dp)) {
         ImageBlock(
-            photo = plant.photo?.toUri(),
+            photo = plant.photo.toUri(),
             snackbarHostState = snackbarHostState
         ) {
             if (it != null) {
@@ -184,26 +184,26 @@ fun PlantCreationEditForm(
         )
         TextInputRow(
             label = "Species",
-            value = plant.species!!,
+            value = plant.species,
             onTextChanged = { plant.species = it},
             modifier = Modifier
         )
         DropdownMenuRow(
             label = "Type",
-            value = plant.type!!,
+            value = plant.type,
             onSelect = { plant.type = it},
             options = getTypesOfPlantsList().map { it.name },
             modifier = Modifier
         )
         TextInputRow(
             label = "Position",
-            value = plant.position!!,
+            value = plant.position,
             onTextChanged = { plant.position = it},
             modifier = Modifier
         )
         DatePickerMenuRow(
-            label = "birthday",
-            value = plant.age!!,
+            label = "With you since",
+            value = plant.age,
             onSelect = { plant.age = it},
             modifier = Modifier)
         TasksListCard(
@@ -224,14 +224,14 @@ fun PlantCreationEditForm(
             isVisible = showDialog,
             onConfirm = {
                         onDelete(plant)
-                        deletePhotoFromDb(plant.photo?.toUri())
+                        deletePhotoFromDb(plant.photo.toUri())
                         navigateBackToGallery()
                         showDialog = false
             },
             onDismiss = {showDialog = false})
     }
     Row(
-        horizontalArrangement = bottomArrangment,
+        horizontalArrangement = bottomArrangement,
         modifier = Modifier
             .padding(top = 30.dp, bottom = 15.dp)
             .fillMaxWidth()
@@ -270,7 +270,7 @@ fun ImageBlock(
     val context = LocalContext.current
 
     var photoUri by remember(photo) {
-        mutableStateOf<Uri?>(
+        mutableStateOf(
             if (photo.toString() == ""){null} else {photo}
         )
     }
@@ -320,7 +320,7 @@ fun ImageBlock(
     ) {
         PlantCareImage(
             imageUrl = photoUri ?: R.drawable.placeholderimage,
-            contentDescription = stringResource(id = R.string.plants_photo_description),
+            contentDescription = stringResource(id = R.string.missing_photo_description),
             modifier = Modifier
                 .height(250.dp)
                 .width(250.dp)
@@ -435,10 +435,10 @@ fun saveImageToInternalStorage(context: Context, uri: Uri) : String {
     return file.path.toString()
 }
 fun deletePhotoFromDb(uri: Uri?){
-    val fdelete = File(uri?.path.toString())
+    val fileToDelete = File(uri?.path.toString())
     if (uri != null) {
-        if (fdelete.exists()) {
-            if (fdelete.delete()) {
+        if (fileToDelete.exists()) {
+            if (fileToDelete.delete()) {
                 println("file Deleted :" + uri.path)
             } else {
                 println("file not Deleted :" + uri.path)
@@ -484,9 +484,9 @@ fun SavePlant(onButtonClick: (Plants) -> Unit,
             } else {
                 if (plant.photo != "" && plant.photo != currentlySavedPhoto.toString()){
                     Log.e("worked","if started to save image")
-                    Log.e("worked",plant.photo!!)
+                    Log.e("worked", plant.photo)
                     Log.e("worked",currentlySavedPhoto.toString())
-                    plant.photo = saveImageToInternalStorage(context, plant.photo!!.toUri())
+                    plant.photo = saveImageToInternalStorage(context, plant.photo.toUri())
                 }
                 onButtonClick(plant)
                 if(plant.photo != "" && plant.photo != currentlySavedPhoto.toString()){

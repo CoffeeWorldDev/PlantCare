@@ -1,6 +1,5 @@
 package com.example.plantcare.ui.home
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -20,7 +19,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -31,7 +29,11 @@ import com.example.plantcare.ui.components.PlantCareImage
 
 
 @Composable
-fun HomeMainBlock(plants: Map<Plants?, List<Tasks>>?, onTaskClicked: (Tasks) -> Unit){
+fun HomeMainBlock(
+    plants: Map<Plants?, List<Tasks>>?,
+    onPlantClick: (String, Long) -> Unit,
+    onTaskClicked: (Tasks) -> Unit
+){
     //modifier = Modifier.paddingFromBaseline(top = 24.dp, bottom = 8.dp),
     val plantsList = plants?.toList()
     val primaryColor = MaterialTheme.colorScheme.primary
@@ -45,7 +47,7 @@ fun HomeMainBlock(plants: Map<Plants?, List<Tasks>>?, onTaskClicked: (Tasks) -> 
             Row(modifier = Modifier.padding(15.dp, 0.dp,0.dp, 20.dp)) {
                 PlantCareImage(
                     imageUrl = plantsList[it].first!!.photo ?: R.drawable.placeholderimage,
-                    contentDescription = stringResource(id = R.string.plants_photo_description),
+                    contentDescription = stringResource(id = R.string.missing_photo_description),
                     modifier = Modifier
                         .border(1.dp, color = Color.Black)
                         .weight(1.2f)

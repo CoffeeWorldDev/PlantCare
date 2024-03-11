@@ -17,8 +17,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.example.plantcare.R
 import com.example.plantcare.data.model.Plants
 import com.example.plantcare.ui.components.PlantCareImage
 import com.example.plantcare.ui.navigation.PlantSections
@@ -28,13 +30,13 @@ import com.example.plantcare.ui.utils.getElapsedTime
 @Composable
 fun PlantsGalleryBodyVerL1(
     plants: List<Plants>,
-    onPlantClick: (String, Long) -> Unit,
-    modifier: Modifier) {
-    //val plantsList = plants?.toList()
+    onPlantClick: (String, Long) -> Unit
+) {
     val headlineLarge = MaterialTheme.typography.headlineLarge
-    LazyColumn(){ items(plants.size) {
-        Row(modifier = Modifier
-            .padding(15.dp, 0.dp, 0.dp, 20.dp)
+    LazyColumn { items(plants.size) {
+        Row(
+            modifier = Modifier
+            .padding(start = 15.dp, bottom = 20.dp)
             .clickable(
                 onClick = {
                     onPlantClick(
@@ -44,43 +46,56 @@ fun PlantsGalleryBodyVerL1(
                 }
             )
         ) {
-            PlantCareImage(imageUrl = plants[it].photo!!,
-                contentDescription = "plant image",
+            PlantCareImage(
+                imageUrl = plants[it].photo,
+                contentDescription = stringResource(id = R.string.photo_description),
                 modifier = Modifier
-                    .border(1.dp, color = Color.Black)
+                    .border(
+                        width = 1.dp,
+                        color = Color.Black)
                     .weight(1.1f)
                     .height(95.dp)
             )
-            Column(modifier = Modifier
+            Column(
+                modifier = Modifier
                 .weight(3f)
-                .padding(10.dp, 0.dp, 0.dp, 0.dp),
-                horizontalAlignment = Alignment.End) {
-                Text(text = plants[it].name,
+                .padding( start = 10.dp),
+                horizontalAlignment = Alignment.End
+            ) {
+                Text(
+                    text = plants[it].name,
                     modifier = Modifier
-                        .padding(0.dp, 0.dp, 10.dp, 0.dp)
+                        .padding(end = 10.dp)
                         .fillMaxWidth(),
                     style = headlineLarge,
-                    textAlign = TextAlign.Center)
-                Divider(thickness = 1.dp,
-                    modifier = Modifier.padding(0.dp, 0.dp,0.dp, 10.dp))
-                Row(horizontalArrangement = Arrangement.SpaceBetween,
+                    textAlign = TextAlign.Center
+                )
+                Divider(
+                    thickness = 1.dp,
+                    modifier = Modifier.padding(bottom = 10.dp)
+                )
+                Row(
+                    horizontalArrangement = Arrangement.SpaceBetween,
                     modifier = Modifier
-                        .padding(0.dp, 0.dp, 10.dp, 0.dp)
-                        .fillMaxWidth()) {
-                    plants[it].age?.let { it1 ->
-                        Text(text = "${getElapsedTime(it1)} days old" ,
-                            modifier = Modifier)
-                    }
-                    plants[it].type?.let { it1 ->
-                        Text(text = it1,
-                            modifier = Modifier)
-                    }
+                        .padding(end = 10.dp)
+                        .fillMaxWidth()
+                ) {
+                    Text(
+                        text = "${getElapsedTime(plants[it].age)} days old" ,
+                        modifier = Modifier
+                    )
+                    Text(
+                        text = plants[it].type,
+                        modifier = Modifier
+                    )
                 }
             }
         }
-        if(it == plants.size-1){
-            Spacer(modifier = Modifier.padding(0.dp, 0.dp,0.dp, 35.dp))
+            if(it == plants.size-1){
+                Spacer(
+                    modifier = Modifier.padding(bottom = 35.dp)
+                )
+            }
         }
-    }
     }
 }

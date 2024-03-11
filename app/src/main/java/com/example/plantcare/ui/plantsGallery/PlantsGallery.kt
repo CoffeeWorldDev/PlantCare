@@ -45,15 +45,11 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.repeatOnLifecycle
 import com.example.plantcare.data.model.Plants
-import com.example.plantcare.data.model.Tasks
 import com.example.plantcare.ui.navigation.HomeSections
 import com.example.plantcare.ui.navigation.PlantCareBottomBar
 import com.example.plantcare.ui.utils.AddFloatingBtn
 import com.example.plantcare.ui.utils.TitlesBackgroundShape
 import kotlinx.coroutines.launch
-
-//TODO delete
-val column : Int = 2
 
 @Composable
 fun PlantsGallery(onPlantClick: (String, Long) -> Unit,
@@ -107,25 +103,44 @@ fun PlantsGallery(onPlantClick: (String, Long) -> Unit,
             )
         ) {
             PlantsGalleryHeader(
-                galleryUiState.plantsMap,
+                galleryUiState.plants,
                 //onValueChange = { viewModel.sortGallery(3) },
                 showDialog = {showOptionsDialog = true},
                 modifier = Modifier
             )
             if (galleryUiState.plants.isNotEmpty()) {
                 when (galleryUiState.currentLayout) {
-                    1 -> PlantsGalleryBodyVerL1(galleryUiState.plants,
+                    1 -> PlantsGalleryBodyVerL1(
+                        plants = galleryUiState.plants,
+                        onPlantClick = onPlantClick
+                    )
+                    2 -> PlantsGalleryBodyVerL2(
+                        plants = galleryUiState.plants,
+                        columns = 1,
                         onPlantClick = onPlantClick,
-                        modifier = Modifier)
-                    //  2 -> PlantsGalleryBodyVerL2(galleryUiState.plantsMap,
-                    //      onPlantClick = {onPlantClick(it)}, 1)
-                    3 -> PlantsGalleryBodyVerL3(galleryUiState.plantsMap, 2)
+                        )
+                    3 -> PlantsGalleryBodyVerL2(
+                        plants = galleryUiState.plants,
+                        columns = 2,
+                        onPlantClick = onPlantClick,
+                    )
+                    4 -> PlantsGalleryBodyVerL3(
+                        plants = galleryUiState.plants,
+                        columns = 2,
+                        onPlantClick = onPlantClick
+                    )
+                    5 -> PlantsGalleryBodyVerL3(
+                        plants = galleryUiState.plants,
+                        columns = 3,
+                        onPlantClick = onPlantClick
+                    )
                 }
             }
             if(showOptionsDialog){
                 OptionsMenu(
                     closeDialog = {showOptionsDialog = false},
-                    changeQuery = viewModel::sortGallery
+                    changeQuery = viewModel::sortGallery,
+                    changeLayout = viewModel::changeLayout
                 )
             }
         }
@@ -135,7 +150,8 @@ fun PlantsGallery(onPlantClick: (String, Long) -> Unit,
 @Composable
 fun OptionsMenu(
     closeDialog : () -> Unit,
-    changeQuery : (String) -> Unit
+    changeQuery : (String) -> Unit,
+    changeLayout : (Int) -> Unit
 ){
     val queryOptions = listOf("name", "type", "age", "position")
     Dialog(
@@ -160,9 +176,9 @@ fun OptionsMenu(
             }
             Text(text = "Layout:")
             LazyVerticalGrid(columns = GridCells.Fixed(2)) {
-                items(4){
+                items(5){
                     TextButton(
-                        onClick = { /*TODO*/ }) {
+                        onClick = { changeLayout(it + 1) }) {
                         Text(text = "layout ${it + 1}")
                     }
                 }
@@ -173,12 +189,11 @@ fun OptionsMenu(
 
 @Composable
 fun PlantsGalleryHeader(
-    plants: Map<Plants?, List<Tasks>>?,
+    plants: List<Plants>,
     modifier: Modifier,
    // onValueChange: (Int) -> Unit
-    showDialog : () -> Unit
+    showDialog: () -> Unit
 ) {
-    val plantsList = plants?.keys?.toList()
     val primaryColor = MaterialTheme.colorScheme.primary
     val onPrimaryColor = MaterialTheme.colorScheme.onPrimary
     val primaryColorContainer = MaterialTheme.colorScheme.primaryContainer
@@ -202,7 +217,7 @@ fun PlantsGalleryHeader(
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = "You have ${plantsList?.size}\nplants",
+                    text = "You have ${plants.size}\nplants",
                     fontWeight = FontWeight.SemiBold,
                     textAlign = TextAlign.Center,
                     fontSize = 30.sp,

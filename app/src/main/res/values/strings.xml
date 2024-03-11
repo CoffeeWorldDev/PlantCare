@@ -21,7 +21,8 @@
     <string name="number_zero">0 is not allowed</string>
 
     <!-- Content Descriptions -->
-    <string name="plants_photo_description">Plants not found</string>
+    <string name="missing_photo_description">Plants not found</string>
+    <string name="photo_description">Plants picture</string>
     <string name="hamburger_button_icon">menu icon</string>
     <string name="photo_from_camera_icon">add photo from camera icon</string>
     <string name="photo_from_gallery_icon">add photo from gallery icon</string>

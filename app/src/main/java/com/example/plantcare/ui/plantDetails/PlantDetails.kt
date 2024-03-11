@@ -145,7 +145,7 @@ fun PlantDetailsScreenTop(
 
         PlantCareImage(
             imageUrl = plant.photo ?: R.drawable.placeholderimage,
-            contentDescription = stringResource(id = R.string.plants_photo_description),
+            contentDescription = stringResource(id = R.string.missing_photo_description),
             modifier = Modifier
                 .border(1.dp, color = Color.Black)
                 .fillMaxWidth(0.5f)
