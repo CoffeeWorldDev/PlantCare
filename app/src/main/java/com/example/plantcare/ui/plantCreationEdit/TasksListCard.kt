@@ -1,6 +1,5 @@
 package com.example.plantcare.ui.plantCreationEdit
 
-import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -46,7 +45,6 @@ fun TasksListCard(
 ) {
     var currentSeason by remember(activeSeason) { mutableStateOf(activeSeason) }
     val activeTasks: MutableList<Tasks> = mutableListOf()
-     //Log.e("task", tasks.toString())
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.SpaceEvenly,
@@ -99,7 +97,7 @@ fun TasksListCard(
                     )
                 },
                 modifier = Modifier
-                    .padding(20.dp, 0.dp)
+                    .padding(horizontal = 20.dp)
                     .height(50.dp)
                     .width(50.dp)
                     .offset(0.dp, 20.dp))

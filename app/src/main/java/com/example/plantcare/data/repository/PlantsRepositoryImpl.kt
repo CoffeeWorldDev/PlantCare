@@ -9,12 +9,12 @@ import kotlinx.coroutines.flow.Flow
 import java.util.Date
 
 class PlantsRepositoryImpl (private val plantsLocalDataSource : PlantsLocalDataSource) : PlantsRepository {
-    override suspend fun addPlants(plant: Plants): Long {
-        return plantsLocalDataSource.savePlantToDb(plant)
+    override suspend fun addPlants(plants: Plants): Long {
+        return plantsLocalDataSource.savePlantToDb(plants)
     }
 
-    override suspend fun deletePlants(plant: Plants) {
-        plantsLocalDataSource.deletePlant(plant)
+    override suspend fun deletePlants(plants: Plants) {
+        plantsLocalDataSource.deletePlant(plants)
     }
 
     override fun getPlants(): Flow<Array<Plants>> {
@@ -29,8 +29,8 @@ class PlantsRepositoryImpl (private val plantsLocalDataSource : PlantsLocalDataS
         }
     }
 
-    override suspend fun updatePlants(plant: Plants) {
-        plantsLocalDataSource.updatePlant(plant)
+    override suspend fun updatePlants(plants: Plants) {
+        plantsLocalDataSource.updatePlant(plants)
     }
 
     override fun getPlantsAndTasks(): Flow<Map<Plants?, List<Tasks>>?> {

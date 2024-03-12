@@ -1,6 +1,5 @@
 package com.example.plantcare.data.repository
 
-import com.example.plantcare.data.model.Plants
 import com.example.plantcare.data.model.Tasks
 import com.example.plantcare.data.repository.dataSource.TasksLocalDataSource
 import com.example.plantcare.domain.repository.TasksRepository
@@ -23,7 +22,7 @@ class TasksRepositoryImpl(private val tasksLocalDataSource: TasksLocalDataSource
     override fun getTasksFromPlants(plantId: Int): Flow<List<Tasks>?> {
         return tasksLocalDataSource.getTasksFromPlants(plantId)
     }
-    override suspend fun updateTasks(task: Tasks) {
-        tasksLocalDataSource.updateTask(task)
+    override suspend fun updateTasks(tasks: Tasks) {
+        tasksLocalDataSource.updateTask(tasks)
     }
 }

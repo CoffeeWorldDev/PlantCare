@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -65,8 +64,7 @@ fun TextInputRow(
             value = value,
             onTextChanged = onTextChanged,
             maxLength = maxLength,
-            isError = isError,
-            modifier = Modifier.fillMaxWidth(0.76f)
+            isError = isError
         )
     }
 }
@@ -81,7 +79,7 @@ fun DropdownMenuRow(
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(5.dp, 0.dp, 5.dp, 10.dp)
     ) {
@@ -93,8 +91,8 @@ fun DropdownMenuRow(
         PlantCareDropDownMenu(
             value = value,
             onSelect = onSelect,
-            options = options,
-            modifier = Modifier.fillMaxWidth(0.76f))
+            options = options
+        )
     }
 }
 @Composable
@@ -118,8 +116,8 @@ fun DatePickerMenuRow(
         )
         PlantCareDatePicker(
             startingDate = value,
-            onDatePicked = onSelect,
-            modifier = Modifier.fillMaxWidth(0.76f))
+            onDatePicked = onSelect
+        )
     }
 }
 @Composable
@@ -157,11 +155,12 @@ fun TimePeriodPickerRow(
 }
 
 @Composable
-fun PlantCareTextInput(value: String,
-                       onTextChanged: (String) -> Unit,
-                       maxLength: Int = 40,
-                       isError: Boolean = false,
-                       modifier: Modifier){
+fun PlantCareTextInput(
+    value: String,
+    onTextChanged: (String) -> Unit,
+    maxLength: Int = 40,
+    isError: Boolean = false
+){
 
     val text = remember(value) { mutableStateOf(value) }
     var error = if(text.value.isNotEmpty()){false} else isError
@@ -195,13 +194,15 @@ fun PlantCareTextInput(value: String,
     )
 }
 @Composable
-fun PlantCareNumberInput(value: Int,
-                         onTextChanged: (Int) -> Unit,
-                         isError: Boolean = false,
-                         modifier: Modifier){
+fun PlantCareNumberInput(
+    value: Int,
+    onTextChanged: (Int) -> Unit,
+    isError: Boolean = false,
+    modifier: Modifier
+){
 
     val number = remember(value) { mutableIntStateOf(value) }
-    var error = if(number.intValue != 0){false} else isError
+    val error = if(number.intValue != 0){false} else isError
 
     val focusManager = LocalFocusManager.current
 
@@ -240,8 +241,8 @@ fun PlantCareNumberInput(value: Int,
 fun PlantCareDropDownMenu(
     value: String?,
     onSelect: (String) -> Unit,
-    options : List<String>,
-    modifier: Modifier) {
+    options : List<String>
+) {
     var expanded by remember { mutableStateOf(false) }
     var selectedOptionText by remember(value) { mutableStateOf(value) }
     ExposedDropdownMenuBox(
@@ -280,8 +281,8 @@ fun PlantCareDropDownMenu(
 @Composable
 fun PlantCareDatePicker(
     startingDate : Date,
-    onDatePicked : (Date) -> Unit,
-    modifier: Modifier) {
+    onDatePicked : (Date) -> Unit
+) {
 
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed: Boolean by interactionSource.collectIsPressedAsState()
@@ -297,10 +298,10 @@ fun PlantCareDatePicker(
     calendar.time = Date()
 
     val datePickerDialog =
-        DatePickerDialog(context, { _: DatePicker, year: Int, month: Int, dayOfMonth: Int ->
+        DatePickerDialog(context, { _: DatePicker, year1: Int, month1: Int, dayOfMonth: Int ->
             val newDate = Calendar.getInstance()
-            newDate.set(year, month, dayOfMonth)
-            currentDate = "$dayOfMonth ${month.toMonthName()} $year"
+            newDate.set(year1, month1, dayOfMonth)
+            currentDate = "$dayOfMonth ${month1.toMonthName()} $year1"
             onDatePicked(newDate.time)
             Log.e("selected date",newDate.time.toString())
         }, year, month, day)

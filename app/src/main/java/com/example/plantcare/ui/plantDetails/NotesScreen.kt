@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Card
@@ -15,33 +14,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.example.plantcare.R
 import com.example.plantcare.ui.components.PlantCareIconButton
 
 @Composable
-fun NotesScreen(
-    plantId: Long,
-    upPress: () -> Unit
-) {
-    Text(
-        text = plantId.toString(),
-        textAlign = TextAlign.Start,
-        modifier = Modifier.width(80.dp)
-    )
-}
-
-@Composable
 fun NotesDialog(
     notes: String?,
-    //showDialog : Boolean,
     closeDialog: () -> Unit,
     onSave: (String) -> Unit
 ) {
-    val notes = remember(notes) { mutableStateOf(notes) }
+    val notesValue = remember(notes) { mutableStateOf(notes) }
 
     Dialog(
         onDismissRequest = {closeDialog()},
@@ -64,7 +48,7 @@ fun NotesDialog(
                 )
                 TextButton(
                     onClick = {
-                        onSave(notes.value.toString())
+                        onSave(notesValue.value.toString())
                         closeDialog()
                     }
                 ) {
@@ -74,9 +58,9 @@ fun NotesDialog(
             TextField(
                 modifier = Modifier.fillMaxSize(),
                 //readOnly = true,
-                value = notes.value ?: "",
+                value = notesValue.value ?: "",
                 onValueChange = {
-                    notes.value = it
+                    notesValue.value = it
                     //onSave(it)
                 },
             )

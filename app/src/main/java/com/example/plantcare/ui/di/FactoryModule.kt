@@ -2,7 +2,6 @@ package com.example.plantcare.ui.di
 
 import com.example.plantcare.domain.repository.PlantsRepository
 import com.example.plantcare.domain.repository.TasksRepository
-import com.example.plantcare.domain.useCase.plants.GetActivePlantsUseCase
 import com.example.plantcare.ui.home.HomeViewModelFactory
 import com.example.plantcare.ui.plantCreationEdit.PlantCreationEditViewModelFactory
 import com.example.plantcare.ui.plantsGallery.PlantsGalleryViewModelFactory
@@ -17,7 +16,7 @@ import javax.inject.Singleton
 class FactoryModule {
     @Singleton
     @Provides
-fun ProvidesHomeFactoryModel(
+fun providesHomeFactoryModel(
         plantsRepository: PlantsRepository,
         tasksRepository: TasksRepository
 ): HomeViewModelFactory {
@@ -29,7 +28,7 @@ fun ProvidesHomeFactoryModel(
 
     @Singleton
     @Provides
-    fun ProvidesPlantsGalleryFactoryModel(
+    fun providesPlantsGalleryFactoryModel(
         plantsRepository: PlantsRepository 
     ): PlantsGalleryViewModelFactory {
         return PlantsGalleryViewModelFactory(
@@ -40,7 +39,7 @@ fun ProvidesHomeFactoryModel(
 
 @Singleton
 @Provides
-fun ProvidesPlantCreationEditFactoryModel(
+fun providesPlantCreationEditFactoryModel(
     plantsRepository: PlantsRepository,
     tasksRepository: TasksRepository
 ): PlantCreationEditViewModelFactory {

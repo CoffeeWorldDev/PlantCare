@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -52,16 +51,16 @@ import com.example.plantcare.ui.utils.TitlesBackgroundShape
 import kotlinx.coroutines.launch
 
 @Composable
-fun PlantsGallery(onPlantClick: (String, Long) -> Unit,
-                  onNavigateToRoute: (String) -> Unit,
-                  onCreateNew: (Long) -> Unit,
-                  modifier: Modifier = Modifier,
-                  viewModel: PlantsGalleryViewModel = hiltViewModel()) {
+fun PlantsGallery(
+    onPlantClick: (Long) -> Unit,
+    onNavigateToRoute: (String) -> Unit,
+    onCreateNew: (Long) -> Unit,
+    viewModel: PlantsGalleryViewModel = hiltViewModel()
+) {
 
     val lifecycleOwner = LocalLifecycleOwner.current
 
     LaunchedEffect(Unit) {
-        Log.e("empty screen log", "???")
         lifecycleOwner.repeatOnLifecycle(Lifecycle.State.CREATED) {
             launch {
                 viewModel.sortGallery("name")
@@ -70,10 +69,11 @@ fun PlantsGallery(onPlantClick: (String, Long) -> Unit,
     }
 
     val galleryUiState by viewModel.uiState.collectAsStateWithLifecycle()
-    //Log.e("PLANTS GALLERY", galleryUiState.toString())
+
     var showOptionsDialog by remember {
         mutableStateOf(false)
     }
+
     Scaffold(
         bottomBar = {
             PlantCareBottomBar(
@@ -104,9 +104,7 @@ fun PlantsGallery(onPlantClick: (String, Long) -> Unit,
         ) {
             PlantsGalleryHeader(
                 galleryUiState.plants,
-                //onValueChange = { viewModel.sortGallery(3) },
-                showDialog = {showOptionsDialog = true},
-                modifier = Modifier
+                showDialog = {showOptionsDialog = true}
             )
             if (galleryUiState.plants.isNotEmpty()) {
                 when (galleryUiState.currentLayout) {
@@ -160,9 +158,12 @@ fun OptionsMenu(
         Card(
             modifier = Modifier
                 .fillMaxWidth(0.8f)
-                .fillMaxHeight(0.5f)
         ) {
-            Text(text = "Order by:")
+            Text(
+                text = "Order by:",
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(8.dp)
+            )
             LazyVerticalGrid(columns = GridCells.Fixed(2)) {
                 items(queryOptions.size){
                     TextButton(
@@ -174,7 +175,11 @@ fun OptionsMenu(
                     }
                 }
             }
-            Text(text = "Layout:")
+            Text(
+                text = "Layout:",
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(8.dp)
+            )
             LazyVerticalGrid(columns = GridCells.Fixed(2)) {
                 items(5){
                     TextButton(
@@ -190,16 +195,13 @@ fun OptionsMenu(
 @Composable
 fun PlantsGalleryHeader(
     plants: List<Plants>,
-    modifier: Modifier,
-   // onValueChange: (Int) -> Unit
     showDialog: () -> Unit
 ) {
     val primaryColor = MaterialTheme.colorScheme.primary
     val onPrimaryColor = MaterialTheme.colorScheme.onPrimary
-    val primaryColorContainer = MaterialTheme.colorScheme.primaryContainer
-    val onPrimaryColorContainer = MaterialTheme.colorScheme.onPrimaryContainer
     val titleLarge = MaterialTheme.typography.titleLarge
-    Row (Modifier.padding(0.dp, 10.dp, 0.dp, 40.dp),
+    Row (
+        Modifier.padding(top = 10.dp, bottom = 40.dp),
         horizontalArrangement = Arrangement.SpaceEvenly
     ) {
         Card(
@@ -229,15 +231,14 @@ fun PlantsGalleryHeader(
                     style = titleLarge
                 )
             }
-
-
         }
 
         Column(
             modifier = Modifier
                 .weight(1f)
                 .height(100.dp),
-            verticalArrangement = Arrangement.SpaceBetween) {
+            verticalArrangement = Arrangement.SpaceBetween
+        ) {
             IconButton(
                 //TODO create search plants gallery page
                 modifier = Modifier
@@ -251,16 +252,13 @@ fun PlantsGalleryHeader(
                     contentDescription = "Home Icon"
                 )
             }
-
             IconButton(
-                //TODO create sorting plants gallery page
                 modifier = Modifier
                     .weight(0.5f)
                     .padding(0.dp, 5.dp, 12.dp, 5.dp)
                     .height(45.dp)
                     .width(45.dp),
-                onClick = { showDialog()
-                    Log.d("Click", "IconExample") }) {
+                onClick = { showDialog() }) {
                 Icon(
                     imageVector = Icons.Filled.Menu,
                     contentDescription = "Home Icon"

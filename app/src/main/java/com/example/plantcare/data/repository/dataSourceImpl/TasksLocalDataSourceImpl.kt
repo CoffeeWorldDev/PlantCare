@@ -23,7 +23,7 @@ class TasksLocalDataSourceImpl(private val tasksDao : TasksDao) : TasksLocalData
     }
 
 
-    override suspend fun updateTask(task: Tasks) {
-        tasksDao.updateTask(task)
+    override suspend fun updateTask(tasks: Tasks) {
+        tasksDao.updateTask(tasks)
     }
 }

@@ -7,8 +7,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.plantcare.R
@@ -17,12 +15,15 @@ import com.example.plantcare.R
 fun PlantCareImage(
     imageUrl: Any,
     contentDescription: String?,
-    modifier: Modifier = Modifier,
-    elevation: Dp = 0.dp
+    modifier: Modifier = Modifier
 ) {
+    val photo = if (imageUrl == "") {
+        R.drawable.placeholderimage
+    } else { imageUrl }
+
     AsyncImage(
         model = ImageRequest.Builder(LocalContext.current)
-            .data(imageUrl)
+            .data(photo)
             .crossfade(true)
             .build(),
         contentDescription = contentDescription,

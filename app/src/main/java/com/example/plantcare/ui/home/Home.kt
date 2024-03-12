@@ -1,7 +1,5 @@
 package com.example.plantcare.ui.home
 
-import android.util.Log
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
@@ -50,8 +48,10 @@ fun Home(
                 onValueChange = { viewModel.changeQuery(it) },
                 modifier = Modifier
             )
-            HomeMainBlock(homeUiState.plantsMap,
-                onTaskClicked = { viewModel.updateTask(it)})
+            HomeMainBlock(
+                homeUiState.plantsMap,
+                onPlantClick = onPlantClick
+            ) { viewModel.updateTask(it) }
         }
     }
 }

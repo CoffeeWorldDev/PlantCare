@@ -58,7 +58,7 @@ import kotlinx.coroutines.launch
 fun PlantDetails(
     plantId: Long,
     onNavigateToDetail: (String, Long) -> Unit,
-    upPress: () -> Unit,
+    //upPress: () -> Unit,
     viewModel: PlantDetailsViewModel
 ) {
 
@@ -66,7 +66,6 @@ fun PlantDetails(
     var showDialog by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
-        Log.e("empty screen log", "???")
         lifecycleOwner.repeatOnLifecycle(Lifecycle.State.CREATED) {
             launch {
                 viewModel.getPlantWithId(plantId)
@@ -78,7 +77,6 @@ fun PlantDetails(
 
 
     val scrollState = rememberScrollState()
-    //TODO modify the parameter
     Column(
         verticalArrangement = Arrangement.Top,
         modifier = Modifier
@@ -89,7 +87,6 @@ fun PlantDetails(
         )
         Column(
             modifier = Modifier
-           //.verticalScroll(scrollState)
            .fillMaxHeight()
         ) {
             //todo move it in its own file
@@ -105,7 +102,7 @@ fun PlantDetails(
                     .fillMaxWidth()
             )
             PlantDetailsNotes(
-                state.plant.notes!!,
+                state.plant.notes,
                 showDialog = {showDialog = true},
                 modifier = Modifier
                     .height(300.dp)
@@ -136,7 +133,8 @@ fun PlantDetailsScreenTop(
     plant : Plants
 ) {
 
-    Row(modifier = Modifier
+    Row(
+        modifier = Modifier
         .fillMaxWidth()
         .height(200.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -144,43 +142,47 @@ fun PlantDetailsScreenTop(
     ) {
 
         PlantCareImage(
-            imageUrl = plant.photo ?: R.drawable.placeholderimage,
+            imageUrl = plant.photo,
             contentDescription = stringResource(id = R.string.missing_photo_description),
             modifier = Modifier
                 .border(1.dp, color = Color.Black)
                 .fillMaxWidth(0.5f)
                 .fillMaxHeight()
         )
-        Column(modifier = Modifier
+        Column(
+            modifier = Modifier
             .fillMaxHeight()
             .fillMaxWidth(),
                verticalArrangement = Arrangement.SpaceEvenly,
-               horizontalAlignment = Alignment.End) {
-                    Card(
-                        shape = TitlesBackgroundShape(150f, 100f),
-                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
-                        elevation = CardDefaults.cardElevation(
-                            defaultElevation = 8.dp
-                        ),
-                        modifier = Modifier
-                            .graphicsLayer {
-                                this.rotationZ = 180f
-                            }
-                    ){
-                        //TODO changing box side depending on screen size?
-                        Box( modifier = Modifier
-                            .height(getScreenHeight()),
-                            //.height(40.dp),
-                            contentAlignment = Alignment.CenterEnd) {
-                            formatName(name = plant.name)
-                        }
+               horizontalAlignment = Alignment.End
+        ) {
+            Card(
+                shape = TitlesBackgroundShape(150f, 100f),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
+                elevation = CardDefaults.cardElevation(
+                    defaultElevation = 8.dp
+                ),
+                modifier = Modifier
+                    .graphicsLayer {
+                        this.rotationZ = 180f
                     }
+            ){
+                //TODO changing box side depending on screen size?
+                Box(
+                    modifier = Modifier
+                        .height(getScreenHeight()),
+                        //.height(40.dp),
+                    contentAlignment = Alignment.CenterEnd
+                ) {
+                    FormatName(name = plant.name)
+                }
+            }
             //TODO make a more flexible age text
            // val age : String
-            val age = if(getElapsedTime(plant.age!!) > 1){
-                "${getElapsedTime(plant.age!!)} days old"
+            val age = if(getElapsedTime(plant.age) > 1){
+                "${getElapsedTime(plant.age)} days old"
             }else{
-                "${getElapsedTime(plant.age!!)} day old"
+                "${getElapsedTime(plant.age)} day old"
             }
             Text(
                 text = age,
@@ -196,7 +198,7 @@ fun PlantDetailsScreenTop(
             )
             if(plant.species!=""){
                 Text(
-                    text = plant.species!!,
+                    text = plant.species,
                     fontWeight = FontWeight.SemiBold,
                     textAlign = TextAlign.Center,
                     fontSize = 20.sp,
@@ -208,31 +210,29 @@ fun PlantDetailsScreenTop(
                     style = MaterialTheme.typography.titleLarge
                 )
             }
-
         }
-
     }
 }
 
 
-    @Composable
-    fun getScreenWidth(): Dp {
-        val density = LocalDensity.current;
-        val configuration = LocalConfiguration.current;
-        val screenWidthDp = with(density) {configuration.screenWidthDp.dp}
-        val divider : Int = when {
-            screenWidthDp <= 360.dp -> 4
-            screenWidthDp <= 400.dp -> 5
-            screenWidthDp <= 450.dp -> 6
-            else -> 7
-        }
-        Log.e("HERE", screenWidthDp.toString())
-        return screenWidthDp / divider
-    }
+ //   @Composable
+ //   fun getScreenWidth(): Dp {
+ //       val density = LocalDensity.current;
+ //       val configuration = LocalConfiguration.current;
+ //       val screenWidthDp = with(density) {configuration.screenWidthDp.dp}
+ //       val divider : Int = when {
+ //           screenWidthDp <= 360.dp -> 4
+ //           screenWidthDp <= 400.dp -> 5
+ //           screenWidthDp <= 450.dp -> 6
+ //           else -> 7
+ //       }
+ //       Log.e("HERE", screenWidthDp.toString())
+ //       return screenWidthDp / divider
+ //   }
     @Composable
     fun getScreenHeight(): Dp {
-        val density = LocalDensity.current;
-        val configuration = LocalConfiguration.current;
+        val density = LocalDensity.current
+        val configuration = LocalConfiguration.current
         val screenHeightDp = with(density) {configuration.screenHeightDp.dp}
         val divider : Int = when {
             screenHeightDp <= 720.dp -> 9
@@ -246,7 +246,7 @@ fun PlantDetailsScreenTop(
 
 
     @Composable
-    fun formatName(name : String) {
+    fun FormatName(name : String) {
         var formattedName = name
         var maxLength = name.length
         var isOverflowOn = TextOverflow.Clip
@@ -256,29 +256,28 @@ fun PlantDetailsScreenTop(
             val lines = formattedName.split("\\s".toRegex()).toTypedArray()
 
             lines.forEach {
-                if (it.toString().length > 5) {
-                    maxLength = it.toString().length + 5
+                if (it.length > 5) {
+                    maxLength = it.length + 5
                     Log.e("HERE", maxLength.toString())
                 }
             }
             if (lines.size > 3) isOverflowOn = TextOverflow.Ellipsis
         }
-        var size: TextUnit = 10.em
 
-        if (maxLength <= 6) {
-            size
+        val size: TextUnit = if (maxLength <= 6) {
+            10.em
         } else if (maxLength <= 8) {
-            size = 7.8.em
+            7.8.em
         } else if (maxLength <= 9) {
-            size = 7.2.em
+            7.2.em
         } else if (maxLength <= 11) {
-            size = 5.9.em
+            5.9.em
         } else if (maxLength <= 13) {
-            size = 4.7.em
+            4.7.em
         } else if (maxLength <= 15) {
-            size = 4.em
+            4.em
         } else {
-            size = 3.5.em
+            3.5.em
         }
 
         Text(

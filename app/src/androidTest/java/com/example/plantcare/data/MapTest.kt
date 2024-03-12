@@ -13,7 +13,6 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
 import org.junit.Before
 import org.junit.Test
@@ -34,7 +33,7 @@ class MapTest {
         val context = ApplicationProvider.getApplicationContext<Context>()
         Plantsdb = Room.inMemoryDatabaseBuilder(
             context, PlantsDatabase::class.java).build()
-        tasksDao = Plantsdb.GetTasksDao()
+        tasksDao = Plantsdb.getTasksDao()
         plantsDao = Plantsdb.getPlantsDao()
     }
     @After

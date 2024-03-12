@@ -23,14 +23,13 @@ import androidx.compose.ui.unit.dp
 import com.example.plantcare.R
 import com.example.plantcare.data.model.Plants
 import com.example.plantcare.ui.components.PlantCareImage
-import com.example.plantcare.ui.navigation.PlantSections
 import com.example.plantcare.ui.utils.getElapsedTime
 
 
 @Composable
 fun PlantsGalleryBodyVerL1(
     plants: List<Plants>,
-    onPlantClick: (String, Long) -> Unit
+    onPlantClick: (Long) -> Unit
 ) {
     val headlineLarge = MaterialTheme.typography.headlineLarge
     LazyColumn { items(plants.size) {
@@ -40,7 +39,6 @@ fun PlantsGalleryBodyVerL1(
             .clickable(
                 onClick = {
                     onPlantClick(
-                        PlantSections.PLANT.route,
                         plants[it].plantsId
                     )
                 }

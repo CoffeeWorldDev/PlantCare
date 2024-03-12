@@ -16,13 +16,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.plantcare.data.model.Plants
 import com.example.plantcare.ui.components.PlantCareImage
-import com.example.plantcare.ui.navigation.PlantSections
 
 @Composable
 fun PlantsGalleryBodyVerL3(
     plants: List<Plants>,
     columns: Int,
-    onPlantClick: (String, Long) -> Unit
+    onPlantClick: (Long) -> Unit
 ) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(columns),
@@ -34,7 +33,6 @@ fun PlantsGalleryBodyVerL3(
                     .padding(start = 15.dp, bottom = 20.dp, end = 15.dp)
                     .clickable {
                         onPlantClick(
-                            PlantSections.PLANT.route,
                             plants[it].plantsId
                         )
                     }

@@ -1,6 +1,5 @@
 package com.example.plantcare.data.repository.dataSourceImpl
 
-import android.util.Log
 import com.example.plantcare.data.db.PlantsDao
 import com.example.plantcare.data.model.Plants
 import com.example.plantcare.data.model.Tasks

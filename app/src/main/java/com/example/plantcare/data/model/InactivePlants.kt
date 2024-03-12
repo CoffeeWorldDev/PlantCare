@@ -1,27 +1,25 @@
 package com.example.plantcare.data.model
 
 import androidx.room.Entity
-import androidx.room.PrimaryKey
 
 @Entity(tableName = "inactivePlants")
 class InactivePlants (
-    @PrimaryKey(autoGenerate = true)
-    var InactivePlantsId: Long,
-    //@ColumnInfo(name = "Name")
-    var Name : String,
-    //@ColumnInfo(name = "DateTurnedInactive")
-    var DateTurnedInactive: String,
-    //TODO implement type
-    //@ColumnInfo(name = "Type")
-    var Type : String?,
-    //@ColumnInfo(name = "Species")
-    var Species : String?,
-    //@ColumnInfo(name = "Birthday")
-    var birthday : String?,
-    //@ColumnInfo(name = "Photo")
-    var Photo : String?,
-    //@ColumnInfo(name = "Notes")
-    var Notes : String?,
-    //@ColumnInfo(name = "Age")
-    var Age : String?
+  //  @PrimaryKey(autoGenerate = true)
+  //  var inactivePlantsId: Long,
+  //  @ColumnInfo(name = "Name")
+  //  var name : String,
+  //  @ColumnInfo(name = "DateTurnedInactive")
+  //  var dateTurnedInactive: String,
+  //  //@ColumnInfo(name = "Type")
+  //  var type : String,
+  //  //@ColumnInfo(name = "Species")
+  //  var species : String,
+  //  //@ColumnInfo(name = "Birthday")
+  //  var birthday : String,
+  //  //@ColumnInfo(name = "Photo")
+  //  var photo : String,
+  //  //@ColumnInfo(name = "Notes")
+  //  var notes : String,
+  //  //@ColumnInfo(name = "Age")
+  //  var age : String
 )

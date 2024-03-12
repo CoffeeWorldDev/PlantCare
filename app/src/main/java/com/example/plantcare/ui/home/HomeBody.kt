@@ -31,7 +31,7 @@ import com.example.plantcare.ui.components.PlantCareImage
 @Composable
 fun HomeMainBlock(
     plants: Map<Plants?, List<Tasks>>?,
-    onPlantClick: (String, Long) -> Unit,
+    onPlantClick: (Long) -> Unit,
     onTaskClicked: (Tasks) -> Unit
 ){
     //modifier = Modifier.paddingFromBaseline(top = 24.dp, bottom = 8.dp),
@@ -44,7 +44,16 @@ fun HomeMainBlock(
     LazyColumn(){
         if (plantsList != null) {
             items(plantsList.size) {
-            Row(modifier = Modifier.padding(15.dp, 0.dp,0.dp, 20.dp)) {
+            Row(
+                modifier = Modifier.padding(15.dp, 0.dp,0.dp, 20.dp)
+                    .clickable(
+                        onClick = {
+                            onPlantClick(
+                                plantsList[it].first!!.plantsId
+                            )
+                        }
+                    )
+            ) {
                 PlantCareImage(
                     imageUrl = plantsList[it].first!!.photo ?: R.drawable.placeholderimage,
                     contentDescription = stringResource(id = R.string.missing_photo_description),

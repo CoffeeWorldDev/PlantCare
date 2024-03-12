@@ -96,13 +96,6 @@ fun PlantCreationEdit(
     }
 
     val state by viewModel.uiState.collectAsState()
-    //Log.e("PLANT ui state photo", plantEditCreationUiState.photo.toString())
-    //todo delete
-    if (state.tasks?.isEmpty() == false){
-        val test = state.tasks!![0]
-        Log.e("TASK", test.toString())
-    }
-    // Log.e("TASK", viewModel.getAllTasks().toString())
     val snackbarHostState = remember { SnackbarHostState() }
 
     Scaffold(
@@ -149,14 +142,9 @@ fun PlantCreationEditForm(
     navigateBackToGallery : () -> Unit,
     goBack: () -> Unit){
 
-    //TODO delete log
-    //Log.e("PLANT ui state", plant.toString())
     var showDialog by remember { mutableStateOf(false) }
 
     val currentPhoto = plant.photo.toUri()
-    //Log.e("current photo saved", currentPhoto.toString())
-    //Log.e("new photo saved", plant.photo.toString())
-    //Log.e("new other saved", plant.species.toString())
 
     val bottomArrangement = if (isEdit){Arrangement.SpaceBetween} else {Arrangement.End}
 
@@ -164,8 +152,10 @@ fun PlantCreationEditForm(
         mutableStateOf(false)
     }
 
-    Column(horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.padding(15.dp, 0.dp)) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.padding(15.dp, 0.dp)
+    ) {
         ImageBlock(
             photo = plant.photo.toUri(),
             snackbarHostState = snackbarHostState
@@ -237,7 +227,6 @@ fun PlantCreationEditForm(
             .fillMaxWidth()
     ) {
         if(isEdit){
-            //TODO clean up to fit the new ver with dialog
             DeletePlant(
                 plant = plant,
                 onButtonClick = {
@@ -298,7 +287,6 @@ fun ImageBlock(
     val launcherCamera = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.TakePicture(),
         onResult = { success ->
-            Log.d("camera", tempPhotoUri.toString())
             if (success) photoUri = tempPhotoUri
             onSelect(tempPhotoUri)
         }
@@ -316,7 +304,7 @@ fun ImageBlock(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(40.dp, 0.dp, 0.dp, 20.dp)
+            .padding(start = 40.dp, bottom = 20.dp)
     ) {
         PlantCareImage(
             imageUrl = photoUri ?: R.drawable.placeholderimage,
@@ -330,7 +318,6 @@ fun ImageBlock(
         Column(
             verticalArrangement = Arrangement.Center,
             modifier = Modifier.fillMaxHeight()
-            //.background(Color.Cyan)
         ) {
             PlantCareIconButton(
                 Icons.Filled.AccountBox,
@@ -463,13 +450,14 @@ fun DeletePlant(
 }
 
 @Composable
-fun SavePlant(onButtonClick: (Plants) -> Unit,
-              snackbarHostState : SnackbarHostState,
-              goBack: () -> Unit,
-              plant: Plants,
-              currentlySavedPhoto : Uri,
-              isError : (Boolean) -> Unit,
-              modifier: Modifier
+fun SavePlant(
+    onButtonClick: (Plants) -> Unit,
+    snackbarHostState : SnackbarHostState,
+    goBack: () -> Unit,
+    plant: Plants,
+    currentlySavedPhoto : Uri,
+    isError : (Boolean) -> Unit,
+    modifier: Modifier
 ){
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
@@ -483,42 +471,14 @@ fun SavePlant(onButtonClick: (Plants) -> Unit,
                 isError(true)
             } else {
                 if (plant.photo != "" && plant.photo != currentlySavedPhoto.toString()){
-                    Log.e("worked","if started to save image")
-                    Log.e("worked", plant.photo)
-                    Log.e("worked",currentlySavedPhoto.toString())
                     plant.photo = saveImageToInternalStorage(context, plant.photo.toUri())
                 }
                 onButtonClick(plant)
                 if(plant.photo != "" && plant.photo != currentlySavedPhoto.toString()){
                     deletePhotoFromDb(currentlySavedPhoto)
-                    Log.e("worked","if started to delete image")
                 }
                 goBack()
             }
         },
         modifier = modifier)
- //   Button(onClick = {
- //       if (plant.name == ""){
- //           scope.launch {
- //               snackbarHostState.showSnackbar(context.resources.getString(R.string.form_not_valid))
- //           }
- //           isError(true)
- //       } else {
- //           if (plant.photo != "" && plant.photo != currentlySavedPhoto.toString()){
- //               Log.e("worked","if started to save image")
- //               Log.e("worked",plant.photo!!)
- //               Log.e("worked",currentlySavedPhoto.toString())
- //               plant.photo = saveImageToInternalStorage(context, plant.photo!!.toUri())
- //           }
- //           onButtonClick(plant)
- //           if(plant.photo != "" && plant.photo != currentlySavedPhoto.toString()){
- //               deletePhotoFromDb(currentlySavedPhoto)
- //               Log.e("worked","if started to delete image")
- //           }
- //           goBack()
- //       }
- //   },
- //       modifier = modifier) {
- //       Text(text = "save")
- //   }
 }

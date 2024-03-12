@@ -20,24 +20,23 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.navigation.NavBackStackEntry
-import androidx.navigation.NavGraphBuilder
-import androidx.navigation.compose.composable
-import com.example.plantcare.R
-import com.example.plantcare.ui.Settings
-import com.example.plantcare.ui.plantsGallery.PlantsGallery
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavBackStackEntry
+import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
+import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
+import com.example.plantcare.R
+import com.example.plantcare.ui.Settings
 import com.example.plantcare.ui.home.Home
 import com.example.plantcare.ui.plantCreationEdit.PlantCreationEdit
 import com.example.plantcare.ui.plantCreationEdit.PlantDetailsViewModel
-import com.example.plantcare.ui.plantDetails.NotesScreen
 import com.example.plantcare.ui.plantDetails.PlantDetails
 import com.example.plantcare.ui.plantDetails.TaskListScreen
+import com.example.plantcare.ui.plantsGallery.PlantsGallery
 
 fun NavGraphBuilder.addHomeGraph(
     onPlantSelected: (Long, NavBackStackEntry) -> Unit,
@@ -50,7 +49,8 @@ fun NavGraphBuilder.addHomeGraph(
         startDestination = HomeSections.FEED.route
     ){
         composable(HomeSections.FEED.route) { from ->
-            Home(onPlantClick = { id -> onPlantSelected(id, from) },
+            Home(
+                onPlantClick = { id -> navigateWithinPlantDetails(PlantSections.PLANT.route, id, from) },
                 onNavigateToRoute,
                 modifier = Modifier
                     .fillMaxSize()
@@ -59,13 +59,9 @@ fun NavGraphBuilder.addHomeGraph(
         }
         composable(HomeSections.GALLERY.route) { from ->
             PlantsGallery(
-                onPlantClick = { route, id -> navigateWithinPlantDetails(route, id, from) },
+                onPlantClick = {id -> navigateWithinPlantDetails(PlantSections.PLANT.route, id, from) },
                 onNavigateToRoute,
-                onCreateNew = { id -> onPlantSelected(id, from) },
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(MaterialTheme.colorScheme.background)
-                    .wrapContentSize(align = Alignment.TopCenter)
+                onCreateNew = { id -> onPlantSelected(id, from) }
             )
         }
         composable(HomeSections.SETTINGS.route) {
@@ -96,7 +92,7 @@ fun NavGraphBuilder.addPlantGraph(
             PlantDetails(
                 plantId = plantId,
                 onNavigateToDetail = { route, id -> navigateWithinPlantDetails(route, id, from) },
-                upPress = upPress,
+                //upPress = upPress,
                 viewModel = plantDetailsViewModel
             )
         }
@@ -113,17 +109,6 @@ fun NavGraphBuilder.addPlantGraph(
                 plantId = plantId,
                 upPress = upPress,
                 viewModel = plantDetailsViewModel
-            )
-        }
-        composable(
-            route = "${PlantSections.NOTES.route}/{${MainDestinations.PLANT_ID_KEY}}",
-            arguments = listOf(navArgument(MainDestinations.PLANT_ID_KEY) { type = NavType.LongType })
-        ) { backStackEntry ->
-            val arguments = requireNotNull(backStackEntry.arguments)
-            val plantId = arguments.getLong(MainDestinations.PLANT_ID_KEY)
-            NotesScreen(
-                plantId = plantId,
-                upPress = upPress
             )
         }
         composable(

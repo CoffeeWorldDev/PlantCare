@@ -1,7 +1,6 @@
 package com.example.plantcare.ui.di
 
 import com.example.plantcare.data.db.PlantsDao
-import com.example.plantcare.data.db.PlantsDatabase
 import com.example.plantcare.data.db.TasksDao
 import com.example.plantcare.data.repository.dataSource.PlantsLocalDataSource
 import com.example.plantcare.data.repository.dataSource.TasksLocalDataSource
@@ -16,11 +15,7 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 class LocalDataModule {
- //   @Provides
- //   @Singleton
- //   fun providePlantsRepository(db : PlantsDatabase) : PlantsLocalDataSourceImpl {
- //       return PlantsLocalDataSourceImpl(db.GetPlantsDao())
- //   }
+
  @Singleton
  @Provides
  fun provideLocalPlantsDataSource(plantsDao: PlantsDao):PlantsLocalDataSource{

@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.plantcare.domain.repository.PlantsRepository
 import com.example.plantcare.domain.repository.TasksRepository
 
+@Suppress("UNCHECKED_CAST")
 class PlantCreationEditViewModelFactory(private val plantsRepository: PlantsRepository,
                                         private val tasksRepository: TasksRepository
 ): ViewModelProvider.Factory {

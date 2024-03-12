@@ -15,7 +15,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -73,7 +72,7 @@ fun PlantDetailsNotes(
                     showDialog()
                 },
                 modifier = Modifier
-                    .padding(20.dp, 0.dp)
+                    .padding(horizontal = 20.dp)
                     .height(50.dp)
                     .width(50.dp)
                     .offset(0.dp, 20.dp))
@@ -81,11 +80,12 @@ fun PlantDetailsNotes(
     }
 }
 
-//TODO change to string not map
 @Composable
 fun NotesList(notes: String) {
-    Column( modifier = Modifier
-        .verticalScroll(rememberScrollState()) ){
+    Column(
+        modifier = Modifier
+        .verticalScroll(rememberScrollState())
+    ){
         Text(
             text = notes,
             textAlign = TextAlign.Start,

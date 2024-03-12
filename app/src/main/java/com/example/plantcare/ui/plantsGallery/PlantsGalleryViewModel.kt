@@ -3,7 +3,6 @@ package com.example.plantcare.ui.plantsGallery
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.plantcare.data.model.Plants
-import com.example.plantcare.data.model.Tasks
 import com.example.plantcare.domain.repository.PlantsRepository
 import com.example.plantcare.ui.utils.getElapsedTime
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,8 +15,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 data class PlantsGalleryUiState(
-    val plantsMap: Map<Plants?, List<Tasks>>? = null,
-    val plants: List<Plants> = emptyList<Plants>(),
+    val plants: List<Plants> = emptyList(),
     var currentLayout: Int = 1,
     val isLoading: Boolean = false,
     val userErrorMessage: Int? = null
@@ -33,11 +31,10 @@ class PlantsGalleryViewModel @Inject constructor (
 
 
     //TODO implement search
-    fun searchPlant(){
+ //   fun searchPlant(){
+//
+ //   }
 
-    }
-
-    //TODO implement change Layout
     fun changeLayout(layout : Int) {
         _uiState.update {
             it.copy(currentLayout = layout)
@@ -53,7 +50,7 @@ class PlantsGalleryViewModel @Inject constructor (
                 newList = when(query){
                     "name" -> plant.toList().sortedWith(compareBy { it.name })
                     "type" -> plant.toList().sortedWith(compareBy { it.type })
-                    //pos not working
+                    //todo pos not working
                     "position" -> plant.toList().sortedWith(compareBy { it.position })
                     else -> plant.toList().sortedWith(compareBy { getElapsedTime(it.age) })
                 }

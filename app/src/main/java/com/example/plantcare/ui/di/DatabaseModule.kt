@@ -24,15 +24,6 @@ object DatabaseModule {
             "plants_database"
         ).build()
     }
-    //  @Provides
-    //  @Singleton
-    //  fun provideTasksDatabase(app: Application) : TasksDatabase{
-    //      return Room.databaseBuilder(
-    //          app,
-    //          TasksDatabase::class.java,
-    //          "tasks_database"
-    //      ).build()
-    //  }
     @Provides
     @Singleton
     fun providePlantsDao(plantsDatabase: PlantsDatabase): PlantsDao {
@@ -41,6 +32,6 @@ object DatabaseModule {
     @Provides
     @Singleton
     fun provideTasksDao(plantsDatabase: PlantsDatabase): TasksDao {
-        return plantsDatabase.GetTasksDao()
+        return plantsDatabase.getTasksDao()
     }
 }

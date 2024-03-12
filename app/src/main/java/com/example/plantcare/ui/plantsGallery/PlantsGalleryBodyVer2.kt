@@ -22,14 +22,13 @@ import androidx.compose.ui.unit.dp
 import com.example.plantcare.R
 import com.example.plantcare.data.model.Plants
 import com.example.plantcare.ui.components.PlantCareImage
-import com.example.plantcare.ui.navigation.PlantSections
 import com.example.plantcare.ui.utils.getElapsedTime
 
 @Composable
 fun PlantsGalleryBodyVerL2(
     plants: List<Plants>,
     columns: Int,
-    onPlantClick: (String, Long) -> Unit
+    onPlantClick: (Long) -> Unit
 ) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(columns)
@@ -40,7 +39,6 @@ fun PlantsGalleryBodyVerL2(
                    .padding(start = 15.dp, bottom =  20.dp)
                    .clickable {
                        onPlantClick(
-                           PlantSections.PLANT.route,
                            plants[it].plantsId
                        )
                    }
