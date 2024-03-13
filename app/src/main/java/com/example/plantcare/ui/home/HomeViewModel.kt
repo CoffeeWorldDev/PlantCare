@@ -7,7 +7,7 @@ import com.example.plantcare.data.model.Tasks
 import com.example.plantcare.domain.repository.PlantsRepository
 import com.example.plantcare.domain.repository.TasksRepository
 import com.example.plantcare.ui.utils.changeTaskToInactive
-import com.example.plantcare.ui.utils.GetDateInMillis
+import com.example.plantcare.ui.utils.getDateInMillis
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -34,7 +34,7 @@ class HomeViewModel @Inject constructor (
     val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
 
     init {
-        changeQuery(GetDateInMillis())
+        changeQuery(getDateInMillis())
     }
 
     fun changeQuery(date: Date) {
@@ -53,7 +53,7 @@ class HomeViewModel @Inject constructor (
 
 
     fun updateTask(task: Tasks) = viewModelScope.launch {
-        var taskToUpdate = changeTaskToInactive(task, GetDateInMillis())
+        var taskToUpdate = changeTaskToInactive(task, getDateInMillis())
         tasksRepository.updateTasks(taskToUpdate)
     }
 }

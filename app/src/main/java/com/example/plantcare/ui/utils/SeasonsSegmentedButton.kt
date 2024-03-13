@@ -17,10 +17,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -29,30 +27,17 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
-//items: List<String>,
-//defaultSelectedItemIndex: Int = 0,
-//useFixedWidth: Boolean = false,
-//itemWidth: Dp = 120.dp,
-//cornerRadius: Int = 24,
-//onItemSelection: (selectedItemIndex: Int) -> Unit
-//) {
-//    val selectedIndex = remember { mutableStateOf(defaultSelectedItemIndex) }
-//    val itemIndex = remember { mutableStateOf(defaultSelectedItemIndex) }
-//
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SeasonsSegmentedButton(
     modifier: Modifier = Modifier,
     currentSeason: String,
-    defaultSelectedItemIndex: Int = 0,
     cornerRadius: Int = 50,
     onItemSelection: (selectedItem: String) -> Unit
 ) {
-    val currentSeason by remember { mutableStateOf(currentSeason)}
+    val currentSeason1 by remember { mutableStateOf(currentSeason)}
     val seasons = listOf("summer", "winter", "dormant")
-    val selectedIndex = remember { mutableStateOf(currentSeason) }
-    val itemIndex = remember { mutableIntStateOf(defaultSelectedItemIndex) }
+    val selectedIndex = remember { mutableStateOf(currentSeason1) }
 Box(modifier = Modifier.fillMaxWidth()
     .padding(0.dp, 10.dp),
     contentAlignment = Alignment.Center) {
@@ -62,7 +47,7 @@ Box(modifier = Modifier.fillMaxWidth()
             .fillMaxWidth(0.75f)
             .height(38.dp),
         colors = CardDefaults.cardColors(
-            containerColor = if (currentSeason == selectedIndex.value) {
+            containerColor = if (currentSeason1 == selectedIndex.value) {
 
                 MaterialTheme.colorScheme.primaryContainer
             } else {
@@ -79,7 +64,6 @@ Box(modifier = Modifier.fillMaxWidth()
             horizontalArrangement = Arrangement.Center
         ) {
             seasons.forEachIndexed { index, item ->
-                //itemIndex.value = index
                 Card(
                     modifier = modifier
                         .weight(1f)
@@ -94,10 +78,11 @@ Box(modifier = Modifier.fillMaxWidth()
                         } else {
                             MaterialTheme.colorScheme.primary
                         },
-                        contentColor = if (selectedIndex.value == item)
+                        contentColor = if (selectedIndex.value == item) {
                             MaterialTheme.colorScheme.scrim
-                        else
+                        } else {
                             MaterialTheme.colorScheme.onSecondary
+                        }
                     ),
                     shape = when (index) {
                         0 -> RoundedCornerShape(
@@ -137,12 +122,11 @@ Box(modifier = Modifier.fillMaxWidth()
                                     MaterialTheme.colorScheme.onSecondary
                             ),
                             textAlign = TextAlign.Center,
-
                             )
+                        }
                     }
                 }
             }
         }
     }
-}
 }

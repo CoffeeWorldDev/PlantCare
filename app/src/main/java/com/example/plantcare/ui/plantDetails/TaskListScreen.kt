@@ -52,10 +52,10 @@ import com.example.plantcare.ui.components.TextInputRow
 import com.example.plantcare.ui.components.TimePeriodPickerRow
 import com.example.plantcare.ui.plantCreationEdit.PlantDetailsViewModel
 import com.example.plantcare.ui.utils.AddFloatingBtn
-import com.example.plantcare.ui.utils.GetDateInMillis
+import com.example.plantcare.ui.utils.getDateInMillis
 import com.example.plantcare.ui.utils.SeasonsSegmentedButton
 import com.example.plantcare.ui.utils.TitlesBackgroundShape
-import com.example.plantcare.ui.utils.urgency
+import com.example.plantcare.ui.utils.Urgency
 import kotlinx.coroutines.launch
 
 @Composable
@@ -129,20 +129,22 @@ fun TaskListScreen(
                 }
             }
             if (isCreateNewOpen){
-                CreateTaskCard(
+                TaskCard(
                     task = Tasks(0,
-                        plantId, "", true, GetDateInMillis(),
-                        7, 0, urgency.normal.toString(),
-                        0, GetDateInMillis(), currentSeason
+                        plantId, "", true, getDateInMillis(),
+                        7, 0, Urgency.Normal.toString(),
+                        0, getDateInMillis(), currentSeason
                     ),
                     snackbarHostState = snackbarHostState,
-                    onCreate = {
+                    isEdit = false,
+                    onSave = {
                         viewModel.createTask(it)
                         if(!plantEditCreationUiState.isEdit) {
                             activeTasks.add(it)
                         }
                         isCreateNewOpen = false
-                    }
+                    },
+                    onDelete = {isCreateNewOpen = false}
                 )
             }
             TasksColumn(
@@ -171,7 +173,7 @@ fun TasksColumn(
                 TaskCard(
                     task = taskList[int],
                     snackbarHostState = snackbarHostState,
-                    onUpdate = { onUpdate(taskList[int], int) },
+                    onSave = { onUpdate(taskList[int], int) },
                     onDelete = { onDelete(taskList[int], int) }
                 )
             }
@@ -179,105 +181,14 @@ fun TasksColumn(
     }
 }
 @Composable
-fun CreateTaskCard(
-    task: Tasks,
-    snackbarHostState: SnackbarHostState,
-    onCreate: (Tasks) -> Unit
-){
-
-    var isError by remember { mutableStateOf(false) }
-
-    val scope = rememberCoroutineScope()
-    val context = LocalContext.current
-
-    var name by remember {
-        mutableStateOf(task.name)
-    }
-    var cycleLength by remember {
-        mutableIntStateOf(task.cycleLength)
-    }
-    var lastCompleted by remember {
-        mutableStateOf(task.lastCompleted)
-    }
-    Card(
-        shape = CardDefaults.elevatedShape,
-        colors = CardDefaults.cardColors(containerColor = Color.White),
-        elevation = CardDefaults.cardElevation(
-            defaultElevation = 8.dp
-        ),
-        border = BorderStroke(1.dp, Color.Black),
-        modifier = Modifier
-            .fillMaxWidth(0.97f)
-            .padding(10.dp)
-    ) {
-        //TODO tasks names list
-        TextInputRow(
-            label = "Name",
-            value = task.name,
-            onTextChanged = {
-                //   task.name = it
-                name = it
-            },
-            modifier = Modifier.padding(5.dp, 15.dp, 5.dp, 0.dp)
-        )
-        TimePeriodPickerRow(
-            label = "repeat\nevery",
-            value = task.cycleLength,
-            onTextChanged = {
-                //  if(it != 0){
-                //    task.cycleLength = it
-                cycleLength = it
-                // }
-            },
-            isError = isError,
-            modifier = Modifier.padding(5.dp, 0.dp, 5.dp, 0.dp)
-        )
-        DatePickerMenuRow(
-            label = "last\ncompleted",
-            value = task.lastCompleted,
-            onSelect = {
-                // task.lastCompleted = it
-                lastCompleted = it
-            },
-            modifier = Modifier.padding(5.dp, 0.dp, 5.dp, 0.dp)
-        )
-        Row(
-            horizontalArrangement = Arrangement.SpaceBetween,
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            PlantCareIconButton(
-                iconImage = Icons.Filled.Delete,
-                contentDescription = R.string.delete_task,
-                onClick = { /*TODO*/ }
-            )
-            PlantCareButton(
-                label = "save",
-                onButtonClick = {
-                    if (cycleLength == 0){
-                        isError = true
-                        scope.launch {
-                            snackbarHostState.showSnackbar(context.resources.getString(R.string.number_zero))
-                        }
-                    } else {
-                        task.name = name
-                        task.cycleLength = cycleLength
-                        task.lastCompleted = lastCompleted
-                        onCreate(task)
-                    }
-                },
-                modifier = Modifier
-            )
-        }
-    }
-}
-@Composable
 fun TaskCard(
     task: Tasks,
     snackbarHostState: SnackbarHostState,
-    onUpdate: () -> Unit,
-    onDelete: (Tasks) -> Unit
+    isEdit : Boolean = true,
+    onSave: (Tasks) -> Unit,
+    onDelete: () -> Unit
 ){
-    var isExpanded by remember { mutableStateOf(false) }
+    var isExpanded by remember { mutableStateOf(!isEdit) }
     var isError by remember { mutableStateOf(false) }
 
     val scope = rememberCoroutineScope()
@@ -308,28 +219,32 @@ fun TaskCard(
             .fillMaxWidth(0.97f)
             .padding(10.dp)
     ) {
-        Row(
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .fillMaxWidth()) {
-            Text(text = task.name,
-                modifier = Modifier.padding(start = 5.dp))
-            //todo MAKE A SINGLE DAY VER
-            Text(text = "every ${task.cycleLength} days")
-            PlantCareIconButton(
-                iconImage = Icons.Filled.ArrowDropDown,
-                contentDescription = R.string.open_close_task_icon,
-                onClick = { isExpanded = !isExpanded },
-                modifier = Modifier.rotate(rotationState)
-            )
+        if (isEdit) {
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .fillMaxWidth()
+            ) {
+                Text(
+                    text = task.name,
+                    modifier = Modifier.padding(start = 5.dp)
+                )
+                //todo MAKE A SINGLE DAY VER
+                Text(text = "every ${task.cycleLength} days")
+                PlantCareIconButton(
+                    iconImage = Icons.Filled.ArrowDropDown,
+                    contentDescription = R.string.open_close_task_icon,
+                    onClick = { isExpanded = !isExpanded },
+                    modifier = Modifier.rotate(rotationState)
+                )
+            }
         }
         if (isExpanded){
             TextInputRow(
                 label = "Name",
                 value = task.name,
                 onTextChanged = {
-                    // task.name = it
                     name = it
                 },
                 modifier = Modifier.padding(5.dp, 15.dp, 5.dp, 0.dp)
@@ -338,7 +253,6 @@ fun TaskCard(
                 label = "repeat\nevery",
                 value = task.cycleLength,
                 onTextChanged = {
-                    //task.cycleLength = it
                     cycleLength = it
                 },
                 isError = isError,
@@ -348,7 +262,6 @@ fun TaskCard(
                 label = "last\ncompleted",
                 value = task.lastCompleted,
                 onSelect = {
-                    // task.lastCompleted = it
                     lastCompleted = it
                 },
                 modifier = Modifier.padding(5.dp, 0.dp, 5.dp, 0.dp)
@@ -361,7 +274,7 @@ fun TaskCard(
                     iconImage = Icons.Filled.Delete,
                     contentDescription = R.string.delete_task,
                     onClick = {
-                        onDelete(task)
+                        onDelete()
                     }
                 )
                 PlantCareButton(
@@ -377,7 +290,7 @@ fun TaskCard(
                             task.name = name
                             task.cycleLength = cycleLength
                             task.lastCompleted = lastCompleted
-                            onUpdate()
+                            onSave(task)
                             isExpanded = false
                         }
                     },

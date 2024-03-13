@@ -22,7 +22,7 @@ fun ReadOnlyTaskList(tasks: List<Tasks>){
         items(tasks.size){
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Button(
-                    onClick = { /*TODO*/ },
+                    onClick = { /*TODO reset task*/ },
                     modifier = Modifier
                         .weight(1.5f)
                         .padding(10.dp, 10.dp)) {

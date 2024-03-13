@@ -23,55 +23,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.plantcare.R
-import com.example.plantcare.ui.utils.GetDateInMillis
-import com.example.plantcare.ui.utils.GetDateInString
 import com.example.plantcare.ui.components.PlantCareIconButton
+import com.example.plantcare.ui.utils.getDateInMillis
+import com.example.plantcare.ui.utils.getDateInString
 import java.util.Date
 
-@Composable
-fun HomeTop(onValueChange: (Date) -> Unit,
-            modifier: Modifier){
-    val primaryColor = MaterialTheme.colorScheme.primary
-    val onPrimaryColor = MaterialTheme.colorScheme.onPrimary
-    val primaryColorContainer = MaterialTheme.colorScheme.primaryContainer
-    val onPrimaryColorContainer = MaterialTheme.colorScheme.onPrimaryContainer
-    val shape = CircleShape
-    Row(Modifier.padding(0.dp, 10.dp, 0.dp, 40.dp),
-        horizontalArrangement = Arrangement.SpaceEvenly) {
-        LazyRow(modifier = Modifier.weight(6f),
-                horizontalArrangement = Arrangement.SpaceEvenly
-        ){
-            items(6){
-                Card(shape = shape,
-                     colors = CardDefaults.cardColors(containerColor = primaryColorContainer),
-                     elevation = CardDefaults.cardElevation(
-                                 defaultElevation = 5.dp
-                                 ),
-                    modifier = Modifier.clickable {
-                        onValueChange(GetDateInMillis(it))
-                    }
-                ) {
-                    Text(
-                        text = GetDateInString(it),
-                        fontWeight = FontWeight.SemiBold,
-                        textAlign = TextAlign.Center,
-                        fontSize = 12.sp,
-                        lineHeight = 19.sp,
-                        color = onPrimaryColorContainer,
-                        //TODO see about flexible size
-                        modifier = Modifier.padding(10.dp)
-                    )
-                }
-            }
-        }
-       PlantCareIconButton(
-           iconImage = Icons.Filled.Menu,
-           contentDescription = R.string.hamburger_button_icon,
-           onClick = { Log.d("Click", "IconExample") },
-           modifier = Modifier
-               .weight(0.5f)
-               .padding(0.dp, 5.dp, 12.dp, 5.dp)
-               .height(45.dp)
-               .width(45.dp))
-    }
-}

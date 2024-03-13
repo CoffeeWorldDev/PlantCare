@@ -135,7 +135,7 @@ fun PlantsGallery(
                 }
             }
             if(showOptionsDialog){
-                OptionsMenu(
+                GalleryOptionsMenu(
                     closeDialog = {showOptionsDialog = false},
                     changeQuery = viewModel::sortGallery,
                     changeLayout = viewModel::changeLayout
@@ -146,7 +146,7 @@ fun PlantsGallery(
 }
 
 @Composable
-fun OptionsMenu(
+fun GalleryOptionsMenu(
     closeDialog : () -> Unit,
     changeQuery : (String) -> Unit,
     changeLayout : (Int) -> Unit

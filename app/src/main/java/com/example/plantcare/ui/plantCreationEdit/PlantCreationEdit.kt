@@ -87,7 +87,6 @@ fun PlantCreationEdit(
     val lifecycleOwner = LocalLifecycleOwner.current
 
     LaunchedEffect(Unit) {
-        Log.e("empty screen log", "???")
         lifecycleOwner.repeatOnLifecycle(Lifecycle.State.CREATED) {
             launch {
                 viewModel.getPlantWithId(plantId)
@@ -145,6 +144,7 @@ fun PlantCreationEditForm(
     var showDialog by remember { mutableStateOf(false) }
 
     val currentPhoto = plant.photo.toUri()
+    Log.e("currentPhoto", plant.photo)
 
     val bottomArrangement = if (isEdit){Arrangement.SpaceBetween} else {Arrangement.End}
 
@@ -162,6 +162,7 @@ fun PlantCreationEditForm(
         ) {
             if (it != null) {
                 plant.photo = it.toString()
+                Log.e("just change photo", plant.photo)
             }
         }
         TextInputRow(
@@ -297,6 +298,7 @@ fun ImageBlock(
         onResult = { uri: Uri? ->
             photoUri = uri
             onSelect(uri)
+            Log.e("currentPhoto", uri.toString())
         }
     )
     Row(
@@ -459,6 +461,9 @@ fun SavePlant(
     isError : (Boolean) -> Unit,
     modifier: Modifier
 ){
+    Log.e("currentPhoto", plant.photo)
+    Log.e("currentlySavedPhoto", currentlySavedPhoto.toString())
+
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
     PlantCareButton(

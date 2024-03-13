@@ -231,10 +231,10 @@ fun PlantDetailsScreenTop(
  //   }
     @Composable
     fun getScreenHeight(): Dp {
-        val density = LocalDensity.current
+     LocalDensity.current
         val configuration = LocalConfiguration.current
-        val screenHeightDp = with(density) {configuration.screenHeightDp.dp}
-        val divider : Int = when {
+        val screenHeightDp = configuration.screenHeightDp.dp
+     val divider : Int = when {
             screenHeightDp <= 720.dp -> 9
             screenHeightDp <= 800.dp -> 10
             screenHeightDp <= 900.dp -> 9

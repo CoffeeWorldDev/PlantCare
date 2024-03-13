@@ -3,9 +3,8 @@ package com.example.plantcare.ui.plantsGallery
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.plantcare.domain.repository.PlantsRepository
-import com.example.plantcare.domain.repository.TasksRepository
-import com.example.plantcare.domain.useCase.plants.GetActivePlantsUseCase
 
+@Suppress("UNCHECKED_CAST")
 class PlantsGalleryViewModelFactory(private val plantsRepository: PlantsRepository
 ): ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
@@ -14,7 +13,3 @@ class PlantsGalleryViewModelFactory(private val plantsRepository: PlantsReposito
         ) as T
     }
 }
-
-//private val getActivePlantsUseCase: GetActivePlantsUseCase,
-//private val updateTasksUseCase: UpdateTasksUseCase,
-//private val getFutureActivePlantsUseCase: GetFutureActivePlantsUseCase

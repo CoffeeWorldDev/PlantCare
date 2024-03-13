@@ -1,27 +1,22 @@
 package com.example.plantcare.ui.plantCreationEdit
 
-import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.plantcare.data.model.Plants
 import com.example.plantcare.data.model.Tasks
 import com.example.plantcare.domain.repository.PlantsRepository
 import com.example.plantcare.domain.repository.TasksRepository
-import com.example.plantcare.ui.utils.GetDateInMillis
+import com.example.plantcare.ui.utils.getDateInMillis
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.mapLatest
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 data class PlantCreationEditUiState(
-    val plant: Plants = Plants(0, "", "", "", "", GetDateInMillis(), "",
+    val plant: Plants = Plants(0, "", "", "", "", getDateInMillis(), "",
         "", "summer"),
     val tasks: List<Tasks>? = emptyList(),
     val photo : String = "",

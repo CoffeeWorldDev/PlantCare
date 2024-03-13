@@ -7,8 +7,7 @@ import com.example.plantcare.FakeTasksRepository
 import com.example.plantcare.fakePlantsList
 import com.example.plantcare.fakeTasksList
 import com.example.plantcare.ui.home.HomeViewModel
-import com.example.plantcare.ui.plantsGallery.PlantsGalleryViewModel
-import com.example.plantcare.ui.utils.GetDateInMillis
+import com.example.plantcare.ui.utils.getDateInMillis
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -17,7 +16,6 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Before
 import org.junit.Rule
@@ -60,7 +58,7 @@ class homeViewModelTest {
         //assertNotNull(uiState)
         //advanceTimeBy(500)
 
-        var valRep = fakePlantsRepository.getActivePlants(GetDateInMillis()).first()?.keys
+        var valRep = fakePlantsRepository.getActivePlants(getDateInMillis()).first()?.keys
         var vmRep =  viewModel.uiState.value.plantsMap!!.keys
 
        assertNotNull(uiState.plantsMap)
