@@ -60,9 +60,11 @@ dependencies {
     implementation("androidx.test.ext:junit-ktx:1.1.5")
 
     implementation("com.google.accompanist:accompanist-permissions:0.32.0")
+    implementation("androidx.hilt:hilt-work:1.2.0")
 
     val room_version = "2.6.1"
     val nav_version = "2.7.5"
+    val work_version = "2.9.0"
 
     // Architecture Components
     implementation("androidx.room:room-runtime:$room_version")
@@ -94,6 +96,9 @@ dependencies {
     // Coil
     implementation("io.coil-kt:coil-compose:2.5.0")
 
+    // WorkManager
+    implementation("androidx.work:work-runtime-ktx:$work_version")
+
     implementation("com.google.dagger:hilt-android:2.48.1")
     implementation("androidx.hilt:hilt-navigation-compose:1.1.0")
    // implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
@@ -120,6 +125,7 @@ dependencies {
     androidTestImplementation("androidx.arch.core:core-testing:2.2.0")
     androidTestImplementation("androidx.navigation:navigation-testing:$nav_version")
     androidTestImplementation("com.google.dagger:hilt-android-testing:2.44.2")
+    androidTestImplementation("androidx.work:work-testing:$work_version")
     // Make Hilt generate code in the androidTest folder
     kaptAndroidTest("com.google.dagger:hilt-android-compiler:2.48")
 
