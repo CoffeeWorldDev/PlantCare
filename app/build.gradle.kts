@@ -4,6 +4,7 @@ plugins {
     id("com.google.devtools.ksp")
     kotlin("kapt")
     id("com.google.dagger.hilt.android")
+    id("dagger.hilt.android.plugin")
 }
 
 android {
@@ -62,6 +63,7 @@ dependencies {
     implementation("com.google.accompanist:accompanist-permissions:0.32.0")
     implementation("androidx.hilt:hilt-work:1.2.0")
 
+
     val room_version = "2.6.1"
     val nav_version = "2.7.5"
     val work_version = "2.9.0"
@@ -99,12 +101,16 @@ dependencies {
     // WorkManager
     implementation("androidx.work:work-runtime-ktx:$work_version")
 
-    implementation("com.google.dagger:hilt-android:2.48.1")
-    implementation("androidx.hilt:hilt-navigation-compose:1.1.0")
+    //Dagger Hilt
+    implementation("androidx.hilt:hilt-work:1.2.0")
+
+    implementation("com.google.dagger:hilt-android:2.49")
+    implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
    // implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
     kapt("com.google.dagger:hilt-android-compiler:2.48")
     kapt("org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.5.0")
-
+    //kapt("com.google.dagger:hilt-android-compiler:2.48")
+    kapt("androidx.hilt:hilt-compiler:1.2.0")
 
 //UNIT TEST IMPLEMENTATION
     testImplementation("org.robolectric:robolectric:4.9.2")

@@ -1,13 +1,18 @@
 package com.example.plantcare.ui.home
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
 import com.example.plantcare.data.model.Plants
 import com.example.plantcare.data.model.Tasks
 import com.example.plantcare.domain.repository.PlantsRepository
 import com.example.plantcare.domain.repository.TasksRepository
 import com.example.plantcare.ui.utils.changeTaskToInactive
 import com.example.plantcare.ui.utils.getDateInMillis
+import com.example.plantcare.worker.Initializer
+import com.example.plantcare.worker.TasksWorker
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -27,14 +32,23 @@ data class HomeUiState(
 class HomeViewModel @Inject constructor (
     private val plantsRepository: PlantsRepository,
     private val tasksRepository: TasksRepository,
+    private var workerInitializer: Initializer
     //savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(HomeUiState(isLoading = true))
     val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
 
+   // private val workManager = WorkManager.getInstance(application)
+
     init {
         changeQuery(getDateInMillis())
+        //workerInitializer()
+    }
+
+    fun addDatePeriodicWorker(context: Context) {
+        val workRequest = OneTimeWorkRequestBuilder<TasksWorker>().build()
+        WorkManager.getInstance(context).enqueue(workRequest)
     }
 
     fun changeQuery(date: Date) {

@@ -3,8 +3,8 @@ package com.example.plantcare.ui.di
 import com.example.plantcare.domain.repository.PlantsRepository
 import com.example.plantcare.domain.repository.TasksRepository
 import com.example.plantcare.ui.home.HomeViewModelFactory
-import com.example.plantcare.ui.plantCreationEdit.PlantCreationEditViewModelFactory
 import com.example.plantcare.ui.plantsGallery.PlantsGalleryViewModelFactory
+import com.example.plantcare.worker.Initializer
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,11 +18,13 @@ class FactoryModule {
     @Provides
 fun providesHomeFactoryModel(
         plantsRepository: PlantsRepository,
-        tasksRepository: TasksRepository
+        tasksRepository: TasksRepository,
+        workerInitializer: Initializer
 ): HomeViewModelFactory {
     return HomeViewModelFactory(
         plantsRepository,
-        tasksRepository
+        tasksRepository,
+        workerInitializer
     )
 }
 
@@ -35,17 +37,4 @@ fun providesHomeFactoryModel(
             plantsRepository
         )
     }
-
-
-@Singleton
-@Provides
-fun providesPlantCreationEditFactoryModel(
-    plantsRepository: PlantsRepository,
-    tasksRepository: TasksRepository
-): PlantCreationEditViewModelFactory {
-    return PlantCreationEditViewModelFactory(
-        plantsRepository,
-        tasksRepository
-    )
-}
 }

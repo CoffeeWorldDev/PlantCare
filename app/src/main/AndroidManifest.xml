@@ -45,22 +45,23 @@
             </intent-filter>
         </activity>
 
+        <!--
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.example.plantcare.fileProvider"
             android:exported="false"
-            android:grantUriPermissions="true">
+            android:grantUriPermissions="true"
+            >
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
-        <!-- added this and added tools:replace when getting error -->
+         added this and added tools:replace when getting error -->
         <provider
             android:name="androidx.startup.InitializationProvider"
             android:authorities="com.example.plantcare.androidx-startup"
-            tools:node="remove"
-            tools:replace="android:authorities">
-        </provider>
+            tools:replace="android:authorities"
+            tools:node="remove" />
     </application>
 
 </manifest>

@@ -27,6 +27,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -50,6 +51,11 @@ fun Home(
     viewModel: HomeViewModel = hiltViewModel()
 ) {
     val homeUiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    //todo delete
+    val context = LocalContext.current
+
+
 
     var showOptionsDialog by remember {
         mutableStateOf(false)
@@ -76,7 +82,10 @@ fun Home(
             )
         ) {
             HomeHeader(
-                onValueChange = { viewModel.changeQuery(it) },
+                onValueChange = { viewModel.changeQuery(it)
+                                //todo delete
+                    viewModel.addDatePeriodicWorker(context)
+                    },
                 showDialog = {showOptionsDialog = true},
                 modifier = Modifier
             )
